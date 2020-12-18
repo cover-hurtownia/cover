@@ -1,0 +1,11 @@
+:root {
+    --color: #202020;
+    --background-color: #f0f0f0;
+    --font-family: sans-serif;
+}
+
+body {
+    color: var(--color);
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+}

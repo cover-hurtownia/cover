@@ -1,0 +1,16 @@
+{
+  "name": "hurtownia-ksiazek",
+  "version": "0.1.0",
+  "description": "Projekt strony WWW hurtowni książek",
+  "main": "server.js",
+  "repository": "https://github.com/bittersweetshimmer/hurtownia-ksiazek",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
