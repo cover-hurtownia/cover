@@ -2,18 +2,19 @@
 ## Usage
 
 1.  Clone the repository:
-    ```console
+    ```sh
     git clone https://github.com/bittersweetshimmer/hurtownia-ksiazek
     cd hurtownia-ksiazek
     ```
 2.  Run the server:
     -   using [Node.js](https://nodejs.org/en/download/):
-        ```console
+        ```sh
         npm install
+        npm run migrate
         npm run server
         ```
     -   using [Docker](https://www.docker.com/):
-        ```console
+        ```sh
         docker build -t hurtownia-ksiazek .
         docker run -p 8080:8080 -d hurtownia-ksiazek
         ```
