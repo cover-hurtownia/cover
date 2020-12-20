@@ -8,7 +8,7 @@ const expect = chai.expect;
 describe("server", function() {
     let server;
     before(async function() {
-        server = app.listen("127.0.0.1", 18080);
+        server = app.listen();
     });
 
     describe("GET /", function() {

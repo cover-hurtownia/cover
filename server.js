@@ -15,9 +15,6 @@ const SESSION_COOKIE_NAME = "session";
 const SESSION_SECRET      = "FOOBAR";
 const SESSION_MAX_AGE     = 60 * 60 * 1000;
 
-const DIRECTORY           = path.dirname(import.meta.url).replace(/^file:\/\//, '');
-const STATIC_DIRECTORY    = path.join(DIRECTORY, "www");
-
 
 
 const db = knex(knexFile);
@@ -40,8 +37,7 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use("/", express.static(STATIC_DIRECTORY));
+app.use("/", express.static("www"));
 
 app.post("/api/echo", (request, response) => {
     response.send({

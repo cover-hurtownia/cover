@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "tests": "mocha --exit",
-    "migrate": "knex migrate:latest",
+    "migrate": "knex migrate:latest --esm",
     "server": "node index.js"
   },
   "dependencies": {
