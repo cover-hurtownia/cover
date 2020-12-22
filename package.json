@@ -8,7 +8,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "tests": "mocha --exit",
+    "test": "mocha --exit",
     "migrate": "knex migrate:latest --esm",
     "server": "node index.js"
   },

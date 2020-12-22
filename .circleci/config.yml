@@ -1,7 +1,9 @@
-version: 2.1
 orbs:
-  welcome: circleci/welcome-orb@0.4.1
+  node: circleci/node@4.0.0
+
+version: 2.1
+
 workflows:
-  welcome:
+  app-tests:
     jobs:
-      - welcome/run
+      - node/test
