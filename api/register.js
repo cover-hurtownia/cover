@@ -57,9 +57,10 @@ export const register = database => async (request, response) => {
         });
 
         // Update session, generates a session cookie and sends it back.
-        request.session.username = username;
+        request.session.user = { username };
 
         response.status(200);
+        response.cookie("session_username", request.session.user.username, { maxAge: request.session.cookie.maxAge, sameSite: true });
         response.send({
             status: "ok"
         });

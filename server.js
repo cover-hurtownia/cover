@@ -36,6 +36,20 @@ app.use(session({
         maxAge: SESSION_MAX_AGE
     }
 }));
+app.use((request, response, next) => {
+    // If session contains "user" key, then the user is probably logged in.
+    if (request.session.hasOwnProperty("user")) {
+        // Send a non-samesite cookie for client.
+        response.cookie("session_username", request.session.user.username, { maxAge: request.session.cookie.maxAge, sameSite: true });
+    }
+    // Otherwise, they are probably not logged in, so remove session cookies just in case.
+    else {
+        response.clearCookie("session");
+        response.clearCookie("session_username");
+    }
+
+    next();
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/", express.static("www"));

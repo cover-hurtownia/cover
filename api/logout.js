@@ -1,16 +1,19 @@
 export const logout = () => async (request, response) => {
     try {
-        // If session doesn't contain "username" key, then the user is probably logged out.
-        if (!request.session.hasOwnProperty("username")) {
-            throw "already logged out";
-        };
-
         // Destroy the session.
-        request.session.destroy();
-
-        response.status(200);
-        response.send({
-            status: "ok"
+        request.session.destroy((error) => {
+            if (error) {
+                console.error("/api/logout: request.session.destroy error:", error);
+                throw "internal error";
+            }
+            else {
+                response.status(200);
+                response.clearCookie("session");
+                response.clearCookie("session_username");
+                response.send({
+                    status: "ok"
+                });
+            }
         });
     }
     catch (error) {
