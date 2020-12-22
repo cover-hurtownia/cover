@@ -7,3 +7,4 @@ workflows:
   app-tests:
     jobs:
       - node/test
+          version: 15.3.0
