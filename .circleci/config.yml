@@ -8,3 +8,4 @@ workflows:
     jobs:
       - node/test:
           version: 15.3.0
+          cache-version: v2
