@@ -1,6 +1,7 @@
 import express, { request, response } from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 import knex from "knex";
 import connectSessionKnex from "connect-session-knex";
@@ -36,6 +37,10 @@ app.use(session({
         maxAge: SESSION_MAX_AGE
     }
 }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use("/", express.static("www"));
 app.use((request, response, next) => {
     // If session contains "user" key, then the user is probably logged in.
     if (request.session.hasOwnProperty("user")) {
@@ -44,15 +49,18 @@ app.use((request, response, next) => {
     }
     // Otherwise, they are probably not logged in, so remove session cookies just in case.
     else {
-        response.clearCookie("session");
-        response.clearCookie("session_username");
+        // Send Set-Cookie header to clear cookies only if they were present.
+        if ("session" in request.cookies) {
+            response.clearCookie("session");
+        }
+
+        if ("session_username" in request.cookies) {
+            response.clearCookie("session_username");
+        }
     }
 
     next();
 });
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use("/", express.static("www"));
 
 app.post("/api/echo", (request, response) => {
     response.send({
