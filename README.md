@@ -10,7 +10,7 @@
     -   using [Node.js](https://nodejs.org/en/download/):
         ```sh
         npm install
-        npm run migrate
+        npm run migrate # updates existing database or creates it 
         npm run server
         ```
     -   using [Docker](https://www.docker.com/):

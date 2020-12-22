@@ -19,13 +19,13 @@ const SESSION_MAX_AGE     = 60 * 60 * 1000;
 
 
 
-const db = knex(knexFile);
+const db = knex(knexFile[process.env.NODE_ENV ?? "development"]);
 
 const app = express();
 
 app.use(session({
     secret: SESSION_SECRET,
-    store: new KnexSessionStore({ knex: db }),
+    store: new KnexSessionStore({ knex: db, createtable: false }),
     name: SESSION_COOKIE_NAME,
     rolling: true,
     resave: true,
@@ -72,5 +72,7 @@ app.post("/api/echo", (request, response) => {
 app.post("/api/login", login(db));
 app.post("/api/register", register(db));
 app.post("/api/logout", logout(db));
+
+app.set('database', db);
 
 export default app;

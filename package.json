@@ -8,7 +8,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "tests": "mocha --exit",
+    "tests": "cross-env NODE_ENV=test mocha --exit",
     "migrate": "knex migrate:latest --esm",
     "server": "node index.js"
   },
@@ -25,6 +25,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "cross-env": "^7.0.3",
     "mocha": "^8.2.1"
   }
 }
