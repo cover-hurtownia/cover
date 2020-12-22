@@ -6,5 +6,5 @@ version: 2.1
 workflows:
   app-tests:
     jobs:
-      - node/test
+      - node/test:
           version: 15.3.0
