@@ -1,4 +1,4 @@
-import express, { request, response } from "express";
+import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -45,7 +45,7 @@ app.use((request, response, next) => {
     // If session contains "user" key, then the user is probably logged in.
     if (request.session.hasOwnProperty("user")) {
         // Send a non-samesite cookie for client.
-        response.cookie("session_username", request.session.user.username, { maxAge: request.session.cookie.maxAge, sameSite: true });
+        response.cookie("session_user", JSON.stringify({ username: request.session.user.username }), { maxAge: request.session.cookie.maxAge, sameSite: true });
     }
     // Otherwise, they are probably not logged in, so remove session cookies just in case.
     else {
@@ -54,8 +54,8 @@ app.use((request, response, next) => {
             response.clearCookie("session");
         }
 
-        if ("session_username" in request.cookies) {
-            response.clearCookie("session_username");
+        if ("session_user" in request.cookies) {
+            response.clearCookie("session_user");
         }
     }
 

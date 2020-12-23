@@ -104,8 +104,8 @@ describe("server", function() {
                 expect(response).to.have.cookie("session");
             });
 
-            it("should respond with session_username cookie", async function() {
-                expect(response).to.have.cookie("session");
+            it("should respond with session_user cookie", async function() {
+                expect(response).to.have.cookie("session_user");
             });
 
             it("should respond with Content-Type: application/json", async function() {
@@ -189,8 +189,8 @@ describe("server", function() {
                 expect(response).to.have.cookie("session");
             });
 
-            it("should respond with session_username cookie", async function() {
-                expect(response).to.have.cookie("session");
+            it("should respond with session_user cookie", async function() {
+                expect(response).to.have.cookie("session_user");
             });
 
             it("should respond with Content-Type: application/json", async function() {

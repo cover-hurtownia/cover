@@ -32,7 +32,7 @@ export const login = database => async (request, response) => {
         request.session.user = { username };
 
         response.status(200);
-        response.cookie("session_username", request.session.user.username, { maxAge: request.session.cookie.maxAge, sameSite: true });
+        response.cookie("session_user", JSON.stringify({ username: request.session.user.username }), { maxAge: request.session.cookie.maxAge, sameSite: true });
         response.send({
             status: "ok"
         });
