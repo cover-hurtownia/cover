@@ -4,11 +4,19 @@ export default {
         connection: {
             filename: 'database.sqlite3'
         },
-        useNullAsDefault: true
+        useNullAsDefault: true,
+        migrations: {
+            extension: 'mjs',
+            loadExtensions: ['.mjs']
+        }
     },
     test: {
         client: 'sqlite3',
         connection: ":memory:",
-        useNullAsDefault: true
+        useNullAsDefault: true,
+        migrations: {
+            extension: 'mjs',
+            loadExtensions: ['.mjs']
+        }
     }
 };
