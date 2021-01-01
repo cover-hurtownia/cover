@@ -79,7 +79,7 @@
                     document.body.classList.add("is-logged-in");
                 }
                 else {
-                    console.warn(`Błąd logowania: ${json.error}`);
+                    console.warn(`Błąd logowania: ${response.error}`);
                 }
             });
 
@@ -96,7 +96,7 @@
                     document.body.classList.add("is-logged-in");
                 }
                 else {
-                    console.warn(`Błąd rejestracji: ${json.error}`);
+                    console.warn(`Błąd rejestracji: ${response.error}`);
                 }
             });
 
@@ -110,7 +110,7 @@
                     document.body.classList.remove("is-logged-in");
                 }
                 else {
-                    console.warn(`Błąd wylogowania: ${json.error}`);
+                    console.warn(`Błąd wylogowania: ${response.error}`);
                 }
             });
 
