@@ -104,10 +104,6 @@ describe("server", function() {
                 expect(response).to.have.cookie("session");
             });
 
-            it("should respond with session_user cookie", async function() {
-                expect(response).to.have.cookie("session_user");
-            });
-
             it("should respond with Content-Type: application/json", async function() {
                 expect(response.type).to.equal("application/json");
             });
@@ -187,10 +183,6 @@ describe("server", function() {
 
             it("should respond with session cookie", async function() {
                 expect(response).to.have.cookie("session");
-            });
-
-            it("should respond with session_user cookie", async function() {
-                expect(response).to.have.cookie("session_user");
             });
 
             it("should respond with Content-Type: application/json", async function() {

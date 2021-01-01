@@ -7,7 +7,7 @@
     cd hurtownia-ksiazek
     ```
 2.  Run the server:
-    -   using [Node.js](https://nodejs.org/en/download/):
+    -   using [Node.js](https://nodejs.org/en/download/) _(tested on v15.3.0)_:
         ```sh
         npm install
         npm run migrate # updates existing database or creates it 

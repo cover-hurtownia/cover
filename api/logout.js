@@ -8,8 +8,7 @@ export const logout = () => async (request, response) => {
             }
             else {
                 response.status(200);
-                response.clearCookie("session");
-                response.clearCookie("session_username");
+                response.clearCookie("session", { sameSite: true, httpOnly: true, secure: false });
                 response.send({
                     status: "ok"
                 });

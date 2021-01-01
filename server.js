@@ -8,10 +8,7 @@ import connectSessionKnex from "connect-session-knex";
 import knexFile from "./knexfile.js";
 const KnexSessionStore = connectSessionKnex(session);
 
-import { login } from "./api/login.js";
-import { register } from "./api/register.js";
-import { logout } from "./api/logout.js";
-
+import * as API from "./api/index.js";
 
 const SESSION_COOKIE_NAME = "session";
 const SESSION_SECRET      = "FOOBAR";
@@ -20,6 +17,7 @@ const SESSION_MAX_AGE     = 60 * 60 * 1000;
 
 
 const db = knex(knexFile[process.env.NODE_ENV ?? "development"]);
+await db.raw('PRAGMA foreign_keys = ON');
 
 const app = express();
 
@@ -41,26 +39,6 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/", express.static("www"));
-app.use((request, response, next) => {
-    // If session contains "user" key, then the user is probably logged in.
-    if (request.session.hasOwnProperty("user")) {
-        // Send a non-samesite cookie for client.
-        response.cookie("session_user", JSON.stringify({ username: request.session.user.username }), { maxAge: request.session.cookie.maxAge, sameSite: true });
-    }
-    // Otherwise, they are probably not logged in, so remove session cookies just in case.
-    else {
-        // Send Set-Cookie header to clear cookies only if they were present.
-        if ("session" in request.cookies) {
-            response.clearCookie("session");
-        }
-
-        if ("session_user" in request.cookies) {
-            response.clearCookie("session_user");
-        }
-    }
-
-    next();
-});
 
 app.post("/api/echo", (request, response) => {
     response.send({
@@ -69,9 +47,11 @@ app.post("/api/echo", (request, response) => {
     });
 });
 
-app.post("/api/login", login(db));
-app.post("/api/register", register(db));
-app.post("/api/logout", logout(db));
+app.post("/api/login", API.login(db));
+app.post("/api/register", API.register(db));
+app.post("/api/logout", API.logout(db));
+app.post("/api/session", API.session(db));
+app.post("/api/roles", API.roles(db));
 
 app.set('database', db);
 
