@@ -1,9 +1,11 @@
+import logger from "../logger.js";
+
 export const logout = () => async (request, response) => {
     try {
         // Destroy the session.
         request.session.destroy((error) => {
             if (error) {
-                console.error("/api/logout: request.session.destroy error:", error);
+                logger.error("/api/logout: request.session.destroy error:", error);
                 throw "internal error";
             }
             else {
@@ -16,7 +18,8 @@ export const logout = () => async (request, response) => {
         });
     }
     catch (error) {
-        // Send 404 (bad request) on any error.
+        // Send 400 (bad request) on any error.
+        logger.warn(`/api/logout: ${error}`);
         response.status(400)
         response.send({
             status: "error",

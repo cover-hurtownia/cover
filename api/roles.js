@@ -1,3 +1,5 @@
+import logger from "../logger.js";
+
 export const roles = database => async (request, response) => {
     try {
         if (request.session.hasOwnProperty("user")) {
@@ -9,7 +11,7 @@ export const roles = database => async (request, response) => {
                 .where("users.username", "=", request.session.user.username);
 
             const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
-                console.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+                logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
                 throw "database error";
             });
 
@@ -22,7 +24,8 @@ export const roles = database => async (request, response) => {
         else throw "not logged in";
     }
     catch (error) {
-        // Send 404 (bad request) on any error.
+        // Send 400 (bad request) on any error.
+        logger.warn(`/api/roles: ${error}`);
         response.status(400)
         response.send({
             status: "error",

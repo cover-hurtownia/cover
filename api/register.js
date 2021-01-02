@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import logger from "../logger.js";
 
 export const register = database => async (request, response) => {
     const username = request.body.username ?? ""; // If no username in request body, then default to empty string.
@@ -30,7 +31,7 @@ export const register = database => async (request, response) => {
         // Check if username already exists.
         const usersInDatabaseQuery = database('users').where({ username });
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
-            console.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+            logger.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
             throw "database error";
         });
 
@@ -38,13 +39,13 @@ export const register = database => async (request, response) => {
 
         // Generate salt for password hashing.
         const salt = await bcrypt.genSalt().catch(_ => {
-            console.error("/api/register: salt generation error");
+            logger.error("/api/register: salt generation error");
             throw "internal error"
         });
 
         // Hash the password.
         const passwordHash = await bcrypt.hash(password, salt).catch(_ => {
-            console.error("/api/register: hashing error");
+            logger.error("/api/register: hashing error");
             throw "internal error";
         });
 
@@ -52,7 +53,7 @@ export const register = database => async (request, response) => {
         const insertUserQuery = database('users').insert({ username, password_hash: passwordHash });
 
         await insertUserQuery.catch(error => {
-            console.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
+            logger.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
             throw "database error";
         });
 
@@ -66,7 +67,8 @@ export const register = database => async (request, response) => {
         });
     }
     catch (error) {
-        // Send 404 (bad request) on any error.
+        // Send 400 (bad request) on any error.
+        logger.warn(`/api/register: ${error}`);
         response.status(400)
         response.send({
             status: "error",

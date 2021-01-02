@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import logger from "../logger.js";
 
 export const login = database => async (request, response) => {
     const username = request.body.username ?? ""; // If no username in request body, then default to empty string.
@@ -8,7 +9,7 @@ export const login = database => async (request, response) => {
         // Check if username exists.
         const usersInDatabaseQuery = database('users').where({ username });
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
-            console.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+            logger.error(`/api/login: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
             throw "database error";
         });
 
@@ -20,7 +21,7 @@ export const login = database => async (request, response) => {
 
         // Compare the hashes.
         const passwordMatches = await bcrypt.compare(password, user.password_hash).catch(_ => {
-            console.error("/api/login: hash comparison error");
+            logger.error("/api/login: hash comparison error");
             throw "internal error";
         });
 
@@ -38,7 +39,8 @@ export const login = database => async (request, response) => {
         });
     }
     catch (error) {
-        // Send 404 (bad request) on any error.
+        // Send 400 (bad request) on any error.
+        logger.warn(`/api/login: ${error}`);
         response.status(400)
         response.send({
             status: "error",
