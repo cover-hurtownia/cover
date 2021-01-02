@@ -9,9 +9,15 @@ import knexFile from "./knexfile.js";
 const KnexSessionStore = connectSessionKnex(session);
 
 import * as API from "./api/index.js";
+import logger from "./logger.js";
 
 const SESSION_COOKIE_NAME = "session";
-const SESSION_SECRET      = process.env.SESSION_SECRET;
+
+if (process.env.SESSION_SECRET === undefined) {
+    logger.warn("SESSION_SECRET not present in .env");
+}
+
+const SESSION_SECRET      = process.env.SESSION_SECRET ?? "FOOBAR";
 const SESSION_MAX_AGE     = 60 * 60 * 1000;
 
 
