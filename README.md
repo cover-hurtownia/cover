@@ -19,4 +19,4 @@
         docker build -t hurtownia-ksiazek .
         docker run -p 8080:8080 -d hurtownia-ksiazek
         ```
-4.  Open your browser at `http://127.0.0.1:8080`.
+4.  Open your browser at `http://127.0.0.1:8080` _(or whatever you have assigned in the `.env` file)_.
