@@ -2,13 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default {
-    client: process.env.DATABASE_CLIENT,
+    client: process.env.DATABASE_CLIENT ? process.env.DATABASE_CLIENT : "sqlite3",
     connection: process.env.DATABASE_IN_MEMORY === "true" ? ":memory:" : {
         host: process.env.DATABASE_HOST,
         user: process.env.DATABASE_USERNAME,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
-        filename: process.env.DATABASE_FILENAME
+        filename: process.env.DATABASE_FILENAME ? process.env.DATABASE_FILENAME : "database.sqlite3"
     },
     useNullAsDefault: true,
     migrations: {
