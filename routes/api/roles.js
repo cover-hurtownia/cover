@@ -4,26 +4,23 @@ export const roles = async (request, response) => {
     const database = request.app.get("database");
 
     try {
-        if (request.session.hasOwnProperty("user")) {
-            const rolesQuery = database
-                .select("roles.name")
-                .from("user_roles")
-                .join("users", "users.id", "user_roles.user_id")
-                .join("roles", "roles.id", "user_roles.role_id")
-                .where("users.username", "=", request.session.user.username);
+        const rolesQuery = database
+            .select("roles.name")
+            .from("user_roles")
+            .join("users", "users.id", "user_roles.user_id")
+            .join("roles", "roles.id", "user_roles.role_id")
+            .where("users.username", "=", request.session.user.username);
 
-            const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
-                logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-                throw "database error";
-            });
+        const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
+            logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+            throw "database error";
+        });
 
-            response.status(200);
-            response.send({
-                status: "ok",
-                roles
-            });
-        }
-        else throw "not logged in";
+        response.status(200);
+        response.send({
+            status: "ok",
+            roles
+        });
     }
     catch (error) {
         // Send 400 (bad request) on any error.
