@@ -1,4 +1,7 @@
 import express from "express";
+
+import { authenticated } from "../utilities.js";
+
 import { login } from "./login.js";
 import { register } from "./register.js";
 import { logout } from "./logout.js";
@@ -10,7 +13,7 @@ export const router = express.Router();
 
 router.post("/login"   , login   );
 router.post("/register", register);
-router.post("/logout"  , logout  );
-router.post("/session" , session );
-router.post("/roles"   , roles   );
+router.post("/logout"  , authenticated, logout );
+router.post("/session" , authenticated, session);
+router.post("/roles"   , authenticated, roles  );
 router.post("/echo"    , echo    );
