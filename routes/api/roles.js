@@ -1,6 +1,8 @@
-import logger from "../logger.js";
+import logger from "../../logger.js";
 
-export const roles = database => async (request, response) => {
+export const roles = async (request, response) => {
+    const database = request.app.get("database");
+
     try {
         if (request.session.hasOwnProperty("user")) {
             const rolesQuery = database

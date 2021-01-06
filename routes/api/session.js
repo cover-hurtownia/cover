@@ -1,4 +1,4 @@
-export const session = database => async (request, response) => {
+export const session = async (request, response) => {    
     try {
         if (request.session.hasOwnProperty("user")) {
             response.status(200);

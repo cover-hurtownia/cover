@@ -1,6 +1,6 @@
-import logger from "../logger.js";
+import logger from "../../logger.js";
 
-export const logout = () => async (request, response) => {
+export const logout = async (request, response) => {
     try {
         // Destroy the session.
         request.session.destroy((error) => {

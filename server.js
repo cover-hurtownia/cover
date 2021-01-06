@@ -8,8 +8,8 @@ import connectSessionKnex from "connect-session-knex";
 import knexFile from "./knexfile.js";
 const KnexSessionStore = connectSessionKnex(session);
 
-import * as API from "./api/index.js";
 import logger from "./logger.js";
+import { router as api } from "./routes/api/router.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -34,6 +34,7 @@ const db = knex(process.env.NODE_ENV !== "test" ? knexFile : {
 
 const app = express();
 
+app.set("database", db);
 app.use(session({
     secret: SESSION_SECRET,
     store: new KnexSessionStore({ knex: db, createtable: false }),
@@ -53,13 +54,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/", express.static("www"));
 
-app.post("/api/echo", API.echo(db));
-app.post("/api/login", API.login(db));
-app.post("/api/register", API.register(db));
-app.post("/api/logout", API.logout(db));
-app.post("/api/session", API.session(db));
-app.post("/api/roles", API.roles(db));
-
-app.set("database", db);
+app.use("/api", api);
 
 export default app;

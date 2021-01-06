@@ -1,4 +1,4 @@
-export const echo = db => async (request, response) => {
+export const echo = async (request, response) => {
     response.send({
         message: "Hello from /api/echo.",
         data: request.body

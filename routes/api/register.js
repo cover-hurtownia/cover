@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
-import logger from "../logger.js";
+import logger from "../../logger.js";
 
-export const register = database => async (request, response) => {
+export const register = async (request, response) => {
+    const database = request.app.get("database");
+
     const username = request.body.username ?? ""; // If no username in request body, then default to empty string.
     const password = request.body.password ?? ""; // If no password in request body, then default to empty string.
 
