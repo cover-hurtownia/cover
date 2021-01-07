@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import logger from "../../logger.js";
+import * as errorCodes from "../../www/js/common/errorCodes.js";
 
 export const register = async (request, response) => {
     const database = request.app.get("database");
@@ -19,36 +20,38 @@ export const register = async (request, response) => {
     
             return isNumeric || isUpperAlpha || isLowerAlpha || isUnderscore;
         })) {
-            throw "username can't contain characters other than 0-9/a-z/A-Z/_";
+            throw [422, errorCodes.REGISTER_USERNAME_INVALID_CHARACTERS]
         };
 
         if (username.length < 3) {
-            throw "username must consist of at least 3 characters";
+            throw [422, errorCodes.REGISTER_USERNAME_TOO_SHORT];
         }
         
         if (password.length === 0) {
-            throw "password can't be empty";
+            throw [422, errorCodes.REGISTER_PASSWORD_EMPTY];
         };
 
         // Check if username already exists.
         const usersInDatabaseQuery = database('users').where({ username });
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
             logger.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-            throw "database error";
+            throw [503, errorCodes.DATABASE_ERROR];
         });
 
-        if (usersInDatabase.length != 0) { throw "username already exists" }
+        if (usersInDatabase.length != 0) { 
+            throw [409, errorCodes.REGISTER_USERNAME_EXISTS];
+        }
 
         // Generate salt for password hashing.
         const salt = await bcrypt.genSalt().catch(_ => {
             logger.error("/api/register: salt generation error");
-            throw "internal error"
+            throw [500, errorCodes.INTERNAL_ERROR];
         });
 
         // Hash the password.
         const passwordHash = await bcrypt.hash(password, salt).catch(_ => {
             logger.error("/api/register: hashing error");
-            throw "internal error";
+            throw [500, errorCodes.INTERNAL_ERROR];
         });
 
         // Insert new user into the database.
@@ -56,8 +59,10 @@ export const register = async (request, response) => {
 
         await insertUserQuery.catch(error => {
             logger.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
-            throw "database error";
+            throw [503, errorCodes.DATABASE_ERROR];
         });
+
+        logger.info(`/api/register: new user registered: ${username}`);
 
         // Update session, generates a session cookie and sends it back.
         request.session.user = { username };
@@ -68,13 +73,16 @@ export const register = async (request, response) => {
             user: { username }
         });
     }
-    catch (error) {
-        // Send 400 (bad request) on any error.
-        logger.warn(`/api/register: ${error}`);
-        response.status(400)
+    catch ([status, errorCode]) {
+        logger.warn(`/api/register: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+
+        response.status(status)
         response.send({
             status: "error",
-            error
+            error: {
+                code: errorCode,
+                message: errorCodes.asMessage(errorCode)
+            }
         });
     }
 };

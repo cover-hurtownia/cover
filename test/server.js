@@ -85,7 +85,7 @@ describe("server", function() {
             });
             
             it("should respond with error message", async function() {
-                expect(response.body.error).to.be.a("string");
+                expect(response.body.error).to.be.ok;
             });
         });
 
@@ -147,7 +147,7 @@ describe("server", function() {
             });
 
             it("should respond with error message", async function() {
-                expect(response.body.error).to.be.a("string");
+                expect(response.body.error).to.be.ok;
             });
         });
 

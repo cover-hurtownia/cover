@@ -1,6 +1,8 @@
 import logger from "../../logger.js";
+import { authenticated } from "../utilities.js";
+import * as errorCodes from "../../www/js/common/errorCodes.js";
 
-export const roles = async (request, response) => {
+export const roles = [authenticated, async (request, response) => {
     const database = request.app.get("database");
 
     try {
@@ -13,7 +15,7 @@ export const roles = async (request, response) => {
 
         const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
             logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-            throw "database error";
+            throw [503, errorCodes.DATABASE_ERROR];
         });
 
         response.status(200);
@@ -23,12 +25,15 @@ export const roles = async (request, response) => {
         });
     }
     catch (error) {
-        // Send 400 (bad request) on any error.
-        logger.warn(`/api/roles: ${error}`);
-        response.status(400)
+        logger.warn(`/api/roles: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+
+        response.status(status);
         response.send({
             status: "error",
-            error
+            error: {
+                code: errorCode,
+                message: errorCodes.asMessage(errorCode)
+            }
         });
     }
-};
+}];

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import logger from "../../logger.js";
+import * as errorCodes from "../../www/js/common/errorCodes.js";
 
 export const login = async (request, response) => {
     const database = request.app.get("database");
@@ -12,11 +13,11 @@ export const login = async (request, response) => {
         const usersInDatabaseQuery = database('users').where({ username });
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
             logger.error(`/api/login: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-            throw "database error";
+            throw [503, errorCodes.DATABASE_ERROR];
         });
 
         if (usersInDatabase.length != 1) {
-            throw "invalid username or password";
+            throw [401, errorCodes.LOGIN_INVALID_USERNAME_OR_PASSWORD];
         }
  
         const user = usersInDatabase[0];
@@ -24,12 +25,14 @@ export const login = async (request, response) => {
         // Compare the hashes.
         const passwordMatches = await bcrypt.compare(password, user.password_hash).catch(_ => {
             logger.error("/api/login: hash comparison error");
-            throw "internal error";
+            throw [500, errorCodes.INTERNAL_ERROR];
         });
 
         if (!passwordMatches) {
-            throw "invalid username or password";
+            throw [401, errorCodes.LOGIN_INVALID_USERNAME_OR_PASSWORD];
         }
+
+        logger.info(`/api/login: user logged in: ${username}`);
 
         // Update session, generates a session cookie and sends it back.
         request.session.user = { username };
@@ -40,13 +43,16 @@ export const login = async (request, response) => {
             user: { username }
         });
     }
-    catch (error) {
-        // Send 400 (bad request) on any error.
-        logger.warn(`/api/login: ${error}`);
-        response.status(400)
+    catch ([status, errorCode]) {
+        logger.warn(`/api/login: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+
+        response.status(status);
         response.send({
             status: "error",
-            error
+            error: {
+                code: errorCode,
+                message: errorCodes.asMessage(errorCode)
+            }
         });
     }
 };
