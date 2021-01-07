@@ -26,6 +26,10 @@ export const register = async (request, response) => {
         if (username.length < 3) {
             throw [422, errorCodes.REGISTER_USERNAME_TOO_SHORT];
         }
+
+        if (username.length > 24) {
+            throw [422, errorCodes.REGISTER_USERNAME_TOO_LONG];
+        }
         
         if (password.length === 0) {
             throw [422, errorCodes.REGISTER_PASSWORD_EMPTY];

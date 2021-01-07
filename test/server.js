@@ -2,6 +2,7 @@ import chai from "chai";
 import chaiHttp from 'chai-http';
 import app from '../server.js';
 import bcrypt from "bcryptjs";
+import * as errorCodes from "../www/js/common/errorCodes.js";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -65,7 +66,7 @@ describe("server", function() {
             await db.migrate.latest();
         });
 
-        describe("invalid request", function() {
+        describe("username is too short", function() {
             const data = { "username": "", "password": "" };
             let response;
     
@@ -86,6 +87,94 @@ describe("server", function() {
             
             it("should respond with error message", async function() {
                 expect(response.body.error).to.be.ok;
+            });
+
+            it("should respond with proper error code", async function() {
+                expect(response.body.error.code).to.equal(errorCodes.REGISTER_USERNAME_TOO_SHORT);
+            });
+        });
+
+        describe("username is too long", function() {
+            const data = { "username": Array(100).fill("a"), "password": "" };
+            let response;
+    
+            before(async function() {
+                response = await chai.request(app)
+                    .post("/api/register")
+                    .set("Content-Type", "application/json")
+                    .send(data);
+            });
+
+            it("should respond with Content-Type: application/json", async function() {
+                expect(response.type).to.equal("application/json");
+            });
+
+            it("should respond with error status", async function() {
+                expect(response.body.status).to.equal("error");
+            });
+            
+            it("should respond with error message", async function() {
+                expect(response.body.error).to.be.ok;
+            });
+
+            it("should respond with proper error code", async function() {
+                expect(response.body.error.code).to.equal(errorCodes.REGISTER_USERNAME_TOO_LONG);
+            });
+        });
+
+        describe("username contains invalid characters", function() {
+            const data = { "username": "!@#$%", "password": "" };
+            let response;
+    
+            before(async function() {
+                response = await chai.request(app)
+                    .post("/api/register")
+                    .set("Content-Type", "application/json")
+                    .send(data);
+            });
+
+            it("should respond with Content-Type: application/json", async function() {
+                expect(response.type).to.equal("application/json");
+            });
+
+            it("should respond with error status", async function() {
+                expect(response.body.status).to.equal("error");
+            });
+            
+            it("should respond with error message", async function() {
+                expect(response.body.error).to.be.ok;
+            });
+
+            it("should respond with proper error code", async function() {
+                expect(response.body.error.code).to.equal(errorCodes.REGISTER_USERNAME_INVALID_CHARACTERS);
+            });
+        });
+
+        describe("password is empty", function() {
+            const data = { "username": "username", "password": "" };
+            let response;
+    
+            before(async function() {
+                response = await chai.request(app)
+                    .post("/api/register")
+                    .set("Content-Type", "application/json")
+                    .send(data);
+            });
+
+            it("should respond with Content-Type: application/json", async function() {
+                expect(response.type).to.equal("application/json");
+            });
+
+            it("should respond with error status", async function() {
+                expect(response.body.status).to.equal("error");
+            });
+            
+            it("should respond with error message", async function() {
+                expect(response.body.error).to.be.ok;
+            });
+
+            it("should respond with proper error code", async function() {
+                expect(response.body.error.code).to.equal(errorCodes.REGISTER_PASSWORD_EMPTY);
             });
         });
 
@@ -110,6 +199,10 @@ describe("server", function() {
 
             it("should respond with ok status", async function() {
                 expect(response.body.status).to.equal("ok");
+            });
+
+            it("should respond with registered username", async function() {
+                expect(response.body.user.username).to.equal(data.username);
             });
 
             it("should create a user entry in database", async function() {
@@ -149,6 +242,10 @@ describe("server", function() {
             it("should respond with error message", async function() {
                 expect(response.body.error).to.be.ok;
             });
+
+            it("should respond with proper error code", async function() {
+                expect(response.body.error.code).to.equal(errorCodes.REGISTER_USERNAME_EXISTS);
+            });
         });
 
         after(async function() {
@@ -183,6 +280,10 @@ describe("server", function() {
 
             it("should respond with session cookie", async function() {
                 expect(response).to.have.cookie("session");
+            });
+
+            it("should respond with logged in username", async function() {
+                expect(response.body.user.username).to.equal(data.username);
             });
 
             it("should respond with Content-Type: application/json", async function() {

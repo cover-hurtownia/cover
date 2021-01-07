@@ -21,6 +21,7 @@ export const REGISTER_USERNAME_INVALID_CHARACTERS = 0x05;
 export const REGISTER_USERNAME_TOO_SHORT = 0x06;
 export const REGISTER_PASSWORD_EMPTY = 0x07;
 export const REGISTER_USERNAME_EXISTS = 0x08;
+export const REGISTER_USERNAME_TOO_LONG = 0x09;
 
 
 
@@ -32,6 +33,7 @@ export const asMessage = status => ({
     [LOGIN_INVALID_USERNAME_OR_PASSWORD]: "invalid username or password",
     [REGISTER_USERNAME_INVALID_CHARACTERS]: "username contains invalid characters",
     [REGISTER_USERNAME_TOO_SHORT]: "username is too short",
+    [REGISTER_USERNAME_TOO_LONG]: "username is too long",
     [REGISTER_PASSWORD_EMPTY]: "password can't be empty",
     [REGISTER_USERNAME_EXISTS]: "username already exists"
 })[status] ?? "unknown error";
