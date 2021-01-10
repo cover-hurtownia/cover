@@ -76,6 +76,7 @@ export const getBook = async (request, response) => {
         else if (orderBy === "title") query = query.orderBy("books.title", ordering);
         else if (orderBy === "price") query = query.orderBy("products.price", ordering);
         else if (orderBy === "pages") query = query.orderBy("books.pages", ordering);
+        else if (orderBy === "date") query = query.orderBy("books.publication_date", ordering);
 
         logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
