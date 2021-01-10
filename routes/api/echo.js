@@ -1,3 +1,5 @@
+import logger from "../../logger.js";
+
 export const echo = async (request, response) => {
     logger.info(`${request.originalUrl}: got ${JSON.stringify(request.body)}`);
 

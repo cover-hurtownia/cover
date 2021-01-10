@@ -15,6 +15,8 @@ import { router as booksRouter } from "./books/router.js";
 
 export const router = express.Router();
 
+router.post("/echo"    , echo    );
+
 router.post("/login"   , login   );
 router.post("/register", register);
 router.post("/logout"  , logout  );
