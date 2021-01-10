@@ -11,8 +11,11 @@ export const login = async (request, response) => {
     try {
         // Check if username exists.
         const usersInDatabaseQuery = database('users').where({ username });
+
+        logger.debug(`${request.originalUrl}: SQL: ${usersInDatabaseQuery.toString()}`)
+
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
-            logger.error(`/api/login: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+            logger.error(`${request.originalUrl}: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -24,7 +27,7 @@ export const login = async (request, response) => {
 
         // Compare the hashes.
         const passwordMatches = await bcrypt.compare(password, user.password_hash).catch(_ => {
-            logger.error("/api/login: hash comparison error");
+            logger.error(`${request.originalUrl}: hash comparison error`);
             throw [500, errorCodes.INTERNAL_ERROR];
         });
 
@@ -32,7 +35,7 @@ export const login = async (request, response) => {
             throw [401, errorCodes.LOGIN_INVALID_USERNAME_OR_PASSWORD];
         }
 
-        logger.info(`/api/login: user logged in: ${username}`);
+        logger.info(`${request.originalUrl}: user logged in: ${username}`);
 
         // Update session, generates a session cookie and sends it back.
         request.session.user = { username };
@@ -44,7 +47,7 @@ export const login = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`/api/login: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

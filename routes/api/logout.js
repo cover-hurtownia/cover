@@ -8,11 +8,11 @@ export const logout = [authenticated, async (request, response) => {
         // Destroy the session.
         request.session.destroy((error) => {
             if (error) {
-                logger.error("/api/logout: request.session.destroy error:", error);
+                logger.error(`${request.originalUrl}: request.session.destroy error: ${error.toString()}`);
                 throw [500, errorCodes.INTERNAL_ERROR];
             }
             else {
-                logger.info(`/api/logout: user logged out: ${username}`);
+                logger.info(`${request.originalUrl}: user logged out: ${username}`);
 
                 response.status(200);
                 response.clearCookie("session", { sameSite: true, httpOnly: true, secure: false });
@@ -23,7 +23,7 @@ export const logout = [authenticated, async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`/api/logout: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status)
         response.send({

@@ -2,7 +2,7 @@ export const up = async db => {
     await db.schema.createTable('products', table => {
         table.increments('id').primary();
         table.integer("quantity").unsigned().notNullable();
-        table.string('name').notNullable();
+        table.string('name').notNullable().defaultTo("unknown product");
         table.text("description", "longtext");
     });
 
@@ -23,7 +23,7 @@ export const up = async db => {
 
     await db.schema.createTable('books', table => {
         table.increments('id').primary();
-        table.integer("product_id").unsigned().notNullable();
+        table.integer("product_id").unsigned().notNullable().unique();
         
         table.integer("publisher_id").unsigned().notNullable();
         table.string("publication_date").notNullable();
@@ -49,10 +49,10 @@ export const up = async db => {
 };
 
 export const down = async db => {
-    await db.schema.dropTable("products");
+    await db.schema.dropTable("book_authors");
+    await db.schema.dropTable("books");
     await db.schema.dropTable("authors");
     await db.schema.dropTable("publishers");
     await db.schema.dropTable("binding_types");
-    await db.schema.dropTable("books");
-    await db.schema.dropTable("book_authors");
+    await db.schema.dropTable("products");
 };

@@ -1,4 +1,6 @@
 // General errors
+export const UNKNOWN_ERROR = 0x00;
+
 // Server encountered a database error
 export const DATABASE_ERROR = 0x01;
 
@@ -25,7 +27,10 @@ export const REGISTER_USERNAME_TOO_LONG = 0x09;
 
 
 
+
+
 export const asMessage = status => ({
+    [UNKNOWN_ERROR]: "unknown error",
     [DATABASE_ERROR]: "database error",
     [INTERNAL_ERROR]: "internal error",
     [NOT_AUTHENTICATED]: "not authenticated",
