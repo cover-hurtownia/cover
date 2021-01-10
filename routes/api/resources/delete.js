@@ -7,12 +7,12 @@ export const deleteResource = table => async (request, response) => {
     try {
         const ids = Array.isArray(request.body) ? request.body : [request.body];
 
-        const deleteResourcesQuery = database(table).delete().whereIn("id", ids);
+        const query = database(table).delete().whereIn("id", ids);
 
-        logger.debug(`${request.originalUrl}: SQL: ${deleteResourcesQuery.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const deletedRows = await deleteResourcesQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${deleteResourcesQuery.toString()}: ${error}`);
+        const deletedRows = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 

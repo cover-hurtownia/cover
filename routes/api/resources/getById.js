@@ -7,12 +7,12 @@ export const getResourceById = table => async (request, response) => {
     try {
         const id = request.params.id;
 
-        let ResourcesQuery = database(table).where({ id });
+        let query = database(table).where({ id });
 
-        logger.debug(`${request.originalUrl}: SQL: ${ResourcesQuery.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const resources = await ResourcesQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${ResourcesQuery.toString()}: ${error}`);
+        const resources = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 

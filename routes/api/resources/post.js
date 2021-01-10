@@ -11,12 +11,12 @@ export const postResource = table => async (request, response) => {
             const ids = [];
 
             for (const row of rows) {
-                let insertResourceQuery = trx(table).insert(row);
+                let query = trx(table).insert(row);
 
-                logger.debug(`${request.originalUrl}: SQL: ${insertResourceQuery.toString()}`)
+                logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
         
-                const [id] = await insertResourceQuery.catch(error => {
-                    logger.error(`${request.originalUrl}: database error: ${insertResourceQuery.toString()}: ${error}`);
+                const [id] = await query.catch(error => {
+                    logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         

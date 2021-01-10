@@ -7,12 +7,12 @@ export const putResourceById = table => async (request, response) => {
     try {
         const id = request.params.id;
 
-        let updateResourceQuery = database(table).update(request.body).where({ id });
+        let query = database(table).update(request.body).where({ id });
 
-        logger.debug(`${request.originalUrl}: SQL: ${updateResourceQuery.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const updatedRows = await updateResourceQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${updateResourceQuery.toString()}: ${error}`);
+        const updatedRows = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 

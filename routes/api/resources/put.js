@@ -14,12 +14,12 @@ export const putResource = table => async (request, response) => {
                 if (id === undefined) continue;
                 if (Object.keys(row).length === 0) continue;
 
-                let updateResourceQuery = trx(table).update(row).where({ id });
+                let query = trx(table).update(row).where({ id });
 
-                logger.debug(`${request.originalUrl}: SQL: ${updateResourceQuery.toString()}`)
+                logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
         
-                updatedRows += await updateResourceQuery.catch(error => {
-                    logger.error(`${request.originalUrl}: database error: ${updateResourceQuery.toString()}: ${error}`);
+                updatedRows += await query.catch(error => {
+                    logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         

@@ -5,16 +5,16 @@ export const getBindingType = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        let bindingTypesQuery = database("binding_types");
+        let query = database("binding_types");
 
         const { bindingType } = request.query;
 
-        if (bindingType) bindingTypesQuery = bindingTypesQuery.andWhere("binding_type", "=", bindingType);
+        if (bindingType) query = query.andWhere("binding_type", "=", bindingType);
 
-        logger.debug(`${request.originalUrl}: SQL: ${bindingTypesQuery.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const binding_types = await bindingTypesQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${bindingTypesQuery.toString()}: ${error}`);
+        const binding_types = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
