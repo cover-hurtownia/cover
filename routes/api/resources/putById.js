@@ -7,8 +7,6 @@ export const putResourceById = table => async (request, response) => {
     try {
         const id = request.params.id;
 
-        if (id === undefined) throw [400, errorCodes.UNKNOWN_ERROR];
-
         let updateResourceQuery = database(table).update(request.body).where({ id });
 
         logger.debug(`${request.originalUrl}: SQL: ${updateResourceQuery.toString()}`)
@@ -18,7 +16,7 @@ export const putResourceById = table => async (request, response) => {
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
-        if (updatedRows === 0) throw [404, errorCodes.UNKNOWN_ERROR];
+        if (updatedRows === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
 
         response.status(200);
         response.send({

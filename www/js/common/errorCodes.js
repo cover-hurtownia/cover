@@ -25,7 +25,8 @@ export const REGISTER_PASSWORD_EMPTY = 0x07;
 export const REGISTER_USERNAME_EXISTS = 0x08;
 export const REGISTER_USERNAME_TOO_LONG = 0x09;
 
-
+// /api/<resources>/:id
+export const RESOURCE_NOT_FOUND = 0x0A;
 
 
 
@@ -40,5 +41,6 @@ export const asMessage = status => ({
     [REGISTER_USERNAME_TOO_SHORT]: "username is too short",
     [REGISTER_USERNAME_TOO_LONG]: "username is too long",
     [REGISTER_PASSWORD_EMPTY]: "password can't be empty",
-    [REGISTER_USERNAME_EXISTS]: "username already exists"
+    [REGISTER_USERNAME_EXISTS]: "username already exists",
+    [RESOURCE_NOT_FOUND]: "resource not found"
 })[status] ?? "unknown error";
