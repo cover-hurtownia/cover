@@ -5,7 +5,9 @@ export const deleteResource = table => async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const ids = Array.isArray(request.body) ? request.body : [request.body];
+        if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
+
+        const ids = request.body;
 
         const query = database(table).delete().whereIn("id", ids);
 

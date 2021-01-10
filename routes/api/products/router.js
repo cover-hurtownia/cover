@@ -10,6 +10,6 @@ router.post("", resources.post("products"));
 router.put("", resources.put("products"));
 router.delete("", resources.delete("products"));
 
-router.get("/:id", resources.getById("products"));
-router.put("/:id", resources.putById("products"));
-router.delete("/:id", resources.deleteById("products"));
+router.get("/:product_id", resources.getById("products", "product_id"));
+router.put("/:product_id", resources.putById("products", "product_id"));
+router.delete("/:product_id", resources.deleteById("products", "product_id"));

@@ -24,8 +24,8 @@ router.post("/session" , session );
 router.post("/roles"   , roles   );
 router.post("/echo"    , echo    );
 
-router.use("/products", productsRouter);
-router.use("/authors", authorsRouter);
-router.use("/publishers", publishersRouter);
+router.use("/products",      productsRouter    );
+router.use("/authors",       authorsRouter     );
+router.use("/publishers",    publishersRouter  );
 router.use("/binding_types", bindingTypesRouter);
-router.use("/books", booksRouter);
+router.use("/books",         booksRouter       );

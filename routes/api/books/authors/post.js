@@ -1,40 +1,34 @@
-import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import logger from "../../../../logger.js";
+import * as errorCodes from "../../../../www/js/common/errorCodes.js";
 
-export const postResource = table => async (request, response) => {
+export const postBookAuthors = async (request, response) => {
     const database = request.app.get("database");
     
     try {
+        const book_id = request.params.book_id;
+
         if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
-        
-        const rows = request.body;
 
-        const ids = await database.transaction(async trx => {
-            const ids = [];
+        const author_ids = request.body;
 
-            for (const row of rows) {
-                let query = trx(table).insert(row);
+        await database.transaction(async trx => {
+            for (const author_id of author_ids) {
+                let query = trx("book_authors").insert({ book_id, author_id });
 
                 logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
         
-                const [id] = await query.catch(error => {
+                const [inserted_id] = await query.catch(error => {
                     logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         
-                logger.info(`${request.originalUrl}: inserted: ${id}`);
-                ids.push(id);
+                logger.info(`${request.originalUrl}: inserted: ${inserted_id}`);
             }
-
-            return ids;
         });
-
-        logger.info(`${request.originalUrl}: inserted ids: ${ids.toString()}`);
 
         response.status(201);
         response.send({
-            status: "ok",
-            ids
+            status: "ok"
         });
     }
     catch ([status, errorCode]) {
@@ -51,4 +45,4 @@ export const postResource = table => async (request, response) => {
     }
 };
 
-export default postResource;
+export default postBookAuthors;

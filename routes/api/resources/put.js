@@ -5,7 +5,9 @@ export const putResource = table => async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const rows = Array.isArray(request.body) ? request.body : [request.body];
+        if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
+
+        const rows = request.body;
 
         const updatedRows = await database.transaction(async trx => {
             let updatedRows = 0;

@@ -1,29 +1,29 @@
-import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import logger from "../../../../logger.js";
+import * as errorCodes from "../../../../www/js/common/errorCodes.js";
 
-export const getResourceById = (table, param) => async (request, response) => {
+export const getBookAuthors = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const id = request.params[param];
+        const book_id = request.params.book_id;
 
-        let query = database(table).where({ id });
+        let query = database
+            .select(["authors.id", "authors.author"])
+            .from("book_authors")
+            .where("book_authors.book_id", book_id)
+            .innerJoin("authors", "authors.id", "book_authors.author_id");
 
         logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const resources = await query.catch(error => {
+        const authors = await query.catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
-        if (resources.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
-
-        const resource = resources[0];
-
         response.status(200);
         response.send({
             status: "ok",
-            data: resource
+            data: authors
         });
     }
     catch ([status, errorCode]) {
@@ -40,4 +40,4 @@ export const getResourceById = (table, param) => async (request, response) => {
     }
 };
 
-export default getResourceById;
+export default getBookAuthors;

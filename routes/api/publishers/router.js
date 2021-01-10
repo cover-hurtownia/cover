@@ -10,6 +10,6 @@ router.post("", resources.post("publishers"));
 router.put("", resources.put("publishers"));
 router.delete("", resources.delete("publishers"));
 
-router.get("/:id", resources.getById("publishers"));
-router.put("/:id", resources.putById("publishers"));
-router.delete("/:id", resources.deleteById("publishers"));
+router.get("/:publisher_id", resources.getById("publishers", "publisher_id"));
+router.put("/:publisher_id", resources.putById("publishers", "publisher_id"));
+router.delete("/:publisher_id", resources.deleteById("publishers", "publisher_id"));

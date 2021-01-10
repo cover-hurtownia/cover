@@ -1,29 +1,28 @@
-import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import logger from "../../../../logger.js";
+import * as errorCodes from "../../../../www/js/common/errorCodes.js";
 
-export const getResourceById = (table, param) => async (request, response) => {
+export const deleteBookAuthorById = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const id = request.params[param];
+        const book_id = request.params.book_id;
+        const author_id = request.params.author_id;
 
-        let query = database(table).where({ id });
+        let query = database("book_authors").delete().where({ book_id, author_id });
 
         logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const resources = await query.catch(error => {
+        const deletedRows = await query.catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
-        if (resources.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
-
-        const resource = resources[0];
+        if (deletedRows === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
 
         response.status(200);
         response.send({
             status: "ok",
-            data: resource
+            rows: deletedRows
         });
     }
     catch ([status, errorCode]) {
@@ -40,4 +39,4 @@ export const getResourceById = (table, param) => async (request, response) => {
     }
 };
 
-export default getResourceById;
+export default deleteBookAuthorById;

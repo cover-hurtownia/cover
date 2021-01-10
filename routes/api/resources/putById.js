@@ -1,11 +1,11 @@
 import logger from "../../../logger.js";
 import * as errorCodes from "../../../www/js/common/errorCodes.js";
 
-export const putResourceById = table => async (request, response) => {
+export const putResourceById = (table, param) => async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const id = request.params.id;
+        const id = request.params[param];
 
         let query = database(table).update(request.body).where({ id });
 

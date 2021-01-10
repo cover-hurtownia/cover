@@ -5,12 +5,12 @@ export const getBookById = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        const id = request.params.id;
+        const id = request.params.book_id;
 
-        let booksQuery = database
+        let query = database
             .select([
                 "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
-                "books.products_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image",
+                "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
                 "publishers.publisher",
                 "binding_types.type",
                 database.raw("GROUP_CONCAT(authors.author SEPARATOR ?) as ?", [";", "authors"])
@@ -24,10 +24,10 @@ export const getBookById = async (request, response) => {
             .innerJoin("authors", "authors.id", "book_authors.author_id")
             .groupBy("books.id");
 
-        logger.debug(`${request.originalUrl}: SQL: ${booksQuery.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
 
-        const books = await booksQuery.then(books => books.map(book => ({ ...book, authors: book.authors.split(";") }))).catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${booksQuery.toString()}: ${error}`);
+        const books = await query.then(books => books.map(book => ({ ...book, authors: book.authors.split(";") }))).catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 

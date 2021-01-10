@@ -27,6 +27,7 @@ export const REGISTER_USERNAME_TOO_LONG = 0x09;
 
 // /api/<resources>/:id
 export const RESOURCE_NOT_FOUND = 0x0A;
+export const RESOURCE_INVALID_REQUEST = 0x0B;
 
 
 
