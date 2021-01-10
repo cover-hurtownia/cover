@@ -34,7 +34,7 @@ export const getBook = async (request, response) => {
         let query = database
             .select([
                 "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
-                "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image",
+                "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
                 "publishers.publisher",
                 "binding_types.type",
                 database.raw("GROUP_CONCAT(authors.author SEPARATOR ?) as ?", [";", "authors"])
