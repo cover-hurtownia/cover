@@ -5,9 +5,7 @@ export const getProduct = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        let productsQuery = database("products");
-
-        const {
+        let {
             quantity,
             quantityAtLeast,
             quantityAtMost,
@@ -16,33 +14,53 @@ export const getProduct = async (request, response) => {
             priceAtMost,
             name,
             description,
-            available
+            available,
+            orderBy,
+            ordering = "desc",
+            limit = 20,
+            offset = 0,
         } = request.query;
 
-        if (quantity) productsQuery = productsQuery.andWhere("quantity", "=", quantity);
-        if (quantityAtLeast) productsQuery = productsQuery.andWhere("quantity", ">=", quantityAtLeast);
-        if (quantityAtMost) productsQuery = productsQuery.andWhere("quantity", "<=", quantityAtMost);
+        ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
 
-        if (price) productsQuery = productsQuery.andWhere("price", "=", price);
-        if (priceAtLeast) productsQuery = productsQuery.andWhere("price", ">=", priceAtLeast);
-        if (priceAtMost) productsQuery = productsQuery.andWhere("price", "<=", priceAtMost);
+        const [{ total }] = await database("products").count("id", { as: "total" });
+        
+        let query = database("products").offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
 
-        if (name) productsQuery = productsQuery.andWhere("name", "like", `%${name}%`);
-        if (description) productsQuery = productsQuery.andWhere("description", "like", `%${description}%`);
+        if (quantity) query = query.andWhere("quantity", "=", quantity);
+        if (quantityAtLeast) query = query.andWhere("quantity", ">=", quantityAtLeast);
+        if (quantityAtMost) query = query.andWhere("quantity", "<=", quantityAtMost);
 
-        if (available) productsQuery = productsQuery.andWhere("available", "=", 1);
+        if (price) query = query.andWhere("price", "=", price);
+        if (priceAtLeast) query = query.andWhere("price", ">=", priceAtLeast);
+        if (priceAtMost) query = query.andWhere("price", "<=", priceAtMost);
 
-        logger.debug(`${request.originalUrl}: SQL: ${productsQuery.toString()}`)
+        if (name) query = query.andWhere("name", "like", `%${name}%`);
+        if (description) query = query.andWhere("description", "like", `%${description}%`);
 
-        const products = await productsQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${productsQuery.toString()}: ${error}`);
+        if (available) query = query.andWhere("available", "=", 1);
+
+        if (orderBy === "id") query = query.orderBy("books.id", ordering);
+        else if (orderBy === "quantity") query = query.orderBy("products.quantity", ordering);
+        else if (orderBy === "name") query = query.orderBy("products.title", ordering);
+        else if (orderBy === "price") query = query.orderBy("products.price", ordering);
+
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+
+        const products = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
         response.status(200);
         response.send({
             status: "ok",
-            data: products
+            data: products,
+            total,
+            limit,
+            offset,
+            orderBy,
+            ordering
         });
     }
     catch ([status, errorCode]) {

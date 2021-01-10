@@ -5,23 +5,42 @@ export const getPublisher = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        let publishersQuery = database("publishers");
+        let {
+            publisher,
+            orderBy,
+            ordering = "desc",
+            limit = 20,
+            offset = 0,
+        } = request.query;
 
-        const { publisher } = request.query;
+        ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
 
-        if (publisher) publishersQuery = publishersQuery.andWhere("publisher", "like", `%${publisher}%`);
+        const [{ total }] = await database("publishers").count("id", { as: "total" });
 
-        logger.debug(`${request.originalUrl}: SQL: ${publishersQuery.toString()}`)
+        let query = database("publishers").offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
 
-        const publishers = await publishersQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${publishersQuery.toString()}: ${error}`);
+
+        if (publisher) query = query.andWhere("publisher", "like", `%${publisher}%`);
+
+        if (orderBy === "id") query = query.orderBy("id", ordering);
+        else if (orderBy === "publisher") query = query.orderBy("publisher", ordering);
+
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+
+        const publishers = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
         response.status(200);
         response.send({
             status: "ok",
-            data: publishers
+            data: publishers,
+            total,
+            limit,
+            offset,
+            orderBy,
+            ordering
         });
     }
     catch ([status, errorCode]) {

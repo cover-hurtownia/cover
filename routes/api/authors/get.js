@@ -5,23 +5,41 @@ export const getAuthor = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        let authorsQuery = database("authors");
+        let {
+            author,
+            orderBy,
+            ordering = "desc",
+            limit = 20,
+            offset = 0,
+        } = request.query;
 
-        const { author } = request.query;
+        ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
+        
+        const [{ total }] = await database("authors").count("id", { as: "total" });
 
-        if (author) authorsQuery = authorsQuery.andWhere("author", "like", `%${author}%`);
+        let query = database("authors").offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
 
-        logger.debug(`${request.originalUrl}: SQL: ${authorsQuery.toString()}`)
+        if (author) query = query.andWhere("author", "like", `%${author}%`);
+        
+        if (orderBy === "id") query = query.orderBy("id", ordering);
+        else if (orderBy === "author") query = query.orderBy("author", ordering);
 
-        const authors = await authorsQuery.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${authorsQuery.toString()}: ${error}`);
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+
+        const authors = await query.catch(error => {
+            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
         response.status(200);
         response.send({
             status: "ok",
-            data: authors
+            data: authors,
+            total,
+            limit,
+            offset,
+            orderBy,
+            ordering
         });
     }
     catch ([status, errorCode]) {
