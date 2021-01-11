@@ -12,6 +12,7 @@
         ```sh
         npm install
         npm run migrate # updates existing database or creates it 
+        npm run seed # fills database with some data from ./seeds/example.js
         npm run server
         ```
     -   using [Docker](https://www.docker.com/):

@@ -1,4 +1,6 @@
 // General errors
+export const UNKNOWN_ERROR = 0x00;
+
 // Server encountered a database error
 export const DATABASE_ERROR = 0x01;
 
@@ -23,9 +25,14 @@ export const REGISTER_PASSWORD_EMPTY = 0x07;
 export const REGISTER_USERNAME_EXISTS = 0x08;
 export const REGISTER_USERNAME_TOO_LONG = 0x09;
 
+// /api/<resources>/:id
+export const RESOURCE_NOT_FOUND = 0x0A;
+export const RESOURCE_INVALID_REQUEST = 0x0B;
+
 
 
 export const asMessage = status => ({
+    [UNKNOWN_ERROR]: "unknown error",
     [DATABASE_ERROR]: "database error",
     [INTERNAL_ERROR]: "internal error",
     [NOT_AUTHENTICATED]: "not authenticated",
@@ -35,5 +42,7 @@ export const asMessage = status => ({
     [REGISTER_USERNAME_TOO_SHORT]: "username is too short",
     [REGISTER_USERNAME_TOO_LONG]: "username is too long",
     [REGISTER_PASSWORD_EMPTY]: "password can't be empty",
-    [REGISTER_USERNAME_EXISTS]: "username already exists"
+    [REGISTER_USERNAME_EXISTS]: "username already exists",
+    [RESOURCE_NOT_FOUND]: "resource not found",
+    [RESOURCE_INVALID_REQUEST]: "invalid request"
 })[status] ?? "unknown error";

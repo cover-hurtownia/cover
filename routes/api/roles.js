@@ -13,8 +13,10 @@ export const roles = [authenticated, async (request, response) => {
             .join("roles", "roles.id", "user_roles.role_id")
             .where("users.username", "=", request.session.user.username);
 
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${rolesQuery.toString()}`);
+
         const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
-            logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -24,8 +26,8 @@ export const roles = [authenticated, async (request, response) => {
             roles
         });
     }
-    catch (error) {
-        logger.warn(`/api/roles: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+    catch ([status, errorCode]) {
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

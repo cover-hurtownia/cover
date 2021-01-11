@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css" />
+
+        <title>Hurtownia Książek</title>
+        <style>
+            a {
+                color: #606060;
+            }
+
+            .book {
+                margin: 1em;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                padding: 1em;
+                gap: 1em;
+            }
+
+            .book-image-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .book-image {
+                max-width: 16em;
+                max-height: 16em;
+                box-shadow: 0.25em 0.5em 0.5em 0 rgba(0, 0, 0, 0.4);
+                border: 1px solid #000000;
+                margin: 0.5em;
+            }
+
+            .book-details {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 0.5em;
+
+                align-items: baseline;
+            }
+
+            .book-title {
+                font-size: larger;
+                font-weight: lighter;
+                color: #606060;
+            }
+
+            .book-price {
+                font-weight: bolder;
+            }
+            
+            .book-isbn {
+                font-family: monospace;
+            }
+
+            .tag {
+                background-color: #e0e0e0;
+                border-radius: 0.5em;
+                display: inline-block;
+                padding: 0.25em 0.5em;
+                text-decoration: none;
+            }
+
+            .book-quantity { color: #80d000; font-weight: bolder; }
+            .quantity-low { color: #d0b000; }
+            .quantity-lowest { color: #f08000; }
+            .quantity-none { color: #f04000; }
+        </style>
+    </head>
+    <body>
+        <div id="books"></div>
+
+        <template id="template-book">
+            <div class="book">
+                <div class="book-image-wrapper">
+                    <img class="book-image" loading="lazy"></img>
+                </div>
+                <div class="book-details">
+                    <div>Tytuł:</div><div class="book-title"></div>
+                    <div>Autorzy:</div><div class="book-authors"></div>
+                    <div>Wydawca:</div><div class="book-publisher"></div>
+                    <div>Data wydania:</div><div class="book-publication-date"></div>
+                    <div>Kategorie:</div><div class="book-tags"></div>
+                    <div>Oprawa:</div><div class="book-type"></div>
+                    <div>ISBN:</div><div class="book-isbn"></div>
+                    <div>Strony:</div><div class="book-pages"></div>
+                    <div>Cena:</div><div class="book-price"></div>
+                    <div>Ilość:</div><div class="book-quantity"></div>
+                </div>
+            </div>
+        </template>
+
+        <script type="module">
+            import * as API from "./js/api/index.js";
+
+            const intersperse = (xs, separator) => xs.reduce((acc, x) => [...acc, x, separator()], []).slice(0, -1);
+            const templateBook = document.getElementById("template-book");
+            const booksElement = document.getElementById("books");
+
+            (async () => {
+                const booksResponse = await API.books.get();
+
+                if (booksResponse.status = "ok") {
+                    const books = booksResponse.data;
+
+                    while (booksElement.firstChild) {
+                        booksElement.firstChild.remove();
+                    }
+
+                    for (const book of books) {
+                        const bookElement = templateBook.content.cloneNode(true);
+
+                        bookElement.querySelector(".book-image").src = `/images/${book.image_id}`;
+                        bookElement.querySelector(".book-title").textContent = book.title;
+                        bookElement.querySelector(".book-authors").append(...intersperse(book.authors.map(author => {
+                            const authorElement = document.createElement("a");
+                            authorElement.classList.add("author");
+                            authorElement.href = "#";
+                            authorElement.textContent = author;
+
+                            return authorElement;
+                        }), () => document.createTextNode(", ")));
+                        bookElement.querySelector(".book-publisher").append((() => {
+                            const publisherElement = document.createElement("a");
+                            publisherElement.classList.add("publisher");
+                            publisherElement.href = "#";
+                            publisherElement.textContent = book.publisher;
+
+                            return publisherElement;
+                        })());
+                        bookElement.querySelector(".book-publication-date").textContent = book.publication_date;
+                        bookElement.querySelector(".book-tags").append(...intersperse(book.tags.map(tag => {
+                            const tagElement = document.createElement("a");
+                            tagElement.classList.add("tag");
+                            tagElement.href = "#";
+                            tagElement.textContent = tag;
+
+                            return tagElement;
+                        }), () => document.createTextNode(", ")));
+                        bookElement.querySelector(".book-type").textContent = book.type;
+                        bookElement.querySelector(".book-isbn").textContent = book.isbn;
+                        bookElement.querySelector(".book-pages").textContent = book.pages;
+                        bookElement.querySelector(".book-price").textContent = `${(book.price / 100.0).toFixed(2).replace(".", ",")}zł`;
+
+                        const quantityElement = bookElement.querySelector(".book-quantity");
+                        quantityElement.textContent = book.quantity;
+                        
+                        if (book.quantity === 0) quantityElement.classList.add("quantity-none");
+                        else if (book.quantity <= 10) quantityElement.classList.add("quantity-lowest");
+                        else if (book.quantity <= 40) quantityElement.classList.add("quantity-low");
+
+                        booksElement.append(bookElement);
+                    }
+                }
+                else console.error(booksResponse.error);
+            })();
+        </script>
+    </body>
+</html>

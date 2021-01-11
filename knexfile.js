@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import logger from "./logger.js";
+
 dotenv.config();
 
 export default {
@@ -17,5 +19,16 @@ export default {
     },
     pool: {
         min: 0
+    },
+    log: {
+        warn(message) {
+            logger.warn(`knex: ${message}`);
+        },
+        error(message) {
+            logger.error(`knex: ${message}`);
+        },
+        debug(message) {
+            logger.debug(`knex: ${message}`);
+        },
     }
 };
