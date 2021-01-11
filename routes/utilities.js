@@ -1,9 +1,10 @@
+import logger from "../logger.js";
 import * as errorCodes from "../www/js/common/errorCodes.js";
 
 export const authenticated = async (request, response, next) => {
     if (request.session.hasOwnProperty("user")) next();
     else {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.originalUrl}: [401]`);
 
         response.status(401);
         response.send({
@@ -50,3 +51,5 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
         });
     }
 }];
+
+export const adminAuthorization = roleAuthorization("ADMIN");
