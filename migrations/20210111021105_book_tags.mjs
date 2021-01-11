@@ -16,6 +16,6 @@ export const up = async db => {
 };
 
 export const down = async db => {
-    await db.schema.droptable("book_tags");
-    await db.schema.droptable("tags");
+    await db.schema.dropTable("book_tags");
+    await db.schema.dropTable("tags");
 };
