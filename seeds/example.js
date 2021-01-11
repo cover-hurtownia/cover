@@ -11,6 +11,7 @@ export const seed = async database => {
     await trx("binding_types").delete();
     await trx("books").delete();
     await trx("book_authors").delete();
+    await trx("images").delete();
 
     const [admin] = await trx("users").insert({
       username: "admin",

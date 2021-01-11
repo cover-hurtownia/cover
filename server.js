@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 
 import knex from "knex";
 import connectSessionKnex from "connect-session-knex";
@@ -10,6 +11,7 @@ const KnexSessionStore = connectSessionKnex(session);
 
 import logger from "./logger.js";
 import { router as api } from "./routes/api/router.js";
+import { router as images } from "./routes/images.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -52,8 +54,10 @@ app.use(session({
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(fileUpload());
 app.use("/", express.static("www"));
 
 app.use("/api", api);
+app.use("/images", images);
 
 export default app;

@@ -43,5 +43,6 @@ export const asMessage = status => ({
     [REGISTER_USERNAME_TOO_LONG]: "username is too long",
     [REGISTER_PASSWORD_EMPTY]: "password can't be empty",
     [REGISTER_USERNAME_EXISTS]: "username already exists",
-    [RESOURCE_NOT_FOUND]: "resource not found"
+    [RESOURCE_NOT_FOUND]: "resource not found",
+    [RESOURCE_INVALID_REQUEST]: "invalid request"
 })[status] ?? "unknown error";

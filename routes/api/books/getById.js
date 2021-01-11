@@ -24,7 +24,7 @@ export const getBookById = async (request, response) => {
             .innerJoin("authors", "authors.id", "book_authors.author_id")
             .groupBy("books.id");
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
 
         const books = await query.then(books => books.map(book => ({ ...book, authors: book.authors.split(";") }))).catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);

@@ -12,6 +12,7 @@ import { router as authorsRouter } from "./authors/router.js";
 import { router as publishersRouter } from "./publishers/router.js";
 import { router as bindingTypesRouter } from "./binding_types/router.js";
 import { router as booksRouter } from "./books/router.js";
+import { router as imagesRouter } from "./images/router.js";
 
 export const router = express.Router();
 
@@ -29,3 +30,4 @@ router.use("/authors",       authorsRouter     );
 router.use("/publishers",    publishersRouter  );
 router.use("/binding_types", bindingTypesRouter);
 router.use("/books",         booksRouter       );
+router.use("/images",        imagesRouter      );

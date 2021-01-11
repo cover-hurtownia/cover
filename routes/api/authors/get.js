@@ -24,7 +24,7 @@ export const getAuthor = async (request, response) => {
         if (orderBy === "id") query = query.orderBy("id", ordering);
         else if (orderBy === "author") query = query.orderBy("author", ordering);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
 
         const authors = await query.catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);

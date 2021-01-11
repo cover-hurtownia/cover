@@ -4,9 +4,9 @@ export const up = async db => {
 
     await db.schema.createTable("images", table => {
         table.increments('id').primary();
-        table.binary("data");
-        table.string("original_filename");
+        table.specificType("data", "MEDIUMBLOB").notNull();
         table.string("type").notNull();
+        table.string("original_filename");
     });
 
     await db.schema.alterTable("products", table => {
@@ -30,6 +30,7 @@ export const down = async db => {
         .select(["products.id", "products.image_id"]);
 
     await db.schema.alterTable("products", table => {
+        table.dropForeign("image_id");
         table.dropColumn("image_id");
         table.binary("image");
     });
@@ -37,7 +38,7 @@ export const down = async db => {
     for (const { id: product_id, image_id } of products) {
         const image = images.find(({ id }) => id === image_id).data;
 
-        db("products").update({ image }).where({ id: product_id });
+        if (image) db("products").update({ image }).where({ id: product_id });
     }
 
     await db.schema.dropTable("images");

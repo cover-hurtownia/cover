@@ -45,7 +45,7 @@ export const getProduct = async (request, response) => {
         else if (orderBy === "name") query = query.orderBy("products.title", ordering);
         else if (orderBy === "price") query = query.orderBy("products.price", ordering);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
 
         const products = await query.catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
