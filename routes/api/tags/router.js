@@ -11,6 +11,6 @@ router.post("", adminAuthorization, resources.post("tags"));
 router.put("", adminAuthorization, resources.put("tags"));
 router.delete("", adminAuthorization, resources.delete("tags"));
 
-router.get("/:id", resources.getById("tags"));
-router.put("/:id", adminAuthorization, resources.putById("tags"));
-router.delete("/:id", adminAuthorization, resources.deleteById("tags"));
+router.get("/:tag_id", resources.getById("tags", "tag_id"));
+router.put("/:tag_id", adminAuthorization, resources.putById("tags", "tag_id"));
+router.delete("/:tag_id", adminAuthorization, resources.deleteById("tags", "tag_id"));

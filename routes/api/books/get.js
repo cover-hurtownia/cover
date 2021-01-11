@@ -12,7 +12,7 @@ export const getBook = async (request, response) => {
             price,
             priceAtLeast,
             priceAtMost,
-            name,
+            title,
             description,
             available,
             bindingType,
@@ -60,7 +60,7 @@ export const getBook = async (request, response) => {
         if (priceAtLeast) query = query.andWhere("products.price", ">=", priceAtLeast);
         if (priceAtMost) query = query.andWhere("products.price", "<=", priceAtMost);
 
-        if (name) query = query.andWhere("products.name", "like", `%${name}%`);
+        if (title) query = query.andWhere("books.title", "like", `%${title}%`);
         if (description) query = query.andWhere("products.description", "like", `%${description}%`);
 
         if (available) query = query.andWhere("products.available", "=", 1);
