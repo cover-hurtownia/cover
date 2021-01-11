@@ -21,6 +21,7 @@ export const getBook = async (request, response) => {
             pagesAtLeast,
             pagesAtMost,
             author,
+            tag,
             orderBy,
             ordering = "desc",
             limit = 20,
@@ -72,7 +73,27 @@ export const getBook = async (request, response) => {
         if (pagesAtLeast) query = query.andWhere("books.pages", ">=", pagesAtLeast);
         if (pagesAtMost) query = query.andWhere("books.pages", "<=", pagesAtMost);
 
-        if (author) query = query.having("authors", "like", `%${author}%`);
+        if (author) {
+            if (Array.isArray(author)) {
+                for (const a of author) {
+                    query = query.having("authors", "like", `%${a}%`);
+                }
+            }
+            else {
+                query = query.having("authors", "like", `%${author}%`);
+            }
+        }
+
+        if (tag) {
+            if (Array.isArray(tag)) {
+                for (const t of tag) {
+                    query = query.having("tags", "like", `%${t}%`);
+                }
+            }
+            else {
+                query = query.having("tags", "like", `%${tag}%`);
+            }
+        }
 
         if (orderBy === "id") query = query.orderBy("books.id", ordering);
         else if (orderBy === "quantity") query = query.orderBy("products.quantity", ordering);
