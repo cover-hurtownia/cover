@@ -6,11 +6,11 @@ export const images = {
         return fetch(`/api/images`, { method: "POST", body: formData }).then(_ => _.json());
     },
 
-    update: file => {
+    update: (id, file) => {
         const formData = new FormData();
         formData.append("image", file);
 
-        return fetch(`/api/images`, { method: "PUT", body: formData }).then(_ => _.json());
+        return fetch(`/api/images/${id}`, { method: "PUT", body: formData }).then(_ => _.json());
     },
 
     get: query => fetch(`/api/images` + (query ? `?${new URLSearchParams(query).toString()}` : "")).then(_ => _.json()),
