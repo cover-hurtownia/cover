@@ -4,7 +4,7 @@ import * as errorCodes from "../www/js/common/errorCodes.js";
 export const authenticated = async (request, response, next) => {
     if (request.session.hasOwnProperty("user")) next();
     else {
-        logger.warn(`${request.originalUrl}: [401]`);
+        logger.warn(`${request.method} ${request.originalUrl}: [401]`);
 
         response.status(401);
         response.send({
@@ -28,7 +28,7 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
             .join("roles", "roles.id", "user_roles.role_id")
             .where("users.username", "=", request.session.user.username);
 
-        logger.debug(`${request.originalUrl}: SQL: ${rolesQuery.toString()}`);
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${rolesQuery.toString()}`);
 
         const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
             logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
@@ -39,7 +39,7 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
         else throw [403, errorCodes.NOT_AUTHORIZED];
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status)
         response.send({

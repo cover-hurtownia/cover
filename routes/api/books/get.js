@@ -104,14 +104,14 @@ export const getBook = async (request, response) => {
         else if (orderBy === "pages") query = query.orderBy("books.pages", ordering);
         else if (orderBy === "date") query = query.orderBy("books.publication_date", ordering);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
         const books = await query.then(books => books.map(book => ({ 
             ...book,
             authors: book.authors.split(";"),
             tags: book.tags.split(";")
         }))).catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -127,7 +127,7 @@ export const getBook = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

@@ -11,10 +11,10 @@ export const getBindingType = async (request, response) => {
 
         if (bindingType) query = query.andWhere("binding_type", "=", bindingType);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
         const binding_types = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -25,7 +25,7 @@ export const getBindingType = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

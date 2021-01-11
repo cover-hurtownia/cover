@@ -13,10 +13,10 @@ router.get("/:image_id", async (request, response) => {
 
         let query = database("images").where({ id: image_id });
         
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 
         const images = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -29,7 +29,7 @@ router.get("/:image_id", async (request, response) => {
         response.end(image.data, "binary");
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

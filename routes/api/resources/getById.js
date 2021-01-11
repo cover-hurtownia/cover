@@ -9,10 +9,10 @@ export const getResourceById = (table, param) => async (request, response) => {
 
         let query = database(table).where({ id });
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 
         const resources = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -27,7 +27,7 @@ export const getResourceById = (table, param) => async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

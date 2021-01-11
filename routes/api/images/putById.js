@@ -13,10 +13,10 @@ export const putImageById = async (request, response) => {
 
         const query = database("images").update({ data: file.data, type: file.mimetype, original_filename: file.name }).where({ id: image_id });
 
-        logger.debug(`${request.originalUrl}: updating image: ${file.data.length} bytes`);
+        logger.debug(`${request.method} ${request.originalUrl}: updating image: ${file.data.length} bytes`);
 
         await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -26,7 +26,7 @@ export const putImageById = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

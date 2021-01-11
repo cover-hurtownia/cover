@@ -13,10 +13,10 @@ export const getBookTags = async (request, response) => {
             .where("book_tags.book_id", book_id)
             .innerJoin("tags", "tags.id", "book_tags.tag_id");
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 
         const tags = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -27,7 +27,7 @@ export const getBookTags = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

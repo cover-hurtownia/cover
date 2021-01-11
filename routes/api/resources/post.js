@@ -5,9 +5,9 @@ export const postResource = table => async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
-        
-        const rows = request.body;
+        const rows = Array.isArray(request.body) ? request.body : [request.body];
+
+        if (rows.some(row => !(row instanceof Object))) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
 
         const ids = await database.transaction(async trx => {
             const ids = [];
@@ -15,21 +15,21 @@ export const postResource = table => async (request, response) => {
             for (const row of rows) {
                 let query = trx(table).insert(row);
 
-                logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+                logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
         
                 const [id] = await query.catch(error => {
-                    logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+                    logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         
-                logger.info(`${request.originalUrl}: inserted: ${id}`);
+                logger.info(`${request.method} ${request.originalUrl}: inserted: ${id}`);
                 ids.push(id);
             }
 
             return ids;
         });
 
-        logger.info(`${request.originalUrl}: inserted ids: ${ids.toString()}`);
+        logger.info(`${request.method} ${request.originalUrl}: inserted ids: ${ids.toString()}`);
 
         response.status(201);
         response.send({
@@ -38,7 +38,7 @@ export const postResource = table => async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

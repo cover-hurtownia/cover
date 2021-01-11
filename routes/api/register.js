@@ -38,7 +38,7 @@ export const register = async (request, response) => {
         // Check if username already exists.
         const usersInDatabaseQuery = database('users').where({ username });
 
-        logger.debug(`${request.originalUrl}: SQL: ${usersInDatabaseQuery.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${usersInDatabaseQuery.toString()}`)
 
         const usersInDatabase = await usersInDatabaseQuery.catch(error => {
             logger.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
@@ -64,7 +64,7 @@ export const register = async (request, response) => {
         // Insert new user into the database.
         const insertUserQuery = database('users').insert({ username, password_hash: passwordHash });
 
-        logger.debug(`${request.originalUrl}: SQL: ${insertUserQuery.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${insertUserQuery.toString()}`)
 
         await insertUserQuery.catch(error => {
             logger.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
@@ -83,7 +83,7 @@ export const register = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status)
         response.send({

@@ -25,10 +25,10 @@ export const getPublisher = async (request, response) => {
         if (orderBy === "id") query = query.orderBy("id", ordering);
         else if (orderBy === "publisher") query = query.orderBy("publisher", ordering);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 
         const publishers = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -44,7 +44,7 @@ export const getPublisher = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

@@ -5,9 +5,9 @@ export const putResource = table => async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
+        const rows = Array.isArray(request.body) ? request.body : [request.body];
 
-        const rows = request.body;
+        if (rows.some(row => !(row instanceof Object) || row.id === undefined)) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
 
         const updatedRows = await database.transaction(async trx => {
             let updatedRows = 0;
@@ -18,20 +18,20 @@ export const putResource = table => async (request, response) => {
 
                 let query = trx(table).update(row).where({ id });
 
-                logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+                logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
         
                 updatedRows += await query.catch(error => {
-                    logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+                    logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         
-                logger.info(`${request.originalUrl}: updated: ${id}`);
+                logger.info(`${request.method} ${request.originalUrl}: updated: ${id}`);
             }
 
             return updatedRows;
         });
 
-        logger.info(`${request.originalUrl}: updated rows: ${updatedRows}`);
+        logger.info(`${request.method} ${request.originalUrl}: updated rows: ${updatedRows}`);
 
         response.status(200);
         response.send({
@@ -40,7 +40,7 @@ export const putResource = table => async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

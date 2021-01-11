@@ -11,14 +11,14 @@ export const postImage = async (request, response) => {
 
         const query = database("images").insert({ data: file.data, type: file.mimetype, original_filename: file.name });
 
-        logger.debug(`${request.originalUrl}: inserting image: ${file.data.length} bytes`);
+        logger.debug(`${request.method} ${request.originalUrl}: inserting image: ${file.data.length} bytes`);
 
         const [id] = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
-        logger.debug(`${request.originalUrl}: image inserted with id: ${id}`);
+        logger.debug(`${request.method} ${request.originalUrl}: image inserted with id: ${id}`);
 
         response.status(200);
         response.send({
@@ -27,7 +27,7 @@ export const postImage = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

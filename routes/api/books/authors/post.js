@@ -7,22 +7,22 @@ export const postBookAuthors = async (request, response) => {
     try {
         const book_id = request.params.book_id;
 
-        if (!Array.isArray(request.body)) throw [400, RESOURCE_INVALID_REQUEST];
+        const author_ids = Array.isArray(request.body) ? request.body : [request.body];
 
-        const author_ids = request.body;
+        if (author_ids.some(id => typeof id !== Number)) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
 
         await database.transaction(async trx => {
             for (const author_id of author_ids) {
                 let query = trx("book_authors").insert({ book_id, author_id });
 
-                logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`)
+                logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
         
                 const [inserted_id] = await query.catch(error => {
-                    logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+                    logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                     throw [503, errorCodes.DATABASE_ERROR];
                 });
         
-                logger.info(`${request.originalUrl}: inserted: ${inserted_id}`);
+                logger.info(`${request.method} ${request.originalUrl}: inserted: ${inserted_id}`);
             }
         });
 
@@ -32,7 +32,7 @@ export const postBookAuthors = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({

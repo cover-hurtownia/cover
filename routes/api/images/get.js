@@ -28,10 +28,10 @@ export const getImage = async (request, response) => {
         if (orderBy === "id") query = query.orderBy("images.id", ordering);
         else if (orderBy === "filename") query = query.orderBy("images.original_filename", ordering);
 
-        logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
         const images = await query.catch(error => {
-            logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
 
@@ -47,7 +47,7 @@ export const getImage = async (request, response) => {
         });
     }
     catch ([status, errorCode]) {
-        logger.warn(`${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
 
         response.status(status);
         response.send({
