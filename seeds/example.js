@@ -5,12 +5,14 @@ export const seed = async database => {
     await trx("users").delete();
     await trx("roles").delete();
     await trx("user_roles").delete();
-    await trx("products").delete();
-    await trx("authors").delete();
-    await trx("publishers").delete();
-    await trx("binding_types").delete();
-    await trx("books").delete();
     await trx("book_authors").delete();
+    await trx("book_tags").delete();
+    await trx("tags").delete();
+    await trx("books").delete();
+    await trx("authors").delete();
+    await trx("binding_types").delete();
+    await trx("publishers").delete();
+    await trx("products").delete();
     await trx("images").delete();
 
     const [admin] = await trx("users").insert({
@@ -25,6 +27,12 @@ export const seed = async database => {
       username: "user",
       password_hash: await bcrypt.hash("password", await bcrypt.genSalt())
     });
+
+    const [fantastyka] = await trx("tags").insert({ tag: "fantastyka" });
+    const [thriller] = await trx("tags").insert({ tag: "thriller" });
+    const [horror] = await trx("tags").insert({ tag: "horror" });
+    const [komiks] = await trx("tags").insert({ tag: "komiks" });
+    const [informatyka] = await trx("tags").insert({ tag: "informatyka" });
 
     const [twardaOprawa] = await trx("binding_types").insert({ type: "twarda" });
     const [miekkaOprawa] = await trx("binding_types").insert({ type: "miękka" });
@@ -58,10 +66,9 @@ export const seed = async database => {
         title: "ZGROZA W DUNWICH i inne przerażające opowieści"
       });
     
-      await trx("book_authors").insert({
-        author_id: lovecraft,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: lovecraft, book_id });
+      await trx("book_tags").insert({ tag_id: horror, book_id });
+      await trx("book_tags").insert({ tag_id: fantastyka, book_id });
     }
 
     {
@@ -86,6 +93,9 @@ export const seed = async database => {
         author_id: lovecraft,
         book_id
       });
+
+      await trx("book_tags").insert({ tag_id: horror, book_id });
+      await trx("book_tags").insert({ tag_id: fantastyka, book_id });
     }
 
     {
@@ -110,6 +120,10 @@ export const seed = async database => {
         author_id: tanabeGou,
         book_id
       });
+
+      await trx("book_tags").insert({ tag_id: horror, book_id });
+      await trx("book_tags").insert({ tag_id: fantastyka, book_id });
+      await trx("book_tags").insert({ tag_id: komiks, book_id });
     }
 
     {
@@ -134,6 +148,10 @@ export const seed = async database => {
         author_id: tanabeGou,
         book_id
       });
+
+      await trx("book_tags").insert({ tag_id: horror, book_id });
+      await trx("book_tags").insert({ tag_id: fantastyka, book_id });
+      await trx("book_tags").insert({ tag_id: komiks, book_id });
     }
 
     {
@@ -154,10 +172,8 @@ export const seed = async database => {
         title: "Lśnienie"
       });
     
-      await trx("book_authors").insert({
-        author_id: stephenKing,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: stephenKing, book_id });
+      await trx("book_tags").insert({ tag_id: horror, book_id });
     }
 
     {
@@ -178,10 +194,8 @@ export const seed = async database => {
         title: "Przebudzenie"
       });
     
-      await trx("book_authors").insert({
-        author_id: stephenKing,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: stephenKing, book_id });
+      await trx("book_tags").insert({ tag_id: horror, book_id });
     }
 
     {
@@ -202,10 +216,9 @@ export const seed = async database => {
         title: "JavaScript i jQuery. Interaktywne strony WWW dla każdego. Podręcznik Front-End Developera"
       });
     
-      await trx("book_authors").insert({
-        author_id: jonDuckett,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: jonDuckett, book_id });
+      await trx("book_tags").insert({ tag_id: horror, book_id });
+      await trx("book_tags").insert({ tag_id: informatyka, book_id });
     }
 
     {
@@ -226,10 +239,8 @@ export const seed = async database => {
         title: "HTML i CSS. Zaprojektuj i zbuduj witrynę WWW. Podręcznik Front-End Developera"
       });
     
-      await trx("book_authors").insert({
-        author_id: jonDuckett,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: jonDuckett, book_id });
+      await trx("book_tags").insert({ tag_id: informatyka, book_id });
     }
 
     {
@@ -250,10 +261,8 @@ export const seed = async database => {
         title: "Czysty kod. Podręcznik dobrego programisty"
       });
     
-      await trx("book_authors").insert({
-        author_id: robertCMartin,
-        book_id
-      });
+      await trx("book_authors").insert({ author_id: robertCMartin, book_id });
+      await trx("book_tags").insert({ tag_id: informatyka, book_id });
     }
   });
 };

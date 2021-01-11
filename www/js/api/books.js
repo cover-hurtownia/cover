@@ -25,3 +25,27 @@ books.deleteAuthors = (book_id, author_ids) => fetch(`/api/books/${book_id}/auth
 books.deleteAuthorById = (book_id, author_id) => fetch(`/api/books/${book_id}/authors/${author_id}`, {
     method: "DELETE"
 }).then(_ => _.json());
+
+books.getTags = (book_id) => fetch(`/api/books/${book_id}/tags`).then(_ => _.json());
+
+books.addTags = (book_id, tag_ids) => fetch(`/api/books/${book_id}/tags`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(Array.isArray(tag_ids) ? tag_ids : [tag_ids])
+}).then(_ => _.json());
+
+books.setTags = (book_id, tag_ids) => fetch(`/api/books/${book_id}/tags`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(Array.isArray(tag_ids) ? tag_ids : [tag_ids])
+}).then(_ => _.json());
+
+books.deleteTags = (book_id, tag_ids) => fetch(`/api/books/${book_id}/tags`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(Array.isArray(tag_ids) ? tag_ids : [tag_ids])
+}).then(_ => _.json());
+
+books.deleteTagById = (book_id, tag_id) => fetch(`/api/books/${book_id}/tags/${tag_id}`, {
+    method: "DELETE"
+}).then(_ => _.json());

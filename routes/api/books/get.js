@@ -37,7 +37,8 @@ export const getBook = async (request, response) => {
                 "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
                 "publishers.publisher",
                 "binding_types.type",
-                database.raw("GROUP_CONCAT(authors.author SEPARATOR ?) as ?", [";", "authors"])
+                database.raw("GROUP_CONCAT(DISTINCT authors.author SEPARATOR ?) as ?", [";", "authors"]),
+                database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
             ])
             .from("books")
             .innerJoin("products", "books.product_id", "products.id")
@@ -45,6 +46,8 @@ export const getBook = async (request, response) => {
             .innerJoin("binding_types", "books.binding_type_id", "binding_types.id")
             .innerJoin("book_authors", "books.id", "book_authors.book_id")
             .innerJoin("authors", "authors.id", "book_authors.author_id")
+            .innerJoin("book_tags", "books.id", "book_tags.book_id")
+            .innerJoin("tags", "tags.id", "book_tags.tag_id")
             .groupBy("books.id")
             .offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
 
@@ -80,7 +83,11 @@ export const getBook = async (request, response) => {
 
         logger.debug(`${request.originalUrl}: SQL: ${query.toString()}`);
 
-        const books = await query.then(books => books.map(book => ({ ...book, authors: book.authors.split(";")}))).catch(error => {
+        const books = await query.then(books => books.map(book => ({ 
+            ...book,
+            authors: book.authors.split(";"),
+            tags: book.tags.split(";")
+        }))).catch(error => {
             logger.error(`${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
