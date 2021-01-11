@@ -22,6 +22,7 @@ export const getBook = async (request, response) => {
             pagesAtMost,
             author,
             tag,
+            isbn,
             orderBy,
             ordering = "desc",
             limit = 20,
@@ -62,6 +63,7 @@ export const getBook = async (request, response) => {
 
         if (title) query = query.andWhere("books.title", "like", `%${title}%`);
         if (description) query = query.andWhere("products.description", "like", `%${description}%`);
+        if (isbn) query = query.andWhere("books.isbn", "=", isbn);
 
         if (available) query = query.andWhere("products.available", "=", 1);
 
