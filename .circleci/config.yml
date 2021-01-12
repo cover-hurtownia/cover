@@ -8,4 +8,5 @@ workflows:
     jobs:
       - node/test:
           version: 15.5.1
-          cache-version: v4
+          cache-version: v5
+          override-ci-command: npm ci --python=python3
