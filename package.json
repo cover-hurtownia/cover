@@ -23,7 +23,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.1",
-    "knex": "^0.21.14",
+    "knex": "^0.21.15",
     "mysql": "^2.18.1",
     "winston": "^3.3.3"
   },
