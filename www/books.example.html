@@ -2,91 +2,68 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/bulma.css" />
         <link rel="stylesheet" href="./css/style.css" />
 
         <title>Hurtownia Książek</title>
-        <style>
-            a {
-                color: #606060;
-            }
-
-            .book {
-                margin: 1em;
-                display: grid;
-                grid-template-columns: auto 1fr;
-                padding: 1em;
-                gap: 1em;
-            }
-
-            .book-image-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .book-image {
-                max-width: 16em;
-                max-height: 16em;
-                box-shadow: 0.25em 0.5em 0.5em 0 rgba(0, 0, 0, 0.4);
-                border: 1px solid #000000;
-                margin: 0.5em;
-            }
-
-            .book-details {
-                display: grid;
-                grid-template-columns: auto 1fr;
-                gap: 0.5em;
-
-                align-items: baseline;
-            }
-
-            .book-title {
-                font-size: larger;
-                font-weight: lighter;
-                color: #606060;
-            }
-
-            .book-price {
-                font-weight: bolder;
-            }
-            
-            .book-isbn {
-                font-family: monospace;
-            }
-
-            .tag {
-                background-color: #e0e0e0;
-                border-radius: 0.5em;
-                display: inline-block;
-                padding: 0.25em 0.5em;
-                text-decoration: none;
-            }
-
-            .book-quantity { color: #80d000; font-weight: bolder; }
-            .quantity-low { color: #d0b000; }
-            .quantity-lowest { color: #f08000; }
-            .quantity-none { color: #f04000; }
-        </style>
     </head>
-    <body>
-        <div id="books"></div>
+    <body>        
+        <section id="books" class="section"></section>
 
         <template id="template-book">
-            <div class="book">
-                <div class="book-image-wrapper">
-                    <img class="book-image" loading="lazy"></img>
+            <div class="container box">
+                <div class="columns is-vcentered">
+                    <div class="column is-2">
+                        <figure class="image">
+                            <img class="book-image" loading="lazy"></img>
+                        </figure>
+                    </div>
+                    <div class="column">
+                        <div class="book-title title"></div>
+                        <table class="table is-fullwidth is-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="has-text-grey-dark">Autorzy</td>
+                                    <td class="book-authors"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Wydawca</td>
+                                    <td class="book-publisher"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Data wydania</td>
+                                    <td><time class="book-publication-date"></time></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Kategorie</td>
+                                    <td class="book-tags"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Oprawa</td>
+                                    <td class="book-type"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">ISBN</td>
+                                    <td class="book-isbn is-family-monospace"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Strony</td>
+                                    <td class="book-pages"></td>
+                                </tr>
+                                <tr>
+                                    <td class="has-text-grey-dark">Ilość</td>
+                                    <td class="book-quantity"></td>
+                                </tr>
+                                <tr class="has-text-weight-bold">
+                                    <td class="has-text-grey-dark">Cena</td>
+                                    <td class="book-price"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="book-details">
-                    <div>Tytuł:</div><div class="book-title"></div>
-                    <div>Autorzy:</div><div class="book-authors"></div>
-                    <div>Wydawca:</div><div class="book-publisher"></div>
-                    <div>Data wydania:</div><div class="book-publication-date"></div>
-                    <div>Kategorie:</div><div class="book-tags"></div>
-                    <div>Oprawa:</div><div class="book-type"></div>
-                    <div>ISBN:</div><div class="book-isbn"></div>
-                    <div>Strony:</div><div class="book-pages"></div>
-                    <div>Cena:</div><div class="book-price"></div>
-                    <div>Ilość:</div><div class="book-quantity"></div>
+                <div>
+                    <div class="book-description"></div>
                 </div>
             </div>
         </template>
@@ -129,15 +106,16 @@
 
                             return publisherElement;
                         })());
+                        bookElement.querySelector(".book-publication-date").setAttribute("datetime", book.publication_date);
                         bookElement.querySelector(".book-publication-date").textContent = book.publication_date;
                         bookElement.querySelector(".book-tags").append(...intersperse(book.tags.map(tag => {
                             const tagElement = document.createElement("a");
-                            tagElement.classList.add("tag");
+                            tagElement.classList.add("tag", "is-primary", "is-light");
                             tagElement.href = "#";
                             tagElement.textContent = tag;
 
                             return tagElement;
-                        }), () => document.createTextNode(", ")));
+                        }), () => document.createTextNode(" ")));
                         bookElement.querySelector(".book-type").textContent = book.type;
                         bookElement.querySelector(".book-isbn").textContent = book.isbn;
                         bookElement.querySelector(".book-pages").textContent = book.pages;
@@ -146,9 +124,12 @@
                         const quantityElement = bookElement.querySelector(".book-quantity");
                         quantityElement.textContent = book.quantity;
                         
-                        if (book.quantity === 0) quantityElement.classList.add("quantity-none");
-                        else if (book.quantity <= 10) quantityElement.classList.add("quantity-lowest");
-                        else if (book.quantity <= 40) quantityElement.classList.add("quantity-low");
+                        if (book.quantity === 0) quantityElement.classList.add("has-text-danger-dark");
+                        else if (book.quantity <= 25) quantityElement.classList.add("has-text-warning-dark");
+                        else quantityElement.classList.add("has-text-primary-dark");
+
+
+                        if (book.description) bookElement.querySelector(".book-description").textContent = description;
 
                         booksElement.append(bookElement);
                     }
