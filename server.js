@@ -24,15 +24,7 @@ const SESSION_MAX_AGE     = 60 * 60 * 1000;
 
 
 
-const db = knex(process.env.NODE_ENV !== "test" ? knexFile : {
-    client: "sqlite3",
-    connection: ":memory:",
-    useNullAsDefault: true,
-    migrations: {
-        extension: 'mjs',
-        loadExtensions: ['.mjs']
-    }
-});
+const db = knex(knexFile);
 
 const app = express();
 
