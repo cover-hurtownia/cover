@@ -10,7 +10,7 @@ logger.add(new winston.transports.Console({
         winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
     ),
     silent: process.env.NODE_ENV === "test",
-    level: process.env.LOG_LEVEL ?? "info"
+    level: process.env.LOG_LEVEL ? process.env.LOG_LEVEL : "info"
 }));
 
 export default logger;
