@@ -17,7 +17,7 @@ export const getAuthor = async (request, response) => {
         
         const [{ total }] = await database("authors").count("id", { as: "total" });
 
-        let query = database("authors").offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
+        let query = database("authors").offset(Math.max(offset, 0)).limit(Math.min(limit, 50));
 
         if (author) query = query.andWhere("author", "like", `%${author}%`);
         

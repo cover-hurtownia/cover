@@ -51,7 +51,7 @@ export const getBook = async (request, response) => {
             .innerJoin("book_tags", "books.id", "book_tags.book_id")
             .innerJoin("tags", "tags.id", "book_tags.tag_id")
             .groupBy("books.id")
-            .offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
+            .offset(Math.max(offset, 0)).limit(Math.min(limit, 50));
 
         if (quantity) query = query.andWhere("products.quantity", "=", quantity);
         if (quantityAtLeast) query = query.andWhere("products.quantity", ">=", quantityAtLeast);
