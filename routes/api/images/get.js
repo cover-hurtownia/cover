@@ -20,7 +20,7 @@ export const getImage = async (request, response) => {
         let query = database
             .select(["images.id", "images.type", "images.original_filename"])
             .from("images")
-            .offset(Math.min(offset, 0))
+            .offset(Math.max(offset, 0))
             .limit(Math.min(limit, 50));
 
         if (filename) query = query.andWhere("images.original_filename", "like", `%${filename}%`);
