@@ -3,6 +3,7 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
+import handlebars from "express-handlebars";
 
 import knex from "knex";
 import connectSessionKnex from "connect-session-knex";
@@ -12,6 +13,7 @@ const KnexSessionStore = connectSessionKnex(session);
 import logger from "./logger.js";
 import { router as api } from "./routes/api/router.js";
 import { router as images } from "./routes/images.js";
+import search from "./routes/search.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -37,6 +39,12 @@ const db = knex(process.env.NODE_ENV !== "test" ? knexFile : {
 const app = express();
 
 app.set("database", db);
+app.set("view engine", "handlebars");
+app.engine("handlebars", handlebars({
+    helpers: {
+        showPrice: price => `${(Number(price) / 100.0).toFixed(2)}zł`
+    }
+}));
 app.use(session({
     secret: SESSION_SECRET,
     store: new KnexSessionStore({ knex: db, createtable: false }),
@@ -59,5 +67,32 @@ app.use("/", express.static("www"));
 
 app.use("/api", api);
 app.use("/images", images);
+
+app.get('/', (request, response) => {
+    response.render("home", {
+        meta: {
+            title: "Hurtownia książek",
+            description: "Lorem ipsum",
+            image: "/assets/banner.png"
+        }
+    });
+});
+
+app.get('/search', search);
+
+app.use('*', (request, response) => {
+    response.status(404);
+    response.render('error', {
+        meta: {
+            title: "Hurtownia książek",
+            description: "Błąd 404",
+            image: "/assets/banner.png"
+        },
+        error: {
+            title: "Błąd 404",
+            message: "Nie znaleziono strony"
+        }
+    });
+});
 
 export default app;
