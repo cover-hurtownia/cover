@@ -1,0 +1,37 @@
+<div class="card">
+  <div class="card-image">
+    <figure class="image">
+      <img src="/images/{{book.image_id}}" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="title is-5"><a href="/book/{{book.id}}">{{book.name}}</a></div>
+    <ul class="content">
+        <li>
+            <span class="has-text-grey-dark">Autorzy: </span>
+            <span>
+                {{#each book.authors}}
+                    {{> author author=this}}
+                    {{#unless @last}}, {{/unless}}
+                {{/each}}
+            </span>
+        </li>
+        <li>
+            <span class="has-text-grey-dark">Wydawnictwo: </span> {{> publisher publisher=book.publisher}}
+        </li>
+        <li>
+            <span class="has-text-grey-dark">Kategorie: </span>
+            <span>
+                {{#each book.tags}}
+                    {{> tag tag=this}}
+                {{/each}}
+            </span>
+        </li>
+    </ul>
+    <footer class="card-footer">
+        <p class="card-footer-item">
+            <span class="has-text-grey-dark">Cena: </span>&nbsp;<span class="has-text-weight-bold">{{showPrice book.price}}</span>
+        </p>
+    </footer>
+  </div>
+</div>
