@@ -24,9 +24,8 @@
     "express-fileupload": "^1.2.1",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
-    "knex": "^0.21.14",
+    "knex": "^0.21.15",
     "mysql": "^2.18.1",
-    "sqlite3": "^5.0.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
