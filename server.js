@@ -14,6 +14,7 @@ import logger from "./logger.js";
 import { router as api } from "./routes/api/router.js";
 import { router as images } from "./routes/images.js";
 import search from "./routes/search.js";
+import book from "./routes/book.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -71,6 +72,7 @@ app.get('/', (request, response) => {
 });
 
 app.get('/search', search);
+app.get('/book/:book_id', book);
 
 app.use('*', (request, response) => {
     response.status(404);

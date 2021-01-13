@@ -1,29 +1,35 @@
 <div class="container box">
     <div class="columns is-vcentered">
-        <div class="column is-2">
+        <div class="column is-3">
             <figure class="image">
                 <img class="book-image" loading="lazy" src="/images/{{book.image_id}}"></img>
             </figure>
         </div>
         <div class="column">
-            <div class="book-title title">{{book.title}}</div>
+            <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
             <table class="table is-fullwidth is-striped">
                 <tbody>
                     <tr>
+                        <td class="has-text-grey-dark">Tytuł</td>
+                        <td>{{book.title}}</td>
+                    </tr>
+                    <tr>
                         <td class="has-text-grey-dark">Autorzy</td>
-                        <td class="book-authors">
-                            {{#each book.authors}}
-                                {{> author author=this}}
-                            {{/each}}
+                        <td>
+                            <ul>
+                                {{#each book.authors}}
+                                    <li>{{> author author=this}}</li>
+                                {{/each}}
+                            </ul>
                         </td>
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">Wydawca</td>
-                        <td class="book-publisher">{{book.publisher}}</td>
+                        <td>{{> publisher publisher=book.publisher}}</td>
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">Kategorie</td>
-                        <td class="book-tags">
+                        <td>
                             {{#each book.tags}}
                                 {{> tag tag=this}}
                             {{/each}}
@@ -31,23 +37,23 @@
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">Oprawa</td>
-                        <td class="book-type">{{book.type}}</td>
+                        <td>{{book.type}}</td>
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">ISBN</td>
-                        <td class="book-isbn is-family-monospace">{{book.isbn}}</td>
+                        <td class="is-family-monospace">{{book.isbn}}</td>
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">Strony</td>
-                        <td class="book-pages">{{book.pages}}</td>
+                        <td>{{book.pages}}</td>
                     </tr>
                     <tr>
                         <td class="has-text-grey-dark">Ilość</td>
-                        <td class="book-quantity">{{book.quantity}}</td>
+                        <td>{{book.quantity}}</td>
                     </tr>
                     <tr class="has-text-weight-bold">
                         <td class="has-text-grey-dark">Cena</td>
-                        <td class="book-price">{{showPrice book.price}}</td>
+                        <td>{{showPrice book.price}}</td>
                     </tr>
                 </tbody>
             </table>

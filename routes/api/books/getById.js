@@ -29,7 +29,11 @@ export const getBookById = async (request, response) => {
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-        const books = await query.then(books => books.map(book => ({ ...book, authors: book.authors.split(";") }))).catch(error => {
+        const books = await query.then(books => books.map(book => ({
+            ...book,
+            authors: book.authors.split(";"),
+            tags: book.tags.split(";")
+        }))).catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
