@@ -25,7 +25,7 @@ export const getProduct = async (request, response) => {
 
         const [{ total }] = await database("products").count("id", { as: "total" });
         
-        let query = database("products").offset(Math.min(offset, 0)).limit(Math.min(limit, 50));
+        let query = database("products").offset(Math.max(offset, 0)).limit(Math.min(limit, 50));
 
         if (quantity) query = query.andWhere("quantity", "=", quantity);
         if (quantityAtLeast) query = query.andWhere("quantity", ">=", quantityAtLeast);
