@@ -5,156 +5,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/logo-icon.png"/>
     <link href="css/bulma.css" type="text/css" rel="stylesheet"/> 
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="css/main.css" type="text/css" rel="stylesheet"/> 
     <title>Cover Hurtownia</title>
 </head>
-
+<!-- <body class="has-navbar-fixed-top"> -->
 <body>
-  <header class="hero is-light">
-    <div class="hero-body py-1 px-0">
-    <div class="container" id="support-bar">
-      <div class="column is-flex" style="padding:5px;">
-        <div class="container is-flex" id="theme-controll">
-              <select id="theme-selector">
-                <option value="light">Jasny</option>
-                <option value="dark">Ciemny</option>
-                <option value="contrast">Kontrast</option>
-              </select>
-              <div class="buttons are-small px-2">
-                <button class="button">+</button>
-                <button class="button">-</button>
-              </div>
-          </div>
-        <div id="social-media">
-          <div class="buttons is-right are-small">
-            <a href="https://www.facebook.com/COVER-Hurtownia-Ksi%C4%85%C5%BCek-105050578207430"
-            class="button is-small is-facebook is-inverted is-black-social">
-              <span class="icon is-small">
-                <img src="assets/social-media/facebook/facebook.svg">
-              </span>
-            </a>
-            <a href="https://www.instagram.com/coverhurtownia/"
-            class="button is-small is-instagram is-inverted is-black-social">
-              <span class="icon is-small">
-                <img src="assets/social-media/instagram/instagram.svg">
-              </span>
-            </a>
-            <a href="https://twitter.com/CoverHurtownia"
-              class="button is-small is-twitter is-inverted is-black-social">
-              <span class="icon is-small">
-                <img src="assets/social-media/twitter/twitter.svg">
-              </span>
-            </a>
-          </div>        
+<header class="section py-0 px-0 is-light">
+  <div class="container py-0 px-0">
+    <div class="section px-0 py-0 my-0 mx-0">
+      <div class="container is-flex is-justify-content-flex-end" id="over-header-bar">
+        <div class="buttons are-small px-2 my-1">
+          <button value="dark" id="dark-layout" class="mx-1 btn">
+            <span class="material-icons">
+              nights_stay
+            </span>
+          </button>
+          <button value="light" id="light-layout" class="mx-1 btn">
+            <span class="material-icons">
+              wb_sunny
+            </span>
+          </button>
+          <button value="contrast" id="contrast-layout" class="mx-1 btn">
+            <span class="material-icons">
+              visibility
+            </span>
+          </button>
+        </div>
+        <div class="buttons are-small px-2 my-1">
+          <button value="font-add" id="font-subtract-btn" class="mx-1 btn">
+            <span class="material-icons">
+              add
+            </span>
+          </button>
+          <button value="font-subtract" id="font-subtract-btn" class="mx-1 btn">
+            <span class="material-icons">
+              remove
+            </span>
+          </button> 
         </div>
       </div>
     </div>
-    
-    <div class="container" id="navigation">  
-      <nav class="navbar py-4" role="navigation" aria-label="main navigation">
-          <div class="navbar-brand">
-              <a href="#" class="navbar-item py-1 px-1">
-                  <img src="assets/logo-wbg.png" alt="logo" style="max-height:50px; max-width: 300px;"/>   
-              </a>
-              <a
-              role="button"
-              class="navbar-burger"
-              aria-label="menu"
-              aria-expanded="false"
-              data-target="navbarBasicExample"
-              >
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </a>
-        </div>
-        <div id="navbar" class="navbar-menu is-light">
-          <div class="navbar-start">
-            <div class="navbar-item">
-              <a class="navbar-item" href="#">Home</a>
-              <a class="navbar-item" href="#">O Nas</a>
-              <a class="navbar-item" href="#">Produkty</a>
-
-              <a class="navbar-item" href="#">Ranking</a>
-              <a class="navbar-item" href="#">Szczęśliwy traf</a>
-              <a class="navbar-item" href="#">Kontakt</a>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand is-flex-mobile is-hidden-desktop is-justify-content-center is-align-items-center">
+          <div class="column is-flex is-hidden-tablet is-hidden-desktop">
+            <a class="navbar-item" >
+              <span class="material-icons icon_color">
+                account_box
+              </span>
+            </a>
+            <a class="navbar-item" >
+              <span class="material-icons icon_color">
+                shopping_cart
+              </span>
+            </a>
+          </div>
+          <div class="column is-flex-mobile is-justify-content-flex-start">
+            <a class="navbar-item is-hidden-desktop" href="main.html"><img src="assets/logo-text.svg" height="100" width="100"></a>
+          </div>
+          <div class="column">
+            <div id="navbarBurger" class="navbar-burger is-hidden-tablet is-hidden-desktop" data-target="navMenuIndex">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
-          <div class="navbar-end">
-              <div class="navbar-item">
-                <a class="navbar-item" href="#">Użytkownik</a>
-                <a class="navbar-item" href="#">Cart</a>
+            <div class="column is-flex is-justify-content-flex-end is-hidden-mobile is-hidden-desktop">
+              <a class="navbar-item" >
+                <span class="material-icons icon_color">
+                  account_box
+                </span>
+              </a>
+              <a class="navbar-item" >
+                <span class="material-icons icon_color">
+                  shopping_cart
+                </span>
+              </a>
+              <div id="navbarBurger" class="navbar-burger px-0 mx-0" data-target="navMenuIndex">
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
             </div>
         </div>
-      </nav>
-    </div>
-  </div>
-  </header>
-
-    <section id="hero" class="section" style="background-image: url(https://w7.pngwing.com/pngs/413/139/png-transparent-books-background-books-retro-library.png);
-    background-position: center center;
-    background-repeat:  no-repeat;
-    background-size:  cover;
-    height: 80vh;">
-          <div class="columns is-mobile is-centered">
-            <div class="column is-half">
-          
+        <!-- desktop menu -->
+        <div class="container is-hidden-mobile is-hidden-tablet-only is-flex is-justify-content-flex-start">
+          <div class="navbar-start">
+            <div class="column is-flex">
+              <a class="navbar-item" href="main.html"><img src="assets/logo-wbgl.svg"></a>
+              <a class="navbar-item navbar-item-anim" href="#">O Nas</a>
+              <a class="navbar-item navbar-item-anim" href="#">Szczęśliwy traf</a>
+              <a class="navbar-item navbar-item-anim" href="#">Produkty</a>
+              <a class="navbar-item navbar-item-anim" href="#">Ranking</a>
+              <a class="navbar-item navbar-item-anim" href="#">Kontakt</a>
             </div>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-items is-flex">
+              <div class="navbar-item">
+                <div class="search">
+                  <input type="text" class="searchTerm" placeholder="What are you looking for?">
+                  <button type="submit" class="searchButton">
+                    <span class="material-icons">
+                      search
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <a class="navbar-item navbar-item-anim" href="#">
+                Zaloguj Się
+                <span class="material-icons icon_color">
+                  account_box
+                </span>
+              </a>
+              <a class="navbar-item navbar-item-anim" href="#">
+                Koszyk
+                <span class="material-icons icon_color">
+                  shopping_cart
+                </span>
+              </a>
+            </div>
+          </div> 
         </div>
-    </section>
-
-    <section class="section">
+        <!-- desktop menu end -->
+      </div>
+    </nav>
+  </div>
+</header>
+<main>
+  <section id="hero" class="section" 
+  style="background-image: 
+  url(https://w7.pngwing.com/pngs/413/139/png-transparent-books-background-books-retro-library.png);
+  background-position: center center;
+  background-repeat:  no-repeat;
+  background-size:  cover;
+  height: 50vh;">
+  </section>
+  <section class="section">
+      <div class="has-text-centered">
+        <h3 class="title is-3">BestSellery</h3>
+      </div>
+      <div class="columns">
+        książki 
+      </div>
+  </section>
+  <section class="section">
+      <dic class="container">
+        <div class="columns">
+        </div>
+      </dic>
+  </section>
+  <section class="section">
+      <dic class="container">
         <div class="has-text-centered">
-            <h3 class="title is-3">BestSellery</h3>
+          <h1 class="title is-1">Cover</h1>
+          <h3 class="title is-3">Trochę o nas</h3>
         </div>
         <div class="columns">
-          <!-- książki -->
+          <div class="column">
+          </div>
         </div>
-    </section>
-
-    <section class="section">
-        <dic class="container">
-            <div class="columns">
-
-            </div>
-        </dic>
-    </section>
-
-    <section class="section">
-        <dic class="container">
-            <div class="has-text-centered">
-                <h1 class="title is-1">Cover</h1>
-                <h3 class="title is-3">Trochę o nas</h3>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    
-                </div>
-            </div>
-        </dic>
-    </section>
-
-  <section class="hero is-dark">
-    <div class="hero-body">
-        <div class="container">
-          <div class="footer-main">
-            <div class="columns">
-                <div class="column is-light">
-                    <h4 class="title is-4">O Cover</h4>
-                    <p class="bg-footer-link"><a href="">O Nas</a></p>
+      </dic>
+  </section>
+</main>
+<footer class="footer my-2 footer-font-color line-sep">
+          <div class="container" >
+            <div class="columns is-tablet">
+                <div class="column is-3 px-4 py-4">
+                    <h4 class="bg-footer-link-title title is-4">O Cover</h4>
+                    <p class="bg-footer-link"><a style="text-decoration: none;" href="">O Nas</a></p>
                     <p class="bg-footer-link"><a href="">Nasze produkty</a></p>
                     <p class="bg-footer-link"><a href="">Akcje promocyjne</a></p>
                     <p class="bg-footer-link"><a href="">Ranking</a></p> 
-                    <p class="bg-footer-link is-gold"><a href="">Szczęśliwy traf</a></p> 
+                    <p class="bg-footer-link"><a href="">Szczęśliwy traf</a></p> 
                 </div>
-                <div class="column">
+                <div class="column is-3 px-4 py-4">
                     <h4 class="title is-4">Konto klienta</h4>
                     <p class="bg-footer-link"><a href="">Logowanie</a></p> 
                     <p class="bg-footer-link"><a href="">Rejestracja</a></p> 
                 </div>
-                <div class="column">
+                <div class="column is-3 px-4 py-4">
                   <h4 class="title is-4">Informacje</h4>
                   <p class="bg-footer-link"><a href="">Regulamin zakupów</a></p>
                   <p class="bg-footer-link"><a href="">Płatności</a></p>
@@ -165,37 +197,37 @@
                   <p class="bg-footer-link"><a href="">Kontakt</a></p> 
                   <p class="bg-footer-link"><a href="">Zwroty i reklamacje</a></p>
                 </div>           
-              <div class="column is-flex is-flex-direction-column is-justify-content-space-evenly">
-                <h4 class="title has-text-centered is-4">Znajdziesz nas również</h4>
-                <div class="image">
-                  <img src="assets/logo-wbg.png" height="200px" width="200px"/>
+              <div class="column is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center">
+                <h4 class="footer-social-heading title has-text-centered is-size-4 py-1">Znajdziesz nas również</h4>
+                <div style="max-width: 200px; max-height: 200px;">
+                  <img src="assets/logo-wbgl.svg"/>
                 </div>
-                <div class="buttons is-justify-content-space-around my-5">
+                <div class="container is-justify-content-flex-start">
                   <a href="https://www.facebook.com/COVER-Hurtownia-Ksi%C4%85%C5%BCek-105050578207430"
-                  class="button is-medium is-facebook is-inverted is-black-social">
+                  class="px-2">
                     <span class="icon">
                       <img src="assets/social-media/facebook/facebook.svg">
                     </span>
                   </a>
                   <a href="https://www.instagram.com/coverhurtownia/"
-                  class="button is-medium is-instagram is-inverted is-black-social">
+                  class="px-2">
                     <span class="icon">
                       <img src="assets/social-media/instagram/instagram.svg">
                     </span>
-                </a>
-                <a href="https://twitter.com/CoverHurtownia"
-                  class="button is-medium is-twitter is-inverted is-black-social">
+                  </a>
+                  <a href="https://twitter.com/CoverHurtownia"
+                    class="px-2">
                     <span class="icon">
                       <img src="assets/social-media/twitter/twitter.svg">
                     </span>
                   </a>
+                </div> 
+                <div class="container"> 
+                  <p class="px-1 py-2">© 2021</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-    </div>
-  </div>
-  </section>
+</footer>
 </body>
 </html>
