@@ -17,7 +17,7 @@ router.get("/:image_id", async (request, response) => {
 
         const images = await query.catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
+            throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
         });
 
         if (images.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
