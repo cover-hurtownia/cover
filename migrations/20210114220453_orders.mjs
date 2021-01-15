@@ -7,6 +7,7 @@ export const up = async db => {
     await db.schema.createTable("delivery_types", table => {
         table.increments('id').primary();
         table.string("type").unique().notNullable();
+        table.string("url").unique();
         table.integer("price").unsigned().notNullable().defaultTo(0);
     });
 
@@ -20,6 +21,7 @@ export const up = async db => {
         table.string('email');
 
         table.string('street').notNullable();
+        table.string('apartment');
         table.string('city').notNullable();
         table.string('postal_code').notNullable();
 
@@ -44,11 +46,8 @@ export const up = async db => {
         table.integer("ordered_quantity").unsigned().notNullable();
         table.integer("price").unsigned().notNullable();
 
-        table.integer('delivery_type_id').unsigned().notNullable();
-        table.integer('order_status_id').unsigned().notNullable();
-
-        table.foreign("delivery_type_id").references("id").inTable("delivery_types");
-        table.foreign("order_status_id").references("id").inTable("order_status");
+        table.foreign("order_id").references("id").inTable("orders");
+        table.foreign("product_id").references("id").inTable("products");
     });
 };
 

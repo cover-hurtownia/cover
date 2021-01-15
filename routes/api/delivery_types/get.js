@@ -1,15 +1,15 @@
 import logger from "../../../logger.js";
 import * as errorCodes from "../../../www/js/common/errorCodes.js";
 
-export const getBindingType = async (request, response) => {
+export const getDeliveryType = async (request, response) => {
     const database = request.app.get("database");
     
     try {
-        let query = database("binding_types");
-
+        let query = database("delivery_types");
+        
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-        const binding_types = await query.catch(error => {
+        const delivery_types = await query.catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, errorCodes.DATABASE_ERROR];
         });
@@ -17,7 +17,7 @@ export const getBindingType = async (request, response) => {
         response.status(200);
         response.send({
             status: "ok",
-            data: binding_types
+            data: delivery_types
         });
     }
     catch ([status, errorCode]) {
@@ -34,4 +34,4 @@ export const getBindingType = async (request, response) => {
     }
 };
 
-export default getBindingType;
+export default getDeliveryType;
