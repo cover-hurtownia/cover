@@ -1,37 +1,27 @@
 import logger from "../../../logger.js";
 import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import { respond } from "../../utilities.js";
 
-export const getBindingType = async (request, response) => {
+export const getBindingType = respond(async request => {
     const database = request.app.get("database");
-    
-    try {
-        let query = database("binding_types");
 
-        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
+    let query = database("binding_types");
 
-        const binding_types = await query.catch(error => {
-            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
-        });
+    const { bindingType } = request.query;
 
-        response.status(200);
-        response.send({
-            status: "ok",
-            data: binding_types
-        });
-    }
-    catch ([status, errorCode]) {
-        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+    if (bindingType) query = query.andWhere("binding_type", "=", bindingType);
 
-        response.status(status);
-        response.send({
-            status: "error",
-            error: {
-                code: errorCode,
-                message: errorCodes.asMessage(errorCode)
-            }
-        });
-    }
-};
+    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
+
+    const binding_types = await query.catch(error => {
+        logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+    });
+
+    return [200, {
+        status: "ok",
+        data: binding_types
+    }];
+});
 
 export default getBindingType;

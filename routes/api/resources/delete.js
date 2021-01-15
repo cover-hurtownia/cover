@@ -1,44 +1,30 @@
 import logger from "../../../logger.js";
 import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import { respond } from "../../utilities.js";
 
-export const deleteResource = table => async (request, response) => {
+export const deleteResource = table => respond(async request => {
     const database = request.app.get("database");
-    
-    try {
-        const ids = Array.isArray(request.body) ? request.body : [request.body];
 
-        console.log(ids);
-        if (ids.some(id => typeof id !== "number")) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
+    const ids = Array.isArray(request.body) ? request.body : [request.body];
 
-        const query = database(table).delete().whereIn("id", ids);
+    console.log(ids);
+    if (ids.some(id => typeof id !== "number")) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
 
-        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
+    const query = database(table).delete().whereIn("id", ids);
 
-        const deletedRows = await query.catch(error => {
-            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
-        });
+    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 
-        logger.info(`${request.method} ${request.originalUrl}: deleted rows: ${deletedRows}`);
+    const deletedRows = await query.catch(error => {
+        logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+    });
 
-        response.status(200);
-        response.send({
-            status: "ok",
-            rows: deletedRows
-        });
-    }
-    catch ([status, errorCode]) {
-        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+    logger.info(`${request.method} ${request.originalUrl}: deleted rows: ${deletedRows}`);
 
-        response.status(status);
-        response.send({
-            status: "error",
-            error: {
-                code: errorCode,
-                message: errorCodes.asMessage(errorCode)
-            }
-        });
-    }
-};
+    return [200, {
+        status: "ok",
+        rows: deletedRows
+    }];
+});
 
 export default deleteResource;
