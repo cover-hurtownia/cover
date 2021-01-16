@@ -1,84 +1,96 @@
-/* // Customization
-
-// You can easily customize Bulma with your own variables.
-// Just uncomment the following block to see the result.
-
-
-// 1. Import the initial variables
-@import "../node_modules/bulma/sass/utilities/initial-variables";
-
-// 2. Set your own initial variables
-// Update the blue shade, used for links
-$blue: #06bcef;
-$navbar-height: 5rem;
-// Add pink and its invert
-$pink: #ff8080;
-$pink-invert: #fff;
-// Update the sans-serif font family
-$family-sans-serif: "Lux", "Helvetica", "Arial", sans-serif;
-
-// 3. Set the derived variables
-// Use the new pink as the primary color
-$primary: $pink;
-$primary-invert: $pink-invert;
-
-// 4. Import the rest of Bulma */
-/*! bulma.io v0.9.1 | MIT License | github.com/jgthms/bulma */
-/* Bulma Utilities */
-
-
-
 :root{
   --decorative-red-color: rgba(141, 10, 10, 0.9);
+  --decorative-darker-red-color: rgba(114, 9, 9, 0.563);
   font-family: "Lux";
+  --width-logo-desktop: 8em;
+  --height-logo-desktop: 7em;
+  --width-logo-mobile-tablet: 6em;
+  --height-logo-mobile-tablet:8em;
+  --width-logo-footer: 15em; 
+  --height-logo-footer: 12em; 
 }
 
-/* global font: Lux */
+body[data-theme="light"] {
+  --white-color: #F3F3F3;
+  --dark-color: #202020;
+  --darker-color: #343434;
 
-/* .search {
-  width: 100%;
+  --background-color: var(--background-color);
+  --color: var(--font-color);
+}
+
+body[data-theme="dark"] {
+  --background-color: #202020;
+  --dark-gray-color: #7F7D7E;
+  --white-gray-color: #FFFEFF;
+
+  --background-color: var(--background-color);
+  --color: var(--white-gray-color);
+}
+
+body[data-theme="contrast"] {
+  --background-color: black;
+  --font-color: yellow;
+
+  --background-color: var(--background-color);
+  --color: var(--font-color);
+}
+
+#search-bar {
   position: relative;
-  display: flex;
 }
 
-.searchTerm {
-  width: 100%;
-  border: 3px solid #00B4CC;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9DBFAF;
+#icon-search {
+  position: absolute;
+  cursor: text;
+  pointer-events: none;
+  top: 5px;
+  right: 10px;
 }
-
-.searchTerm:focus{
-  color: var(--decorative-red-color);
-}
-
-.searchButton {
-  width: 2em;
-  height: 2em;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-} */
-
-
 
 a {
-  color: black !important;
+  color: var(--color) !important;
 }
 
-.line-sep{
+#search-bar-section{
+  background-color: var(--decorative-red-color);
+}
+
+.logo-footer {
+  max-width: var(--width-logo-footer); 
+  max-height: var(--height-logo-footer);
+}
+
+.logo-header-mobile-tablet {
+  max-width: var(--width-logo-mobile-tablet); 
+  max-height: var(--height-logo-mobile-tablet);
+}
+
+.logo-header-desktop {
+  max-width: var(--width-logo-desktop); 
+  max-height: var(--height-logo-desktop);
+}
+
+#btn-to-top {
+  display: none;
+  position: fixed;
+  z-index: 99;
+  background-color: var(--background-color);
+}
+
+#btn-to-top:hover {
+  background-color: var(--background-color);
+}
+
+.line-sep-top {
   border-top: 5px solid var(--decorative-red-color);
 }
 
-.footer-social-heading{
+.line-sep-bottom {
+  border-bottom: 5px solid var(--decorative-red-color);
+}
+
+.footer-social-heading {
   border-bottom: 2px solid var(--decorative-red-color);
 }
 
@@ -1397,7 +1409,8 @@ a.box:active {
   flex-grow: 1;
   margin: 0 auto;
   position: relative;
-  width: auto; }
+  width: auto; 
+  background-color: var(--background-color);}
   .container.is-fluid {
     max-width: none !important;
     padding-left: 32px;
@@ -4202,10 +4215,12 @@ a.navbar-item,
     display: none; }
   .navbar-menu {
     background-color: white;
-    box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
-    padding: 0.5rem 0; }
+    box-shadow: 0 8px 16px rgba(10, 10, 10, 0.5);
+    padding: 0.5rem 0; 
+    }
     .navbar-menu.is-active {
-      display: block; }
+      display: block; 
+      transition: 1s;}
   .navbar.is-fixed-bottom-touch, .navbar.is-fixed-top-touch {
     left: 0;
     position: fixed;
@@ -7821,3 +7836,5 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 .footer {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
+
+
