@@ -1,5 +1,4 @@
 import logger from "../logger.js";
-import * as errorCodes from "../www/js/common/errorCodes.js";
 
 export const authenticated = async (request, response, next) => {
     if (request.session.hasOwnProperty("user")) next();
@@ -10,8 +9,8 @@ export const authenticated = async (request, response, next) => {
         response.send({
             status: "error",
             error: {
-                code: errorCodes.NOT_AUTHENTICATED,
-                message: errorCodes.asMessage(errorCodes.NOT_AUTHENTICATED)
+                userMessage: "wymagane zalogowanie",
+                devMessage: "not authenticated"
             }
         });
     }
@@ -32,23 +31,37 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
 
         const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
             logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
         if (roles.includes(requiredRole)) next();
-        else throw [403, errorCodes.NOT_AUTHORIZED];
+        else throw [403, { userMessage: "brak uprawnień", devMessage: `role required: ${requiredRole}` }];
     }
-    catch ([status, errorCode]) {
-        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+    catch (error) {
+        if (error instanceof Error) {
+            logger.error(`${request.method} ${request.originalUrl}: ${error.toString()}`);
 
-        response.status(status)
-        response.send({
-            status: "error",
-            error: {
-                code: errorCode,
-                message: errorCodes.asMessage(errorCode)
-            }
-        });
+            response.status(500);
+            response.send({
+                status: "error",
+                error: {
+                    userMessage: "błąd serwera",
+                    devMessage: error.toString()
+                }
+            });
+        }
+        else {
+            const [status, errorBody] = error;
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${JSON.stringify(errorBody)}`);
+
+            const body = {
+                status: "error",
+                error: errorBody
+            };
+
+            response.status(status);
+            response.send(body);
+        }
     }
 }];
 
@@ -71,24 +84,19 @@ export const respond = handler => async (request, response) => {
             response.send({
                 status: "error",
                 error: {
-                    code: errorCodes.UNKNOWN_ERROR,
-                    message: error.toString()
+                    userMessage: "błąd serwera",
+                    devMessage: error.toString()
                 }
             });
         }
         else {
-            const [status = 500, errorCode = errorCodes.UNKNOWN_ERROR, details = {}] = error;
-            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+            const [status, errorBody] = error;
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${JSON.stringify(errorBody)}`);
 
             const body = {
                 status: "error",
-                error: {
-                    code: errorCode,
-                    message: errorCodes.asMessage(errorCode),
-                }
+                error: errorBody
             };
-
-            if (details) body.error.details = details;
 
             response.status(status);
             response.send(body);

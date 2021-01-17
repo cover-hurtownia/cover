@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import logger from "../../logger.js";
-import * as errorCodes from "../../www/js/common/errorCodes.js";
 import { respond } from "../utilities.js";
 
 export const register = respond(async request => {
@@ -19,19 +18,31 @@ export const register = respond(async request => {
 
         return isNumeric || isUpperAlpha || isLowerAlpha || isUnderscore;
     })) {
-        throw [422, errorCodes.REGISTER_USERNAME_INVALID_CHARACTERS]
+        throw [422, {
+            userMessage: "nazwa użytkownika musi się składać tylko ze znaków alfanumerycznych i podkreślnika",
+            devMessage: "invalid username"
+        }];
     };
 
     if (username.length < 3) {
-        throw [422, errorCodes.REGISTER_USERNAME_TOO_SHORT];
+        throw [422, {
+            userMessage: "nazwa użytkownika nie może mieć mniej niż 3 znaki",
+            devMessage: "username too short"
+        }];
     }
 
     if (username.length > 24) {
-        throw [422, errorCodes.REGISTER_USERNAME_TOO_LONG];
+        throw [422, {
+            userMessage: "nazwa użytkownika nie może mieć więcej niż 24 znaki",
+            devMessage: "username too long"
+        }];
     }
     
     if (password.length === 0) {
-        throw [422, errorCodes.REGISTER_PASSWORD_EMPTY];
+        throw [422, {
+            userMessage: "hasło nie może być puste",
+            devMessage: "empty password"
+        }];
     };
 
     // Check if username already exists.
@@ -41,23 +52,32 @@ export const register = respond(async request => {
 
     const usersInDatabase = await usersInDatabaseQuery.catch(error => {
         logger.error(`/api/register: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
     if (usersInDatabase.length != 0) { 
-        throw [409, errorCodes.REGISTER_USERNAME_EXISTS];
+        throw [409, {
+            userMessage: "użytkownik z taką nazwą użytkownika już istnieje",
+            devMessage: "username already exists"
+        }];
     }
 
     // Generate salt for password hashing.
-    const salt = await bcrypt.genSalt().catch(_ => {
+    const salt = await bcrypt.genSalt().catch(error => {
         logger.error("/api/register: salt generation error");
-        throw [500, errorCodes.INTERNAL_ERROR];
+        throw [500, {
+            userMessage: "błąd serwera",
+            devMessage: error.toString()
+        }];
     });
 
     // Hash the password.
-    const passwordHash = await bcrypt.hash(password, salt).catch(_ => {
+    const passwordHash = await bcrypt.hash(password, salt).catch(error => {
         logger.error("/api/register: hashing error");
-        throw [500, errorCodes.INTERNAL_ERROR];
+        throw [500, {
+            userMessage: "błąd serwera",
+            devMessage: error.toString()
+        }];
     });
 
     // Insert new user into the database.
@@ -67,7 +87,7 @@ export const register = respond(async request => {
 
     await insertUserQuery.catch(error => {
         logger.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
     logger.info(`/api/register: new user registered: ${username}`);

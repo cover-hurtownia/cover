@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const getBindingType = respond(async request => {
@@ -15,13 +15,10 @@ export const getBindingType = respond(async request => {
 
     const binding_types = await query.catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
-    return [200, {
-        status: "ok",
-        data: binding_types
-    }];
+    return [200, { status: "ok", data: binding_types }];
 });
 
 export default getBindingType;

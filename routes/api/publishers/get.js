@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const getPublisher = respond(async request => {
@@ -29,7 +29,7 @@ export const getPublisher = respond(async request => {
 
     const publishers = await query.catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
     return [200, {

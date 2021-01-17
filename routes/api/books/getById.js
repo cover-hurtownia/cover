@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const getBookById = respond(async request => {
@@ -35,10 +35,13 @@ export const getBookById = respond(async request => {
         tags: book.tags?.split(";") ?? []
     }))).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
-    if (books.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
+    if (books.length === 0) throw [404, {
+        userMessage: "nie znaleziono zasobu",
+        devMessage: `book with id ${id} doesn't exist`
+    }];
 
     const book = books[0];
 

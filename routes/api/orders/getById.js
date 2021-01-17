@@ -1,12 +1,12 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+import { respond } from "../../utilities.js";
 
-export const getOrderById = async (request, response) => {
+export const getOrderById = respond(async request => {
     const database = request.app.get("database");
     
-    try {
-        const id = request.params.order_id;
+    const id = request.params.order_id;
 
+    const { order, products } = await database.transaction(async trx => {
         let query = database
             .select([
                 "orders.*",
@@ -24,10 +24,10 @@ export const getOrderById = async (request, response) => {
 
         const orders = await query.catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
-        if (orders.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
+        if (orders.length === 0) throw [404, `zamówienie o id ${id} nie istnieje`];
 
         const order = orders[0];
 
@@ -44,30 +44,19 @@ export const getOrderById = async (request, response) => {
 
         const products = await productsQuery.catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
-        response.status(200);
-        response.send({
-            status: "ok",
-            data: {
-                ...order,
-                products
-            }
-        });
-    }
-    catch ([status, errorCode]) {
-        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+        return { order, products };
+    });
 
-        response.status(status);
-        response.send({
-            status: "error",
-            error: {
-                code: errorCode,
-                message: errorCodes.asMessage(errorCode)
-            }
-        });
-    }
-};
+    return [200, {
+        status: "ok",
+        data: {
+            ...order,
+            products
+        }
+    }];
+});
 
 export default getOrderById;

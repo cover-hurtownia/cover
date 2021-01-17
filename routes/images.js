@@ -1,7 +1,6 @@
 import express from "express";
 
 import logger from "../logger.js";
-import * as errorCodes from "../www/js/common/errorCodes.js";
 
 export const router = express.Router();
 
@@ -17,10 +16,10 @@ router.get("/:image_id", async (request, response) => {
 
         const images = await query.catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
-        if (images.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
+        if (images.length === 0) throw [404, { userMessage: `nie znaleziono zasobu`, devMessage: `image with id ${image_id} doesn't exist`}];
 
         const image = images[0];
 
@@ -28,16 +27,30 @@ router.get("/:image_id", async (request, response) => {
         response.header("Content-Type", image.type);
         response.end(image.data, "binary");
     }
-    catch ([status, errorCode]) {
-        logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+    catch (error) {
+        if (error instanceof Error) {
+            logger.error(`${request.method} ${request.originalUrl}: ${error.toString()}`);
 
-        response.status(status);
-        response.send({
-            status: "error",
-            error: {
-                code: errorCode,
-                message: errorCodes.asMessage(errorCode)
-            }
-        });
+            response.status(500);
+            response.send({
+                status: "error",
+                error: {
+                    userMessage: "błąd serwera",
+                    devMessage: error.toString()
+                }
+            });
+        }
+        else {
+            const [status, errorBody] = error;
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${JSON.stringify(errorBody)}`);
+
+            const body = {
+                status: "error",
+                error: errorBody
+            };
+
+            response.status(status);
+            response.send(body);
+        }
     }
 });
