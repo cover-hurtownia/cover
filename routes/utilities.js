@@ -35,7 +35,7 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
         });
 
         if (roles.includes(requiredRole)) next();
-        else throw [403, { userMessage: "brak uprawnień", devMessage: `role required: ${requiredRole}` }];
+        else throw [403, { userMessage: "brak uprawnień", devMessage: `role required: ${requiredRole}, current roles: ${roles.join(", ")}` }];
     }
     catch (error) {
         if (error instanceof Error) {
