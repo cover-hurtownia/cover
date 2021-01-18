@@ -6,8 +6,8 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
     const pages = Math.ceil(total / limit);
     const current = Math.ceil(offset / limit);
 
-    const left = current - delta;
-    const right = current + delta;
+    const left = current - delta + 1;
+    const right = current + delta + 1;
 
     const list = [];
 

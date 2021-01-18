@@ -2,9 +2,9 @@ import * as Preact from "/js/lib/Preact.js";
 import { useState, useEffect } from "/js/lib/PreactHooks.js";
 
 import Pagination from "/js/preact/components/Pagination.js";
-import Order from "/js/preact/orders/components/Order.js";
+import Book from "/js/preact/books/components/Book.js";
 import OrderingPanel from "/js/preact/components/OrderingPanel.js";
-import FiltersPanel from "/js/preact/orders/components/FiltersPanel.js";
+import FiltersPanel from "/js/preact/books/components/FiltersPanel.js";
 
 import * as utils from "/js/utils.js";
 import * as API from "/js/api/index.js";
@@ -13,37 +13,38 @@ const h = Preact.h;
 
 const emptyQuery = Object.freeze({
     id: null,
-    firstName: null,
-    lastName: null,
-    phoneNumber: null,
-    email: null,
-    username: null,
-    street: null,
-    apartment: null,
-    city: null,
-    postalCode: null,
-    orderDateFirst: null,
-    orderDateLast: null,
-    trackingNumber: null,
-    deliveryType: [],
-    status: [],
-    totalCost: null,
-    totalCostAtLeast: null,
-    totalCostAtMost: null,
+    quantity: null,
+    quantityAtLeast: null,
+    quantityAtMost: null,
+    price: null,
+    priceAtLeast: null,
+    priceAtMost: null,
+    name: null,
+    title: null,
+    description: null,
+    available: null,
+    bindingType: [],
+    publisher: null,
+    pages: null,
+    pagesAtLeast: null,
+    pagesAtMost: null,
+    author: null,
+    tag: [],
+    isbn: null,
     orderBy: null,
     ordering: "desc",
     limit: 20,
     offset: 0
 });
 
-export const OrdersApp = ({ query: initialQuery }) => {
+export const BooksApp = ({ query: initialQuery }) => {
     const [query, setQuery] = useState({ ...emptyQuery, ...initialQuery });
     const [response, setResponse] = useState(null);
     const [isLoading, setLoading] = useState(true);
     
-    const getOrders = async query => {
+    const getBooks = async query => {
         setLoading(true);
-        setResponse(await API.orders.get(query));
+        setResponse(await API.books.get(query));
         setLoading(false);
     };
 
@@ -59,7 +60,7 @@ export const OrdersApp = ({ query: initialQuery }) => {
         setQuery(fixedQuery);
 
         window.history.pushState(fixedQuery, null, getNextPath(fixedQuery));
-        await getOrders(utils.ungroupParams(fixedQuery));
+        await getBooks(utils.ungroupParams(fixedQuery));
     };
 
     const goTo = async pagination => {
@@ -67,14 +68,14 @@ export const OrdersApp = ({ query: initialQuery }) => {
         setQuery(fixedQuery);
 
         window.history.pushState(fixedQuery, null, getNextPath(fixedQuery));
-        await getOrders(utils.ungroupParams(fixedQuery));
+        await getBooks(utils.ungroupParams(fixedQuery));
     };
 
     const resetQuery = async () => {
         setQuery(emptyQuery);
 
         window.history.pushState(emptyQuery, null, getNextPath(emptyQuery));
-        await getOrders(utils.ungroupParams(emptyQuery));
+        await getBooks(utils.ungroupParams(emptyQuery));
     };
 
     const getQueryField = field => query[field];
@@ -91,11 +92,11 @@ export const OrdersApp = ({ query: initialQuery }) => {
 
     useEffect(async () => {
         window.history.replaceState(query, null, getNextPath(query));
-        await getOrders(utils.ungroupParams(query));
+        await getBooks(utils.ungroupParams(query));
     }, []);
 
     useEffect(async () => {
-        const onPopState = ({ state: query }) => getOrders(utils.ungroupParams(query));
+        const onPopState = ({ state: query }) => getBooks(utils.ungroupParams(query));
         window.addEventListener("popstate", onPopState);
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
@@ -106,10 +107,11 @@ export const OrdersApp = ({ query: initialQuery }) => {
         ]),
         h("div", { className: "column" }, [
             h(OrderingPanel, { getQueryField, setQueryField, resetQuery, search, options: {
-                orderDate: "Daty zamówienia",
-                totalCost: "Kosztu",
-                firstName: "Imienia",
-                lastName: "Nazwiska"
+                publicationDate: "Daty publikacji",
+                price: "Ceny",
+                title: "Tytułu",
+                pages: "Liczby stron",
+                quantity: "Liczby sztuk"
             } }),
             response === null
                 ? h("progress", { className: "progress is-primary", max: "100" }, "0%")
@@ -123,7 +125,7 @@ export const OrdersApp = ({ query: initialQuery }) => {
                                 : h("div", { className: "box notification is-primary is-size-4" }, `Liczba wyników: ${response.total}`),
                         response.total !== 0 && [
                             h(Pagination, { total: response.total, limit: response.limit, offset: response.offset, delta: 2, goTo }),
-                            ...response.data.map(order => h(Order, { order })),
+                            h("div", { className: "columns is-multiline" }, response.data.map(book => h(Book, { book }))),
                             h(Pagination, { total: response.total, limit: response.limit, offset: response.offset, delta: 2, goTo })
                         ]
                     ])
@@ -131,4 +133,4 @@ export const OrdersApp = ({ query: initialQuery }) => {
     ]); 
 };
 
-export default OrdersApp;
+export default BooksApp;

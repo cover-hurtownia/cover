@@ -2,7 +2,7 @@ import * as Preact from "/js/lib/Preact.js";
 
 const h = Preact.h;
 
-export const OrderingPanel = ({ getQueryField, setQueryField, search })  => {
+export const OrderingPanel = ({ getQueryField, setQueryField, search, options })  => {
     return h("nav", { className: "panel" }, [
         h("p", { className: "panel-heading" }, "Sortowanie"),
         h("div", { className: "panel-block" }, [
@@ -34,10 +34,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search })  => {
                                 onchange: event => setQueryField("orderBy", event.target.value)
                             }, [
                                 h("option", { value: "" }, "Domyślnie"),
-                                h("option", { value: "orderDate" }, "Daty zamówienia"),
-                                h("option", { value: "totalCost" }, "Koszt"),
-                                h("option", { value: "firstName" }, "Imienia"),
-                                h("option", { value: "lastName" }, "Nazwiska")
+                                ...Object.entries(options).map(([value, text]) => h("option", { value }, text))
                             ])
                         ])
                     ])

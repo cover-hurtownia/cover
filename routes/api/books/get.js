@@ -22,6 +22,9 @@ export const getBook = respond(async request => {
         pages,
         pagesAtLeast,
         pagesAtMost,
+        publicationDate,
+        publicationDateFirst,
+        publicationDateLast,
         author,
         tag,
         isbn,
@@ -94,6 +97,10 @@ export const getBook = respond(async request => {
     if (pages) query = query.andWhere("books.pages", "=", pages);
     if (pagesAtLeast) query = query.andWhere("books.pages", ">=", pagesAtLeast);
     if (pagesAtMost) query = query.andWhere("books.pages", "<=", pagesAtMost);
+
+    if (publicationDate) query = query.andWhere("books.publication_date", "=", publicationDate);
+    if (publicationDateFirst) query = query.andWhere("books.publication_date", ">=", publicationDateFirst);
+    if (publicationDateLast) query = query.andWhere("books.publication_date", "<=", publicationDateLast);
 
     if (bindingType) {
         if (Array.isArray(bindingType)) query = query.whereIn("binding_types.type", bindingType);

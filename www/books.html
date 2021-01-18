@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="./css/bulma.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+
+        <title>Hurtownia Książek</title>
+    </head>
+    <body>        
+        <section class="section">
+            <div id="books" class="container">
+            
+            </div>
+        </section>
+
+        <script type="module">
+            import * as Preact from "/js/lib/Preact.js";
+            import * as utils from "/js/utils.js";
+            import Orders from "/js/preact/books/App.js";
+
+            Preact.render(Preact.h(Orders, {
+                query: utils.groupParams(new URLSearchParams(document.location.search))
+            }), document.getElementById("books"));
+        </script>
+    </body>
+</html>

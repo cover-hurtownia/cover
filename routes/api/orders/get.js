@@ -16,6 +16,7 @@ export const getOrder = respond(async request => {
         apartment,
         city,
         postalCode,
+        orderDate,
         orderDateFirst,
         orderDateLast,
         trackingNumber,
@@ -79,8 +80,9 @@ export const getOrder = respond(async request => {
     if (city) query = query.andWhere("orders.city", "like", `%${city}%`);
     if (postalCode) query = query.andWhere("orders.postal_code", "like", `%${postalCode}%`);
     if (trackingNumber) query = query.andWhere("orders.tracking_number", "=", trackingNumber);
+    if (orderDate) query = query.andWhere("orders.order_date", "=", orderDate);
     if (orderDateFirst) query = query.andWhere("orders.order_date", ">=", orderDateFirst);
-    if (orderDateLast) query = query.andWhere("orders.order_date", "=", orderDateLast);
+    if (orderDateLast) query = query.andWhere("orders.order_date", "<=", orderDateLast);
 
     if (totalCost) query = query.having("total_cost", "=", totalCost);
     if (totalCostAtLeast) query = query.having("total_cost", ">=", totalCostAtLeast);
