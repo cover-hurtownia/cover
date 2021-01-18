@@ -129,13 +129,13 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     ]),
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Rodzaj oprawy"),
-                        h("input", { type: "hidden", name: "bindingType", value: "", checked: true }),
+                        h("input", { type: "hidden", name: "bookFormat", value: "", checked: true }),
                         h("label", { className: "label" }, [
                             h("input", {
                                 type: "checkbox",
-                                name: "bindingType",
+                                name: "bookFormat",
                                 value: "hardcover",
-                                onchange: event => setQueryField("bindingType", arr => {
+                                onchange: event => setQueryField("bookFormat", arr => {
                                     if (event.target.checked && !arr.includes("hardcover")) return [...arr, "hardcover"];
                                     else if (!event.target.checked) return arr.filter(value => value !== "hardcover");
                                     else return arr;
@@ -143,13 +143,13 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                             }),
                             "twarda oprawa"
                         ]),
-                        h("input", { type: "hidden", name: "bindingType", value: "", checked: true }),
+                        h("input", { type: "hidden", name: "bookFormat", value: "", checked: true }),
                         h("label", { className: "label" }, [
                             h("input", {
                                 type: "checkbox",
-                                name: "bindingType",
+                                name: "bookFormat",
                                 value: "softcover",
-                                onchange: event => setQueryField("bindingType", arr => {
+                                onchange: event => setQueryField("bookFormat", arr => {
                                     if (event.target.checked && !arr.includes("softcover")) return [...arr, "softcover"];
                                     else if (!event.target.checked) return arr.filter(value => value !== "softcover");
                                     else return arr;

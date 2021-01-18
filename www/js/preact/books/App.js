@@ -23,7 +23,7 @@ const emptyQuery = Object.freeze({
     title: null,
     description: null,
     available: null,
-    bindingType: [],
+    bookFormat: [],
     publisher: null,
     pages: null,
     pagesAtLeast: null,

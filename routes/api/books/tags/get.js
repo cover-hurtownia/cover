@@ -8,10 +8,10 @@ export const getBookTags = respond(async request => {
     const book_id = request.params.book_id;
 
     let query = database
-        .select(["authors.id", "authors.author"])
-        .from("book_authors")
-        .where("book_authors.book_id", book_id)
-        .innerJoin("authors", "authors.id", "book_authors.author_id");
+        .select(["tags.id", "tags.tag"])
+        .from("book_tags")
+        .where("book_tags.book_id", book_id)
+        .innerJoin("tags", "tags.id", "book_tags.author_id");
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 

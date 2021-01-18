@@ -6,7 +6,7 @@ export const getAuthor = respond(async request => {
     const database = request.app.get("database");
 
     let {
-        author,
+        name,
         orderBy,
         ordering = "desc",
         limit = 20,
@@ -37,10 +37,10 @@ export const getAuthor = respond(async request => {
     
     let query = database("authors");
 
-    if (author) query = query.andWhere("author", "like", `%${author}%`);
+    if (name) query = query.andWhere("name", "like", `%${name}%`);
     
     if (orderBy === "id") query = query.orderBy("id", ordering);
-    else if (orderBy === "author") query = query.orderBy("author", ordering);
+    else if (orderBy === "name") query = query.orderBy("name", ordering);
 
     const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("authors.id", { as: "total" });
     

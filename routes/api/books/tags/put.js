@@ -7,14 +7,14 @@ export const postBookTags = respond(async request => {
 
     const book_id = request.params.book_id;
 
-    const author_ids = Array.isArray(request.body) ? request.body : [request.body];
+    const tag_ids = Array.isArray(request.body) ? request.body : [request.body];
 
-    for (let i = 0; i < author_ids.length; ++i) {
-        const author_id = author_ids[i];
+    for (let i = 0; i < tag_ids.length; ++i) {
+        const tag_id = tag_ids[i];
 
-        if (typeof author_id !== "number") throw [400, {
+        if (typeof tag_id !== "number") throw [400, {
             userMessage: `błąd formularza`,
-            devMessage: `author id at index ${i} is not a number`
+            devMessage: `tag id at index ${i} is not a number`
         }];  
     } 
 
@@ -29,18 +29,18 @@ export const postBookTags = respond(async request => {
             devMessage: `book with id ${book_id} doesn't exist`
         }];
         
-        const authors = await trx("authors").whereIn("author", author_ids).catch(error => {
+        const tags = await trx("tags").whereIn("id", tag_ids).catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
-        await trx("book_authors").delete().where({ book_id });
+        await trx("book_tags").delete().where({ book_id });
 
-        for (const author_id of author_ids) {
+        for (const tag_id of tag_ids) {
             let ok = false;
 
-            for (const author of authors) {
-                if (author.id === author_id) {
+            for (const tag of tags) {
+                if (tag.id === tag_id) {
                     ok = true;
                     break;
                 }
@@ -48,10 +48,10 @@ export const postBookTags = respond(async request => {
 
             if (!ok) throw [400, {
                 userMessage: `tag o id ${book_id} nie istnieje`,
-                devMessage: `author with id ${book_id} doesn't exist`
+                devMessage: `tag with id ${book_id} doesn't exist`
             }];
 
-            let query = trx("book_authors").insert({ book_id, author_id });
+            let query = trx("book_tags").insert({ book_id, tag_id });
 
             logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
     

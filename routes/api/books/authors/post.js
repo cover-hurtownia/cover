@@ -29,7 +29,7 @@ export const postBookAuthors = respond(async request => {
             devMessage: `book with id ${book_id} doesn't exist`
         }];
         
-        const authors = await trx("authors").whereIn("author", author_ids).catch(error => {
+        const authors = await trx("authors").whereIn("id", author_ids).catch(error => {
             logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
             throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });

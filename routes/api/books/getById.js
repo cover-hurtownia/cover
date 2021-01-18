@@ -12,15 +12,15 @@ export const getBookById = respond(async request => {
             "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
             "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
             "publishers.publisher",
-            "binding_types.type as binding_type",
-            database.raw("GROUP_CONCAT(DISTINCT authors.author SEPARATOR ?) as ?", [";", "authors"]),
+            "book_formats.type as book_format",
+            database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])
         .from("books")
         .where("books.id", id)
         .innerJoin("products", "books.product_id", "products.id")
         .innerJoin("publishers", "books.publisher_id", "publishers.id")
-        .innerJoin("binding_types", "books.binding_type_id", "binding_types.id")
+        .innerJoin("book_formats", "books.book_format_id", "book_formats.id")
         .leftJoin("book_authors", "books.id", "book_authors.book_id")
         .leftJoin("authors", "authors.id", "book_authors.author_id")
         .leftJoin("book_tags", "books.id", "book_tags.book_id")

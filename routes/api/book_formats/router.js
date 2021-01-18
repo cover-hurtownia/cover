@@ -2,11 +2,11 @@ import express from "express";
 
 import { adminAuthorization } from "../../utilities.js";
 import * as resources from "../resources/index.js";
-import getBindingType from "./get.js";
+import getbookFormat from "./get.js";
 
 export const router = express.Router();
 
-router.get("", getBindingType);
+router.get("", getbookFormat);
 router.post("", adminAuthorization, resources.post("book_formats"));
 router.put("", adminAuthorization, resources.put("book_formats"));
 router.delete("", adminAuthorization, resources.delete("book_formats"));

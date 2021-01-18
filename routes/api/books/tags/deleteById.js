@@ -9,7 +9,7 @@ export const deleteBookTagById = respond(async request => {
     const author_id = request.params.author_id;
 
     await database.transaction(async trx => {
-        let query = trx("book_authors").delete().where({ book_id, author_id });
+        let query = trx("book_tags").delete().where({ book_id, author_id });
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
     

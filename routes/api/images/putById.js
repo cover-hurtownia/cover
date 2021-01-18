@@ -14,7 +14,7 @@ export const putImageById = respond(async request => {
 
     const file = request.files.image;
 
-    const query = database("images").update({ data: file.data, type: file.mimetype, original_filename: file.name }).where({ id: image_id });
+    const query = database("images").update({ data: file.data, content_type: file.mimetype, original_filename: file.name }).where({ id: image_id });
 
     logger.debug(`${request.method} ${request.originalUrl}: updating image: ${file.data.length} bytes`);
 

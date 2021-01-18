@@ -9,12 +9,12 @@ export const getDeliveryType = respond(async request => {
     
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const delivery_types = await query.catch(error => {
+    const deliveryTypes = await query.catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
         throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
-    return [200, { status: "ok", data: delivery_types }];
+    return [200, { status: "ok", data: deliveryTypes }];
 });
 
 export default getDeliveryType;

@@ -58,9 +58,9 @@ export const getOrder = respond(async request => {
             "orders.*",
             "delivery_types.type as delivery_type",
             "delivery_types.price as delivery_cost",
-            "order_status.status as status",
+            "order_status.status as order_status",
             "users.username",
-            database.raw("SUM(order_products.price * order_products.ordered_quantity) + delivery_types.price as total_cost")
+            database.raw("SUM(order_products.price_per_unit * order_products.quantity_ordered) + delivery_types.price as total_cost")
         ])
         .from("orders")
         .innerJoin("delivery_types", "orders.delivery_type_id", "delivery_types.id")

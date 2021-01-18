@@ -17,7 +17,7 @@ export const getBook = respond(async request => {
         title,
         description,
         available,
-        bindingType,
+        bookFormat,
         publisher,
         pages,
         pagesAtLeast,
@@ -61,14 +61,14 @@ export const getBook = respond(async request => {
             "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
             "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
             "publishers.publisher",
-            "binding_types.type as binding_type",
-            database.raw("GROUP_CONCAT(DISTINCT authors.author SEPARATOR ?) as ?", [";", "authors"]),
+            "book_formats.type as book_format",
+            database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])
         .from("books")
         .innerJoin("products", "books.product_id", "products.id")
         .innerJoin("publishers", "books.publisher_id", "publishers.id")
-        .innerJoin("binding_types", "books.binding_type_id", "binding_types.id")
+        .innerJoin("book_formats", "books.book_format_id", "book_formats.id")
         .leftJoin("book_authors", "books.id", "book_authors.book_id")
         .leftJoin("authors", "authors.id", "book_authors.author_id")
         .leftJoin("book_tags", "books.id", "book_tags.book_id")
@@ -102,9 +102,9 @@ export const getBook = respond(async request => {
     if (publicationDateFirst) query = query.andWhere("books.publication_date", ">=", publicationDateFirst);
     if (publicationDateLast) query = query.andWhere("books.publication_date", "<=", publicationDateLast);
 
-    if (bindingType) {
-        if (Array.isArray(bindingType)) query = query.whereIn("binding_types.type", bindingType);
-        else query = query.andWhere("binding_types.type", "=", bindingType);
+    if (bookFormat) {
+        if (Array.isArray(bookFormat)) query = query.whereIn("book_formats.type", bookFormat);
+        else query = query.andWhere("book_formats.type", "=", bookFormat);
     }
 
     if (author) {

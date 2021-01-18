@@ -12,7 +12,7 @@ export const postImage = respond(async request => {
 
     const file = request.files.image;
 
-    const query = database("images").insert({ data: file.data, type: file.mimetype, original_filename: file.name });
+    const query = database("images").insert({ data: file.data, content_type: file.mimetype, original_filename: file.name });
 
     logger.debug(`${request.method} ${request.originalUrl}: inserting image: ${file.data.length} bytes`);
 

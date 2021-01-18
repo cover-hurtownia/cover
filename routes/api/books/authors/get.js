@@ -8,7 +8,7 @@ export const getBookAuthors = respond(async request => {
     const book_id = request.params.book_id;
 
     let query = database
-        .select(["authors.id", "authors.author"])
+        .select(["authors.id", "authors.name"])
         .from("book_authors")
         .where("book_authors.book_id", book_id)
         .innerJoin("authors", "authors.id", "book_authors.author_id");
