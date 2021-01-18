@@ -11,14 +11,18 @@ export const getOrderById = respond(async request => {
             .select([
                 "orders.*",
                 "delivery_types.type as delivery_type",
+                "delivery_types.price as delivery_cost",
                 "order_status.status as status",
-                "users.username"
+                "users.username",
+                database.raw("SUM(order_products.price * order_products.ordered_quantity) + delivery_types.price as total_cost")
             ])
             .from("orders")
             .where("orders.id", id)
             .innerJoin("delivery_types", "orders.delivery_type_id", "delivery_types.id")
             .innerJoin("order_status", "orders.order_status_id", "order_status.id")
-            .leftJoin("users", "orders.user_id", "users.id");
+            .leftJoin("order_products", "orders.id", "order_products.order_id")
+            .leftJoin("users", "orders.user_id", "users.id")
+            .groupBy("orders.id");
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 

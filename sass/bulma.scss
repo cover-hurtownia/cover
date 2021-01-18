@@ -27,9 +27,3 @@ $primary-invert: $pink-invert;
 */
 
 @import "../node_modules/bulma/bulma";
-
-.table {
-    td, th {
-      vertical-align: baseline;
-    }
-}

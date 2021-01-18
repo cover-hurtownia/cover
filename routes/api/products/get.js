@@ -21,11 +21,29 @@ export const getProduct = respond(async request => {
         offset = 0,
     } = request.query;
 
-    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
+    limit = Math.trunc(Math.max(1, Math.min(50, 
+        typeof limit === "number"
+            ? limit
+            : typeof limit !== "string"
+                ? 20
+                : isNaN(Number(limit))
+                    ? 20
+                    : Number(limit)
+    )));
 
-    const [{ total }] = await database("products").count("id", { as: "total" });
+    offset = Math.trunc(Math.max(0, 
+        typeof offset === "number"
+            ? offset
+            : typeof offset !== "string"
+                ? 0
+                : isNaN(Number(offset))
+                    ? 0
+                    : Number(offset)
+    ));
+
+    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
-    let query = database("products").offset(Math.max(offset, 0)).limit(Math.min(limit, 50));
+    let query = database("products");
 
     if (quantity) query = query.andWhere("quantity", "=", quantity);
     if (quantityAtLeast) query = query.andWhere("quantity", ">=", quantityAtLeast);
@@ -45,9 +63,11 @@ export const getProduct = respond(async request => {
     else if (orderBy === "name") query = query.orderBy("products.title", ordering);
     else if (orderBy === "price") query = query.orderBy("products.price", ordering);
 
+    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("products.id", { as: "total" });
+
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const products = await query.catch(error => {
+    const products = await query.offset(offset).limit(limit).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
         throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });

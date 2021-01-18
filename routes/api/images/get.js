@@ -13,24 +13,42 @@ export const getImage = respond(async request => {
         offset = 0,
     } = request.query;
 
-    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
+    limit = Math.trunc(Math.max(1, Math.min(50, 
+        typeof limit === "number"
+            ? limit
+            : typeof limit !== "string"
+                ? 20
+                : isNaN(Number(limit))
+                    ? 20
+                    : Number(limit)
+    )));
 
-    const [{ total }] = await database("images").count("id", { as: "total" });
+    offset = Math.trunc(Math.max(0, 
+        typeof offset === "number"
+            ? offset
+            : typeof offset !== "string"
+                ? 0
+                : isNaN(Number(offset))
+                    ? 0
+                    : Number(offset)
+    ));
+
+    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
     let query = database
         .select(["images.id", "images.type", "images.original_filename"])
         .from("images")
-        .offset(Math.max(offset, 0))
-        .limit(Math.min(limit, 50));
 
     if (filename) query = query.andWhere("images.original_filename", "like", `%${filename}%`);
 
     if (orderBy === "id") query = query.orderBy("images.id", ordering);
     else if (orderBy === "filename") query = query.orderBy("images.original_filename", ordering);
 
+    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("images.id", { as: "total" });
+
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const images = await query.catch(error => {
+    const images = await query.offset(offset).limit(limit).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
         throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });

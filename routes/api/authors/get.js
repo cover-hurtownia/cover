@@ -13,20 +13,40 @@ export const getAuthor = respond(async request => {
         offset = 0,
     } = request.query;
 
+    limit = Math.trunc(Math.max(1, Math.min(50, 
+        typeof limit === "number"
+            ? limit
+            : typeof limit !== "string"
+                ? 20
+                : isNaN(Number(limit))
+                    ? 20
+                    : Number(limit)
+    )));
+
+    offset = Math.trunc(Math.max(0, 
+        typeof offset === "number"
+            ? offset
+            : typeof offset !== "string"
+                ? 0
+                : isNaN(Number(offset))
+                    ? 0
+                    : Number(offset)
+    ));
+
     ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
-    const [{ total }] = await database("authors").count("id", { as: "total" });
-
-    let query = database("authors").offset(Math.max(offset, 0)).limit(Math.min(limit, 50));
+    let query = database("authors");
 
     if (author) query = query.andWhere("author", "like", `%${author}%`);
     
     if (orderBy === "id") query = query.orderBy("id", ordering);
     else if (orderBy === "author") query = query.orderBy("author", ordering);
 
+    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("authors.id", { as: "total" });
+    
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const authors = await query.catch(error => {
+    const authors = await query.offset(offset).limit(limit).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
         throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
