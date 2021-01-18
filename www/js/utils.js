@@ -24,3 +24,5 @@ export const ungroupParams = params => new URLSearchParams(Object
 
         return acc;
     }, []));
+
+export const intersperse = (xs, separator) => xs.flatMap(x => [x, separator]).slice(0, -1);

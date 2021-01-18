@@ -7,7 +7,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
         h("p", { className: "panel-heading" }, "Sortowanie"),
         h("div", { className: "panel-block" }, [
             h("form", { className: "columns is-multiline is-justify-content-space-between" }, [
-                h("div", { className: "column is-narrow field has-addons" }, [
+                h("div", { className: "column field has-addons" }, [
                     h("div", { className: "control" }, [
                         h("a", { className: "button is-static" }, "Sortuj")
                     ]),
@@ -39,7 +39,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                         ])
                     ])
                 ]),
-                h("div", { className: "column is-narrow field has-addons" }, [
+                h("div", { className: "column field has-addons" }, [
                     h("div", { className: "control" }, [
                         h("a", { className: "button is-static" }, "Wyników na stronie")
                     ]),
@@ -59,9 +59,9 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                         ])
                     ]),
                 ]),
-                h("div", { className: "column is-narrow field" }, [
+                h("div", { className: "column field" }, [
                     h("div", { className: "control" }, [
-                        h("input", { className: "button is-primary", type: "button", value: "Zastosuj", onclick: _ => search() })
+                        h("input", { className: "button is-fullwidth is-primary", type: "button", value: "Zastosuj", onclick: _ => search() })
                     ])
                 ])
             ])

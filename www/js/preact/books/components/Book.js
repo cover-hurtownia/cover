@@ -3,7 +3,7 @@ import * as utils from "/js/utils.js";
 
 const h = Preact.h;
 
-export const Book = ({ book }) => h("div", { className: "column is-4" }, [
+export const Book = ({ book }) => h("div", { className: "column is-3" }, [
     h("div", { className: "card" }, [
         h("div", { className: "card-image" }, [
             h("figure", { className: "image" }, [
@@ -11,13 +11,13 @@ export const Book = ({ book }) => h("div", { className: "column is-4" }, [
             ])
         ]),
         h("div", { className: "card-content" }, [
-            h("div", { className: "title has-text-centered is-5" }, [
+            h("div", { className: "has-text-weight-bold has-text-centered block" }, [
                 h("a", { href: `/book/${book.id}` }, book.name)
             ]),
             h("ul", { className: "content" }, [
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Autorzy: "),
-                    h("span", {}, book.authors.map(author => h("a", { href: `/books.html?author=${author}` }, author)))
+                    h("span", {}, utils.intersperse(book.authors.map(author => h("a", { href: `/books.html?author=${author}` }, author)), ", "))
                 ]),
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Wydawnictwo: "),
@@ -25,11 +25,11 @@ export const Book = ({ book }) => h("div", { className: "column is-4" }, [
                 ]),
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Kategorie: "),
-                    h("span", {}, book.tags.map(tag => h("a", { href: `/books.html?tag=${tag}`, className: "tag is-primary is-light mx-1" }, tag)))
+                    h("span", {}, utils.intersperse(book.tags.map(tag => h("a", { href: `/books.html?tag=${tag}`, className: "tag is-primary is-light mx-1" }, tag)), ", "))
                 ])
             ]),
             h("footer", { className: "card-footer" }, [
-                h("p", { className: "card-footer-item" }, [
+                h("p", { className: "card-footer-item has-text-centered" }, [
                     book.available
                         ? [
                             h("span", { className: "has-text-grey" }, "Cena: "),
