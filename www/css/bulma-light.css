@@ -299,7 +299,7 @@ th {
     text-align: inherit; }
 
 html {
-  background-color: white;
+  background-color: var(--background-color);
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -424,8 +424,13 @@ a.box:active {
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #945990; }
 
 .button {
+<<<<<<< HEAD:www/css/bulma-light.css
   background-color: white;
   border-color: #d2bdd0;
+=======
+  background-color: (var(--background-color));
+  border-color: #dbdbdb;
+>>>>>>> jakub/header-footer:www/css/main.css
   border-width: 1px;
   color: #2f232e;
   cursor: pointer;
@@ -1313,7 +1318,12 @@ a.box:active {
   flex-grow: 1;
   margin: 0 auto;
   position: relative;
+<<<<<<< HEAD:www/css/bulma-light.css
   width: auto; }
+=======
+  width: auto; 
+  }
+>>>>>>> jakub/header-footer:www/css/main.css
   .container.is-fluid {
     max-width: none !important;
     padding-left: 32px;
@@ -3499,7 +3509,7 @@ button.dropdown-item {
   padding: 20px; }
 
 .navbar {
-  background-color: white;
+  background-color: transparent;
   min-height: 3.25rem;
   position: relative;
   z-index: 30; }
@@ -4053,8 +4063,13 @@ a.navbar-item,
   .navbar-link:focus-within,
   .navbar-link:hover,
   .navbar-link.is-active {
+<<<<<<< HEAD:www/css/bulma-light.css
     background-color: #f3f1f3;
     color: #8d0a0a; }
+=======
+    background-color: var(--background-color);
+    color: #3273dc; }
+>>>>>>> jakub/header-footer:www/css/main.css
 
 .navbar-item {
   flex-grow: 0;
@@ -7734,8 +7749,15 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     .section.is-large {
       padding: 18rem 1.5rem; } }
 
+.section {
+  background-color: var(--background-color);
+}
 .footer {
+<<<<<<< HEAD:www/css/bulma-light.css
   background-color: #f3f1f3;
+=======
+  background-color: var(--background-color);
+>>>>>>> jakub/header-footer:www/css/main.css
   padding: 3rem 1.5rem 6rem; }
 
 .button {
