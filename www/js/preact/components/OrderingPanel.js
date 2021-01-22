@@ -2,12 +2,10 @@ import * as Preact from "/js/lib/Preact.js";
 
 const h = Preact.h;
 
-export const OrderingPanel = ({ getQueryField, setQueryField, search, options })  => {
-    return h("nav", { className: "panel" }, [
-        h("p", { className: "panel-heading" }, "Sortowanie"),
-        h("div", { className: "panel-block" }, [
-            h("form", { className: "columns is-multiline is-justify-content-space-between" }, [
-                h("div", { className: "column field has-addons" }, [
+export const OrderingPanel = ({ getQueryField, setQueryField, updateSearch, options, children = [] })  => {
+    return h("nav", { }, [
+            h("form", { className: "is-flex ", style: { "justify-content": "space-between", "flex-wrap": "wrap" } }, [
+                h("div", { className: "field has-addons" }, [
                     h("div", { className: "control" }, [
                         h("a", { className: "button is-static" }, "Sortuj")
                     ]),
@@ -16,7 +14,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                             h("select", {
                                 name: "ordering",
                                 value: getQueryField("ordering"),
-                                onchange: event => setQueryField("ordering", event.target.value)
+                                onchange: event => updateSearch({ ordering: event.target.value, offset: 0 })
                             }, [
                                 h("option", { value: "desc" }, "Malejąco"),
                                 h("option", { value: "asc" }, "Rosnąco")
@@ -31,7 +29,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                             h("select", {
                                 name: "orderBy",
                                 value: getQueryField("orderBy"),
-                                onchange: event => setQueryField("orderBy", event.target.value)
+                                onchange: event => updateSearch({ orderBy: event.target.value, offset: 0 })
                             }, [
                                 h("option", { value: "" }, "Domyślnie"),
                                 ...Object.entries(options).map(([value, text]) => h("option", { value }, text))
@@ -39,7 +37,7 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                         ])
                     ])
                 ]),
-                h("div", { className: "column field has-addons" }, [
+                h("div", { className: "field has-addons" }, [
                     h("div", { className: "control" }, [
                         h("a", { className: "button is-static" }, "Wyników na stronie")
                     ]),
@@ -48,24 +46,19 @@ export const OrderingPanel = ({ getQueryField, setQueryField, search, options })
                             h("select", {
                                 name: "limit",
                                 value: getQueryField("limit"),
-                                onchange: event => setQueryField("limit", event.target.value)
+                                onchange: event => updateSearch({ limit: event.target.value, offset: 0 })
                             }, [
-                                h("option", { value: "1" }, "1"),
-                                h("option", { value: "5" }, "5"),
-                                h("option", { value: "10" }, "10"),
-                                h("option", { value: "20" }, "20"),
-                                h("option", { value: "40" }, "40")
+                                h("option", { value: "4" }, "4"),
+                                h("option", { value: "8" }, "8"),
+                                h("option", { value: "12" }, "12"),
+                                h("option", { value: "24" }, "24"),
+                                h("option", { value: "48" }, "48")
                             ])
                         ])
                     ]),
                 ]),
-                h("div", { className: "column field" }, [
-                    h("div", { className: "control" }, [
-                        h("input", { className: "button is-fullwidth is-primary", type: "button", value: "Zastosuj", onclick: _ => search() })
-                    ])
-                ])
+                ...children
             ])
-        ])
     ]);
 };
 

@@ -14,7 +14,7 @@ export const getOrderById = respond(async request => {
                 "delivery_types.price as delivery_cost",
                 "order_status.status as status",
                 "users.username",
-                database.raw("SUM(order_products.price * order_products.ordered_quantity) + delivery_types.price as total_cost")
+                database.raw("SUM(order_products.price * order_products.quantity_ordered) + delivery_types.price as total_cost")
             ])
             .from("orders")
             .where("orders.id", id)
@@ -38,7 +38,7 @@ export const getOrderById = respond(async request => {
         let productsQuery = database
             .select([
                 "products.id", "products.price", "products.name", "products.description", "products.image_id",
-                "order_products.ordered_quantity", "order_products.price"
+                "order_products.quantity_ordered", "order_products.price"
             ])
             .from("order_products")
             .where("order_products.order_id", id)

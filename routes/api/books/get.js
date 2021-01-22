@@ -16,7 +16,7 @@ export const getBook = respond(async request => {
         name,
         title,
         description,
-        available,
+        isPurchasable,
         bookFormat,
         publisher,
         pages,
@@ -59,9 +59,9 @@ export const getBook = respond(async request => {
     let query = database
         .select([
             "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
-            "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
-            "publishers.publisher",
-            "book_formats.type as book_format",
+            "books.product_id", "products.quantity_available", "products.name", "products.description", "products.price", "products.is_purchasable", "products.image_id",
+            "publishers.name as publisher",
+            "book_formats.format as book_format",
             database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])
@@ -75,11 +75,14 @@ export const getBook = respond(async request => {
         .leftJoin("tags", "tags.id", "book_tags.tag_id")
         .groupBy("books.id");
 
-    if (id) query = query.andWhere("books.id", "=", id);
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("books.id", id);
+        else query = query.andWhere("books.id", "=", id);
+    }
 
-    if (quantity) query = query.andWhere("products.quantity", "=", quantity);
-    if (quantityAtLeast) query = query.andWhere("products.quantity", ">=", quantityAtLeast);
-    if (quantityAtMost) query = query.andWhere("products.quantity", "<=", quantityAtMost);
+    if (quantity) query = query.andWhere("products.quantity_available", "=", quantity);
+    if (quantityAtLeast) query = query.andWhere("products.quantity_available", ">=", quantityAtLeast);
+    if (quantityAtMost) query = query.andWhere("products.quantity_available", "<=", quantityAtMost);
 
     if (price) query = query.andWhere("products.price", "=", price);
     if (priceAtLeast) query = query.andWhere("products.price", ">=", priceAtLeast);
@@ -90,9 +93,9 @@ export const getBook = respond(async request => {
     if (description) query = query.andWhere("products.description", "like", `%${description}%`);
     if (isbn) query = query.andWhere("books.isbn", "=", isbn);
 
-    if (available) query = query.andWhere("products.available", "=", 1);
+    if (isPurchasable) query = query.andWhere("products.is_purchasable", "=", Number(Boolean(isPurchasable)));
     
-    if (publisher) query = query.andWhere("publishers.publisher", "like", publisher);
+    if (publisher) query = query.andWhere("publishers.name", "like", publisher);
 
     if (pages) query = query.andWhere("books.pages", "=", pages);
     if (pagesAtLeast) query = query.andWhere("books.pages", ">=", pagesAtLeast);
@@ -103,8 +106,8 @@ export const getBook = respond(async request => {
     if (publicationDateLast) query = query.andWhere("books.publication_date", "<=", publicationDateLast);
 
     if (bookFormat) {
-        if (Array.isArray(bookFormat)) query = query.whereIn("book_formats.type", bookFormat);
-        else query = query.andWhere("book_formats.type", "=", bookFormat);
+        if (Array.isArray(bookFormat)) query = query.whereIn("book_formats.format", bookFormat);
+        else query = query.andWhere("book_formats.format", "=", bookFormat);
     }
 
     if (author) {
@@ -130,13 +133,13 @@ export const getBook = respond(async request => {
     }
 
     if (orderBy === "id") query = query.orderBy("books.id", ordering);
-    else if (orderBy === "quantity") query = query.orderBy("products.quantity", ordering);
+    else if (orderBy === "quantity") query = query.orderBy("products.quantity_available", ordering);
     else if (orderBy === "title") query = query.orderBy("books.title", ordering);
     else if (orderBy === "price") query = query.orderBy("products.price", ordering);
     else if (orderBy === "pages") query = query.orderBy("books.pages", ordering);
     else if (orderBy === "publicationDate") query = query.orderBy("books.publication_date", ordering);
 
-    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("books.id", { as: "total" });
+    const total = (await query.clone()).length;
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 

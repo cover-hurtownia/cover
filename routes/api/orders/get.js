@@ -69,7 +69,10 @@ export const getOrder = respond(async request => {
         .leftJoin("users", "orders.user_id", "users.id")
         .groupBy("orders.id");
 
-    if (id) query = query.andWhere("orders.id", "=", id);
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("orders.id", id);
+        else query = query.andWhere("orders.id", "=", id);
+    }
     if (firstName) query = query.andWhere("orders.first_name", "like", `%${firstName}%`);
     if (lastName) query = query.andWhere("orders.last_name", "like", `%${lastName}%`);
     if (phoneNumber) query = query.andWhere("orders.phone_number", "like", `%${phoneNumber}%`);
@@ -103,7 +106,7 @@ export const getOrder = respond(async request => {
     else if (orderBy === "orderDate") query = query.orderBy("orders.order_date", ordering);
     else if (orderBy === "totalCost") query = query.orderBy("total_cost", ordering);
 
-    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("orders.id", { as: "total" });
+    const total = (await query.clone()).length;
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
@@ -119,7 +122,7 @@ export const getOrder = respond(async request => {
     let productsQuery = database
             .select([
                 "products.id", "products.name", "products.description", "products.image_id",
-                "order_products.order_id", "order_products.ordered_quantity", "order_products.price"
+                "order_products.order_id", "order_products.quantity_ordered", "order_products.price_per_unit"
             ])
             .from("order_products")
             .whereIn("order_products.order_id", orders.map(order => order.id))

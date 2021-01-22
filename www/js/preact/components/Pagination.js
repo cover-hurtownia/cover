@@ -2,7 +2,7 @@ import * as Preact from "/js/lib/Preact.js";
 
 const h = Preact.h;
 
-export const Pagination = ({ total, limit, offset, delta, goTo }) => {
+export const Pagination = ({ total, limit, offset, delta, updateSearch, topRef }) => {
     const pages = Math.ceil(total / limit);
     const current = Math.ceil(offset / limit);
 
@@ -16,7 +16,10 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
             if (page !== current + 1) {
                 list.push(h("li", {}, h("button", {
                     className: "button pagination-link",
-                    onclick: _ => goTo({ offset: limit * (page - 1), limit })
+                    onclick: _ => {
+                        updateSearch({ offset: limit * (page - 1), limit });
+                        topRef.current.scrollIntoView();
+                    }
                 }, page.toString()))); 
             }
             else {
@@ -35,7 +38,10 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
     if (right < pages) {
         list.push(h("li", {}, h("a", {
             className: "pagination-link",
-            onclick: _ => goTo({ offset: pages - limit, limit })
+            onclick: _ => {
+                updateSearch({ offset: pages - limit, limit });
+                topRef.current.scrollIntoView();
+            }
         }, pages)));
     }
     
@@ -46,7 +52,10 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
     if (1 < left) {
         list.unshift(h("li", {}, h("a", {
             className: "pagination-link",
-            onclick: _ => goTo({ offset: 0, limit })
+            onclick: _ => {
+                updateSearch({ offset: 0, limit });
+                topRef.current.scrollIntoView();
+            }
         }, "1")));
     }
 
@@ -55,7 +64,10 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
                 className: "pagination-previous",
                 disabled: current <= 0,
                 onclick: current > 0
-                    ? _ => goTo({ offset: offset - limit, limit })
+                    ? _ => {
+                        updateSearch({ offset: offset - limit, limit });
+                        topRef.current.scrollIntoView();
+                    }
                     : _ => _
             },
             "<"
@@ -64,7 +76,10 @@ export const Pagination = ({ total, limit, offset, delta, goTo }) => {
                 className: "pagination-next",
                 disabled: current >= pages - 1,
                 onclick: current < pages - 1
-                    ? _ => goTo({ offset: offset + limit, limit })
+                    ? _ => {
+                        updateSearch({ offset: offset + limit, limit });
+                        topRef.current.scrollIntoView();
+                    }
                     : _ => _
             },
             ">"

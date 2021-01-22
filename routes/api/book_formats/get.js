@@ -7,8 +7,13 @@ export const getBookFormat = respond(async request => {
 
     let query = database("book_formats");
 
-    const { bookFormat } = request.query;
+    const { id, bookFormat } = request.query;
 
+
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("book_formats.id", id);
+        else query = query.andWhere("book_formats.id", "=", id);
+    }
     if (bookFormat) query = query.andWhere("book_format", "=", bookFormat);
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);

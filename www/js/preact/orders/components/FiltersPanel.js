@@ -1,10 +1,11 @@
 import * as Preact from "/js/lib/Preact.js";
+import * as constants from "/js/constants.js";
 
 const h = Preact.h;
 
-export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery }) => {
+export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSearch }) => {
     return h("form", {}, [
-        h("nav", { className: "panel" }, [
+        h("nav", { className: "panel is-primary" }, [
             h("p", { className: "panel-heading" }, "Filtry"),
             h("div", { className: "panel-block" }, [
                 h("div", {}, [
@@ -24,6 +25,9 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     h("label", { className: "label" }, "Data zamówienia"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "od dnia")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "date",
@@ -32,12 +36,12 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 oninput: event => setQueryField("orderDateFirst", event.target.value)
                             })
                         ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "od dnia")
-                        ])
                     ]),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "do dnia")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "date",
@@ -45,43 +49,40 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("orderDateLast"),
                                 oninput: event => setQueryField("orderDateLast", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "do dnia")
                         ])
                     ]),
                     h("label", { className: "label" }, "Łączny koszt"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "więcej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
                                 name: "totalCostAtLeast",
                                 step: ".01",
                                 min: "0",
-                                value: getQueryField("totalCostAtLeast") / 100.0,
-                                oninput: event => setQueryField("totalCostAtLeast", Number(event.target.value) * 100.0)
+                                value: getQueryField("totalCostAtLeast"),
+                                oninput: event => setQueryField("totalCostAtLeast", Number(event.target.value))
                             })
                         ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "więcej niż")
-                        ])
                     ]),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "mniej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
                                 name: "totalCostAtMost",
                                 step: ".01",
                                 min: "0",
-                                value: getQueryField("totalCostAtMost") / 100.0,
-                                oninput: event => setQueryField("totalCostAtMost", Number(event.target.value) * 100.0)
+                                value: getQueryField("totalCostAtMost"),
+                                oninput: event => setQueryField("totalCostAtMost", Number(event.target.value))
                             })
                         ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "mniej niż")
-                        ])
                     ])
                 ])
             ]),
@@ -218,18 +219,21 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Rodzaj dostawy"),
                         h("input", { type: "hidden", name: "deliveryType", value: "", checked: true }),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "deliveryType",
-                                value: "pigeon",
-                                onchange: event => setQueryField("deliveryType", arr => {
-                                    if (event.target.checked && !arr.includes("pigeon")) return [...arr, "pigeon"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "pigeon");
-                                    else return arr;
-                                })
-                            }),
-                            "gołąb pocztowy"
+                        ...Object.entries(constants.delivery).map(([delivery, deliveryShown]) => [
+                            h("label", { className: "label" }, [
+                                h("input", {
+                                    type: "checkbox",
+                                    name: "deliveryType",
+                                    value: delivery,
+                                    checked: getQueryField("deliveryType").includes(delivery),
+                                    onchange: event => setQueryField("deliveryType", arr => {
+                                        if (event.target.checked && !arr.includes(delivery)) return [...arr, delivery];
+                                        else if (!event.target.checked) return arr.filter(value => value !== delivery);
+                                        else return arr;
+                                    })
+                                }),
+                                deliveryShown
+                            ])
                         ])
                     ]),
                     h("div", { className: "field" }, [
@@ -248,78 +252,29 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Status zamówienia"),
                         h("input", { type: "hidden", name: "status", value: "", checked: true }),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "status",
-                                value: "placed",
-                                onchange: event => setQueryField("status", arr => {
-                                    if (event.target.checked && !arr.includes("placed")) return [...arr, "placed"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "placed");
-                                    else return arr;
-                                })
-                            }),
-                            "złożone"
-                        ]),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "status",
-                                value: "accepted",
-                                onchange: event => setQueryField("status", arr => {
-                                    if (event.target.checked && !arr.includes("accepted")) return [...arr, "accepted"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "accepted");
-                                    else return arr;
-                                })
-                            }),
-                            "przyjęte"
-                        ]),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "status",
-                                value: "sent",
-                                onchange: event => setQueryField("status", arr => {
-                                    if (event.target.checked && !arr.includes("sent")) return [...arr, "sent"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "sent");
-                                    else return arr;
-                                })
-                            }),
-                            "wysłane"
-                        ]),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "status",
-                                value: "delivered",
-                                onchange: event => setQueryField("status", arr => {
-                                    if (event.target.checked && !arr.includes("delivered")) return [...arr, "delivered"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "delivered");
-                                    else return arr;
-                                })
-                            }),
-                            "dostarczone"
-                        ]),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "status",
-                                value: "cancelled",
-                                onchange: event => setQueryField("status", arr => {
-                                    if (event.target.checked && !arr.includes("cancelled")) return [...arr, "cancelled"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "cancelled");
-                                    else return arr;
-                                })
-                            }),
-                            "anulowane"
+                        ...Object.entries(constants.status).map(([status, statusShown]) => [
+                            h("label", { className: "label" }, [
+                                h("input", {
+                                    type: "checkbox",
+                                    name: "status",
+                                    value: status,
+                                    checked: getQueryField("status").includes(status),
+                                    onchange: event => setQueryField("status", arr => {
+                                        if (event.target.checked && !arr.includes(status)) return [...arr, status];
+                                        else if (!event.target.checked) return arr.filter(value => value !== status);
+                                        else return arr;
+                                    })
+                                }),
+                                statusShown
+                            ])
                         ])
                     ])
                 ])
             ]),
             h("div", { className: "panel-block" }, [
                 h("div", { className: "buttons" }, [
-                    h("input", { type: "button", className: "button is-primary", value: "Zastosuj", onClick: _ => search() }),
-                    h("input", { type: "button", className: "button is-primary is-light", value: "Zresetuj", onClick: resetQuery })
+                    h("input", { type: "button", className: "button is-primary", value: "Pokaż wyniki", onClick: _ => newSearch() }),
+                    h("input", { type: "button", className: "button is-primary is-light", value: "Wyczyść filtry", onClick: _ => resetSearch() })
                 ])
             ])
         ])

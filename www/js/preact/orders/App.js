@@ -1,5 +1,5 @@
 import * as Preact from "/js/lib/Preact.js";
-import { useState, useEffect } from "/js/lib/PreactHooks.js";
+import { useState, useEffect, useRef } from "/js/lib/PreactHooks.js";
 
 import Pagination from "/js/preact/components/Pagination.js";
 import Order from "/js/preact/orders/components/Order.js";
@@ -32,7 +32,7 @@ const emptyQuery = Object.freeze({
     totalCostAtMost: null,
     orderBy: null,
     ordering: "desc",
-    limit: 20,
+    limit: 12,
     offset: 0
 });
 
@@ -40,6 +40,7 @@ export const OrdersApp = ({ query: initialQuery }) => {
     const [query, setQuery] = useState({ ...emptyQuery, ...initialQuery });
     const [response, setResponse] = useState(null);
     const [isLoading, setLoading] = useState(true);
+    const topRef = useRef(null);
     
     const getOrders = async query => {
         setLoading(true);
@@ -48,34 +49,22 @@ export const OrdersApp = ({ query: initialQuery }) => {
     };
 
     const getNextPath = query => {
-        const queryString = utils.ungroupParams(query).toString();
+        const queryString = utils.ungroupParams({ ...query }).toString();
 
         if (queryString.length === 0) return document.location.pathname;
         else return document.location.pathname + "?" + queryString;
     };
 
-    const search = async nextQuery => {
-        const fixedQuery = { ...(nextQuery ?? query), offset: 0 };
-        setQuery(fixedQuery);
-
-        window.history.pushState(fixedQuery, null, getNextPath(fixedQuery));
-        await getOrders(utils.ungroupParams(fixedQuery));
+    const search = async query => {
+        setQuery(query);
+        topRef.current.scrollIntoView();
+        window.history.pushState({ query }, null, getNextPath(query));
+        await getOrders(utils.ungroupParams(query));
     };
 
-    const goTo = async pagination => {
-        const fixedQuery = { ...query, ...pagination };
-        setQuery(fixedQuery);
-
-        window.history.pushState(fixedQuery, null, getNextPath(fixedQuery));
-        await getOrders(utils.ungroupParams(fixedQuery));
-    };
-
-    const resetQuery = async () => {
-        setQuery(emptyQuery);
-
-        window.history.pushState(emptyQuery, null, getNextPath(emptyQuery));
-        await getOrders(utils.ungroupParams(emptyQuery));
-    };
+    const newSearch = nextQuery => search({ ...(nextQuery ?? query), offset: 0 });
+    const updateSearch = updated => search({ ...query, ...updated });
+    const resetSearch = () => search(emptyQuery);
 
     const getQueryField = field => query[field];
     const setQueryField = (field, getValue) => {
@@ -86,31 +75,36 @@ export const OrdersApp = ({ query: initialQuery }) => {
     };
 
     useEffect(async () => {
-        window.history.replaceState(query, null, getNextPath(query));
-    }, [query]);
-
-    useEffect(async () => {
-        window.history.replaceState(query, null, getNextPath(query));
+        window.history.replaceState({ query }, null, getNextPath(query));
         await getOrders(utils.ungroupParams(query));
     }, []);
 
     useEffect(async () => {
-        const onPopState = ({ state: query }) => getOrders(utils.ungroupParams(query));
+        const onPopState = async ({ state: { query, state } }) => {
+            setQuery(query);
+            await getOrders(utils.ungroupParams(query));
+        };
+
         window.addEventListener("popstate", onPopState);
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
 
-    return h("div", { className: "columns" }, [
+    return h("div", { ref: topRef, className: "columns" }, [
         h("div", { className: "column is-narrow" }, [
-            h(FiltersPanel, { getQueryField, setQueryField, resetQuery, search })
+            h(FiltersPanel, { getQueryField, setQueryField, resetSearch, newSearch })
         ]),
         h("div", { className: "column" }, [
-            h(OrderingPanel, { getQueryField, setQueryField, resetQuery, search, options: {
-                orderDate: "Daty zamówienia",
-                totalCost: "Kosztu",
-                firstName: "Imienia",
-                lastName: "Nazwiska"
-            } }),
+            h(OrderingPanel, {
+                getQueryField,
+                setQueryField,
+                updateSearch,
+                options: {
+                    orderDate: "Daty zamówienia",
+                    totalCost: "Kosztu",
+                    firstName: "Imienia",
+                    lastName: "Nazwiska"
+                }
+            }),
             response === null
                 ? h("progress", { className: "progress is-primary", max: "100" }, "0%")
                 : response.status !== "ok"
@@ -122,9 +116,9 @@ export const OrdersApp = ({ query: initialQuery }) => {
                                 ? h("div", { className: "box notification is-warning is-size-4" }, "Brak wyników.")
                                 : h("div", { className: "box notification is-primary is-size-4" }, `Liczba wyników: ${response.total}`),
                         response.total !== 0 && [
-                            h(Pagination, { total: response.total, limit: response.limit, offset: response.offset, delta: 2, goTo }),
+                            h(Pagination, { topRef, total: response.total, limit: response.limit, offset: response.offset, delta: 2, updateSearch }),
                             ...response.data.map(order => h(Order, { order })),
-                            h(Pagination, { total: response.total, limit: response.limit, offset: response.offset, delta: 2, goTo })
+                            h(Pagination, { topRef, total: response.total, limit: response.limit, offset: response.offset, delta: 2, updateSearch })
                         ]
                     ])
         ])

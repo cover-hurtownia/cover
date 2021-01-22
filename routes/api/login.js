@@ -37,11 +37,25 @@ export const login = respond(async request => {
 
     logger.info(`${request.method} ${request.originalUrl}: user logged in: ${username}`);
 
+    const rolesQuery = database
+        .select("roles.role")
+        .from("user_roles")
+        .join("users", "users.id", "user_roles.user_id")
+        .join("roles", "roles.id", "user_roles.role_id")
+        .where("users.username", "=", username);
+
+    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${rolesQuery.toString()}`);
+
+    const roles = await rolesQuery.then(roles => roles.map(({ role }) => role)).catch(error => {
+        logger.error(`${request.method} ${request.originalUrl}: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
+    });
+
     // Update session, generates a session cookie and sends it back.
     request.session.user = { username };
 
     return [200, {
         status: "ok",
-        user: { username }
+        user: { username, roles }
     }];
 });

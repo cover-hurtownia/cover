@@ -21,7 +21,7 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
 
     try {
         const rolesQuery = database
-            .select("roles.name")
+            .select("roles.role")
             .from("user_roles")
             .join("users", "users.id", "user_roles.user_id")
             .join("roles", "roles.id", "user_roles.role_id")
@@ -29,8 +29,8 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${rolesQuery.toString()}`);
 
-        const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
-            logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
+        const roles = await rolesQuery.then(roles => roles.map(({ role }) => role)).catch(error => {
+            logger.error(`/api/roles: database error: ${rolesQuery.toString()}: ${error}`);
             throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
@@ -65,13 +65,13 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
     }
 }];
 
-export const adminAuthorization = roleAuthorization("ADMIN");
+export const adminAuthorization = roleAuthorization("admin");
 
 export const respond = handler => async (request, response) => {
     logger.debug(`${request.method} ${request.originalUrl}`);
 
     try {
-        const [status, body] = await handler(request);
+        const [status, body] = await handler(request, response);
 
         response.status(status);
         response.send(body);

@@ -157,7 +157,7 @@ export const postOrder = respond(async request => {
 
             const dbProduct = dbProducts[0];
 
-            if (!dbProduct.available) {
+            if (!dbProduct.is_purchasable) {
                 throw [400, `product o id ${product.id} nie jest dostępny na sprzedaż`];
             }
 

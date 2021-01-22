@@ -7,7 +7,7 @@ export const roles = [authenticated, respond(async request => {
     const database = request.app.get("database");
 
     const rolesQuery = database
-        .select("roles.name")
+        .select("roles.role")
         .from("user_roles")
         .join("users", "users.id", "user_roles.user_id")
         .join("roles", "roles.id", "user_roles.role_id")

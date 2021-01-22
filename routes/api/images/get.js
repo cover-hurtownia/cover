@@ -6,6 +6,7 @@ export const getImage = respond(async request => {
     const database = request.app.get("database");
     
     let {
+        id,
         originalFilename,
         contentType,
         orderBy,
@@ -34,6 +35,11 @@ export const getImage = respond(async request => {
                     : Number(offset)
     ));
 
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("id", id);
+        else query = query.andWhere("id", "=", id);
+    }
+
     ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
     let query = database
@@ -46,7 +52,7 @@ export const getImage = respond(async request => {
     if (orderBy === "id") query = query.orderBy("images.id", ordering);
     else if (orderBy === "originalFilename") query = query.orderBy("images.original_filename", ordering);
 
-    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("images.id", { as: "total" });
+    const total = (await query.clone()).length;
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 

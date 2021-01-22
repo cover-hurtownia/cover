@@ -37,12 +37,17 @@ export const getPublisher = respond(async request => {
 
     let query = database("publishers");
 
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("id", id);
+        else query = query.andWhere("id", "=", id);
+    }
+
     if (publisher) query = query.andWhere("publisher", "like", `%${publisher}%`);
 
     if (orderBy === "id") query = query.orderBy("id", ordering);
     else if (orderBy === "publisher") query = query.orderBy("publisher", ordering);
 
-    const [{ total = 0 } = { total: 0 }] = await query.clone().clear("group").countDistinct("publishers.id", { as: "total" });
+    const total = (await query.clone()).length;
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 

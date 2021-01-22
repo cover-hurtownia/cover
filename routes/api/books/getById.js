@@ -10,9 +10,9 @@ export const getBookById = respond(async request => {
     let query = database
         .select([
             "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
-            "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
-            "publishers.publisher",
-            "book_formats.type as book_format",
+            "books.product_id", "products.quantity_available", "products.name", "products.description", "products.price", "products.is_purchasable", "products.image_id",
+            "publishers.name as publisher",
+            "book_formats.format as book_format",
             database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])

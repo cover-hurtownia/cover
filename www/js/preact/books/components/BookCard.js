@@ -1,0 +1,47 @@
+import * as Preact from "/js/lib/Preact.js";
+import * as utils from "/js/utils.js";
+import useShoppingCart from "/js/preact/hooks/useShoppingCart.js";
+
+const h = Preact.h;
+
+export const BookCard = ({ book }) => {
+    const shoppingCart = useShoppingCart();
+
+    return h("div", { className: "column is-3" }, [
+        h("div", { className: "card" }, [
+            h("div", { className: "card-image" }, [
+                h("figure", { className: "image" }, [
+                    h("img", { src: `/images/${book.image_id}`, loading: "lazy" })
+                ])
+            ]),
+            h("div", { className: "card-content" }, [
+                h("div", { className: "has-text-weight-bold has-text-centered" }, [
+                    h("a", { href: `/book/${book.id}` }, book.name)
+                ]),
+                h("div", { className: "has-text-centered" }, [
+                    h("span", {}, utils.intersperse(book.authors.map(author => h("a", {
+                        href: `/books.html?author=${author}`
+                    }, author)), ", "))
+                ]),
+                h("footer", { className: "card-footer" }, [
+                    h("p", { className: "card-footer-item has-text-centered" }, [
+                        book.is_purchasable && book.quantity_available > 0
+                            ? h("div", {}, [
+                                h("div", {}, [
+                                    h("span", { className: "has-text-grey" }, "Cena: "),
+                                    "\u00A0",
+                                    h("span", { className: "has-text-weight-bold" }, utils.showPrice(book.price))
+                                ]),
+                                h("button", { className: "button is-small is-primary", onclick: _ => shoppingCart.add(book.product_id) }, "Dodaj do koszyka")
+                            ])
+                            : [
+                                h("span", { className: "has-text-danger" }, "Produkt niedostępny.")
+                            ]
+                    ])
+                ])
+            ])
+        ])
+    ])
+};
+
+export default BookCard;

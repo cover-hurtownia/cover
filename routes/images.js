@@ -24,8 +24,8 @@ router.get("/:image_id", async (request, response) => {
         const image = images[0];
 
         response.status(200);
-        response.header("Content-Type", image.type);
-        response.end(image.data, "binary");
+        response.header("Content-Type", image.content_type);
+        response.end(image.binary_data, "binary");
     }
     catch (error) {
         if (error instanceof Error) {

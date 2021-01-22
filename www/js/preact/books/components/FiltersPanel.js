@@ -1,10 +1,11 @@
 import * as Preact from "/js/lib/Preact.js";
+import * as constants from "/js/constants.js";
 
 const h = Preact.h;
 
-export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery }) => {
+export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSearch }) => {
     return h("form", {}, [
-        h("nav", { className: "panel" }, [
+        h("nav", { className: "panel is-primary" }, [
             h("p", { className: "panel-heading" }, "Filtry"),
             h("div", { className: "panel-block" }, [
                 h("div", {}, [
@@ -37,21 +38,24 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     h("label", { className: "label" }, "Cena"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "więcej niż")
+                        ]),
+                        h("div", { className: "control" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
                                 name: "priceAtLeast",
                                 step: ".01",
                                 min: "0",
-                                value: getQueryField("priceAtLeast") / 100.0,
-                                oninput: event => setQueryField("priceAtLeast", Number(event.target.value) * 100.0)
+                                value: getQueryField("priceAtLeast"),
+                                oninput: event => setQueryField("priceAtLeast", Number(event.target.value))
                             })
                         ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "więcej niż")
-                        ])
                     ]),
                     h("div", { className: "field has-addons" }, [
+                        h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "mniej niż")
+                        ]),
                         h("div", { className: "control" }, [
                             h("input", {
                                 className: "input",
@@ -59,12 +63,33 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 name: "priceAtMost",
                                 step: ".01",
                                 min: "0",
-                                value: getQueryField("priceAtMost") / 100.0,
-                                oninput: event => setQueryField("priceAtMost", Number(event.target.value) * 100.0)
+                                value: getQueryField("priceAtMost"),
+                                oninput: event => setQueryField("priceAtMost", Number(event.target.value))
                             })
                         ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "mniej niż")
+                    ]),
+                ])
+            ]),
+            h("div", { className: "panel-block" }, [
+                h("details", {}, [
+                    h("summary", {}, "Kategorie"),
+                    h("div", { className: "field" }, [
+                        h("input", { type: "hidden", name: "tag", value: "", checked: true }),
+                        ...Object.entries(constants.tags).map(([tag, tagShown]) => [
+                            h("label", { className: "label" }, [
+                                h("input", {
+                                    type: "checkbox",
+                                    name: "tag",
+                                    value: tag,
+                                    checked: getQueryField("tag").includes(tag),
+                                    onchange: event => setQueryField("tag", arr => {
+                                        if (event.target.checked && !arr.includes(tag)) return [...arr, tag];
+                                        else if (!event.target.checked) return arr.filter(value => value !== tag);
+                                        else return arr;
+                                    })
+                                }),
+                                tagShown
+                            ])
                         ])
                     ])
                 ])
@@ -79,7 +104,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 className: "input",
                                 type: "text",
                                 name: "isbn",
-                                placeholder: "ISBN",
+                                placeholder: " 9783161484100",
                                 value: getQueryField("isbn"),
                                 oninput: event => setQueryField("isbn", event.target.value)
                             })
@@ -101,6 +126,9 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                     h("label", { className: "label" }, "Data publikacji"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "od dnia")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "date",
@@ -108,13 +136,13 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("publicationDateFirst"),
                                 oninput: event => setQueryField("publicationDateFirst", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "od dnia")
                         ])
                     ]),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "do dnia")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "date",
@@ -122,45 +150,34 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("publicationDateLast"),
                                 oninput: event => setQueryField("publicationDateLast", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "do dnia")
                         ])
                     ]),
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Rodzaj oprawy"),
                         h("input", { type: "hidden", name: "bookFormat", value: "", checked: true }),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "bookFormat",
-                                value: "hardcover",
-                                onchange: event => setQueryField("bookFormat", arr => {
-                                    if (event.target.checked && !arr.includes("hardcover")) return [...arr, "hardcover"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "hardcover");
-                                    else return arr;
-                                })
-                            }),
-                            "twarda oprawa"
-                        ]),
-                        h("input", { type: "hidden", name: "bookFormat", value: "", checked: true }),
-                        h("label", { className: "label" }, [
-                            h("input", {
-                                type: "checkbox",
-                                name: "bookFormat",
-                                value: "softcover",
-                                onchange: event => setQueryField("bookFormat", arr => {
-                                    if (event.target.checked && !arr.includes("softcover")) return [...arr, "softcover"];
-                                    else if (!event.target.checked) return arr.filter(value => value !== "softcover");
-                                    else return arr;
-                                })
-                            }),
-                            "miękka oprawa"
+                        ...Object.entries(constants.formats).map(([format, formatShown]) => [
+                            h("label", { className: "label" }, [
+                                h("input", {
+                                    type: "checkbox",
+                                    name: "bookFormat",
+                                    value: format,
+                                    checked: getQueryField("bookFormat").includes(format),
+                                    onchange: event => setQueryField("bookFormat", arr => {
+                                        if (event.target.checked && !arr.includes(format)) return [...arr, format];
+                                        else if (!event.target.checked) return arr.filter(value => value !== format);
+                                        else return arr;
+                                    })
+                                }),
+                                formatShown
+                            ])
                         ])
                     ]),
                     h("label", { className: "label" }, "Liczba stron"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "więcej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -170,13 +187,13 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("pagesAtLeast"),
                                 oninput: event => setQueryField("pagesAtLeast", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "więcej niż")
                         ])
                     ]),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "mniej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -186,14 +203,14 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("pagesAtMost"),
                                 oninput: event => setQueryField("pagesAtMost", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "mniej niż")
                         ])
                     ]),
                     h("label", { className: "label" }, "Dostępne sztuki"),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "więcej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -203,13 +220,13 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("quantityAtLeast"),
                                 oninput: event => setQueryField("quantityAtLeast", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "więcej niż")
                         ])
                     ]),
                     h("div", { className: "field has-addons" }, [
                         h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "mniej niż")
+                        ]),
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -219,17 +236,14 @@ export const FiltersPanel = ({ getQueryField, setQueryField, search, resetQuery 
                                 value: getQueryField("quantityAtMost"),
                                 oninput: event => setQueryField("quantityAtMost", event.target.value)
                             })
-                        ]),
-                        h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "mniej niż")
                         ])
                     ])
                 ])
             ]),
             h("div", { className: "panel-block" }, [
                 h("div", { className: "buttons" }, [
-                    h("input", { type: "button", className: "button is-primary", value: "Zastosuj", onClick: _ => search() }),
-                    h("input", { type: "button", className: "button is-primary is-light", value: "Zresetuj", onClick: resetQuery })
+                    h("input", { type: "button", className: "button is-primary", value: "Pokaż wyniki", onClick: _ => newSearch() }),
+                    h("input", { type: "button", className: "button is-primary is-light", value: "Wyczyść filtry", onClick: _ => resetSearch() })
                 ])
             ])
         ])

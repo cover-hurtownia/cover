@@ -26,14 +26,14 @@ export const register = respond(async request => {
 
     if (username.length < 3) {
         throw [422, {
-            userMessage: "nazwa użytkownika nie może mieć mniej niż 3 znaki",
+            userMessage: "nazwa użytkownika nie może mieć więcej niż 3 znaków",
             devMessage: "username too short"
         }];
     }
 
     if (username.length > 24) {
         throw [422, {
-            userMessage: "nazwa użytkownika nie może mieć więcej niż 24 znaki",
+            userMessage: "nazwa użytkownika nie może mieć więcej niż 24 znaków",
             devMessage: "username too long"
         }];
     }
@@ -95,5 +95,5 @@ export const register = respond(async request => {
     // Update session, generates a session cookie and sends it back.
     request.session.user = { username };
 
-    return [200, { status: "ok", user: { username } }];
+    return [200, { status: "ok", user: { username, roles: [] } }];
 });
