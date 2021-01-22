@@ -424,13 +424,8 @@ a.box:active {
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #945990; }
 
 .button {
-<<<<<<< HEAD:www/css/bulma-light.css
   background-color: white;
   border-color: #d2bdd0;
-=======
-  background-color: (var(--background-color));
-  border-color: #dbdbdb;
->>>>>>> jakub/header-footer:www/css/main.css
   border-width: 1px;
   color: #2f232e;
   cursor: pointer;
