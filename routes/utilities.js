@@ -32,7 +32,7 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
 
         const roles = await rolesQuery.then(roles => roles.map(({ name }) => name)).catch(error => {
             logger.error(`/api/roles: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
-            throw [503, errorCodes.DATABASE_ERROR];
+            throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
         });
 
         if (roles.includes(requiredRole)) next();
@@ -53,3 +53,45 @@ export const roleAuthorization = requiredRole => [authenticated, async (request,
 }];
 
 export const adminAuthorization = roleAuthorization("ADMIN");
+
+export const respond = handler => async (request, response) => {
+    logger.debug(`${request.method} ${request.originalUrl}`);
+
+    try {
+        const [status, body] = await handler(request);
+
+        response.status(status);
+        response.send(body);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            logger.error(`${request.method} ${request.originalUrl}: ${error.toString()}`);
+
+            response.status(500);
+            response.send({
+                status: "error",
+                error: {
+                    code: errorCodes.UNKNOWN_ERROR,
+                    message: error.toString()
+                }
+            });
+        }
+        else {
+            const [status = 500, errorCode = errorCodes.UNKNOWN_ERROR, details = {}] = error;
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${errorCodes.asMessage(errorCode)}`);
+
+            const body = {
+                status: "error",
+                error: {
+                    code: errorCode,
+                    message: errorCodes.asMessage(errorCode),
+                }
+            };
+
+            if (details) body.error.details = details;
+
+            response.status(status);
+            response.send(body);
+        }
+    }
+}
