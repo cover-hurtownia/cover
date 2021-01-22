@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="200"
+   version="1.1"
+   viewBox="0 0 132.29167 52.916668"
+   id="svg60"
+   sodipodi:docname="logo-wbgl.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <defs
+     id="defs64" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1440"
+     inkscape:window-height="837"
+     id="namedview62"
+     showgrid="false"
+     inkscape:zoom="2.2378226"
+     inkscape:cx="242.00689"
+     inkscape:cy="129.29837"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg60"
+     inkscape:document-rotation="0"
+     units="px" />
+  <metadata
+     id="metadata38">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30.6267px;line-height:0;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.765667"
+     x="133.33148"
+     y="23.824423"
+     id="text12"
+     transform="scale(0.70168904,1.4251327)"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:1.25;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';text-align:center;text-anchor:middle;stroke-width:0.765667"
+       sodipodi:role="line"
+       id="tspan90"
+       x="133.33148"
+       y="23.824423">COVER</tspan><tspan
+       sodipodi:role="line"
+       x="133.33148"
+       y="42.96611"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:1.25;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';stroke-width:0.765667"
+       id="tspan14" /></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.49338px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.212332"
+     x="59.483578"
+     y="45.732506"
+     id="text94"
+     transform="scale(0.95378328,1.0484562)"><tspan
+       sodipodi:role="line"
+       id="tspan92"
+       x="59.483578"
+       y="45.732506"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';stroke-width:0.212332">HURTOWNIA KSIĄŻEK</tspan></text>
+  <rect
+     style="fill:#800000;stroke-width:0.173743"
+     id="rect96"
+     width="76.432152"
+     height="1.1244023"
+     x="56.113964"
+     y="37.154247" />
+  <path
+     d="m 19.136229,50.402871 c -0.208856,-0.17111 -0.694096,-0.70132 -1.078296,-1.1783 -1.080736,-1.3416 -1.582783,-1.4281 -8.3200867,-1.434 -8.80519756,-0.008 -7.7868946,2.7476 -7.7739774,-21.031997 C 1.9774319,2.6615739 0.90817789,5.4145739 10.212193,5.5195739 c 7.331206,0.0826 7.763932,0.19552 9.10301,2.3761 l 0.63739,1.037701 0.512532,-0.93637 c 0.282749,-0.516581 0.993473,-1.2655 1.585294,-1.670501 l 1.072771,-0.734139 10.822428,-0.264581 2.121428,-1.6536 c 3.092798,-2.4108 2.38178,-2.6560001 10.55906,3.641901 8.89849,6.8532991 9.045602,7.1099981 5.594352,9.7538981 l -1.47148,1.127201 v 2.839 c 0,3.0196 -0.117324,3.474 -0.897097,3.474 -0.839329,0 -1.233086,-7.0432 -0.432001,-7.7269 0.156643,-0.13369 0.943312,-0.74422 1.748123,-1.3567 l 1.4633,-1.113701 -6.792419,-5.2200981 c -3.735785,-2.871001 -6.853772,-5.220101 -6.928836,-5.220101 -0.346474,0 -13.607511,10.4169991 -13.47188,10.5829991 0.245943,0.30214 13.357061,10.320001 13.50202,10.317001 0.07253,-0.002 1.919346,-1.3641 4.104069,-3.0279 5.004682,-3.811401 4.666899,-3.9408 4.666899,1.7874 0,6.509801 -2.047011,9.300401 -7.278821,9.9225 -6.749648,0.802619 -10.376786,-2.459 -10.382528,-9.3365 l -0.0029,-3.7083 -3.053115,-2.3588 c -4.658505,-3.599101 -4.645157,-3.853901 0.405361,-7.757701 l 3.508516,-2.7118981 -3.60755,0.004 c -4.46295,0.005 -5.63059,0.60271 -6.348567,3.2505981 -0.402973,1.486201 -0.26936,37.124998 0.137259,36.612998 1.205959,-1.5208 1.757307,-1.6312 8.620051,-1.7256 l 6.396076,-0.0879 0.05956,-4.587598 c 0.06365,-4.906801 0.07263,-4.961001 0.819022,-4.961001 0.739147,0 0.754793,0.0809 0.821675,4.251701 0.07694,4.795798 -0.03021,5.884198 -0.666835,6.771198 l -0.491454,0.68483 -6.287286,0.002 c -7.00512,0.002 -7.34484,0.0652 -8.670285,1.6229 -0.9563,1.1236 -1.927527,1.4984 -2.553723,0.98542 z m -0.0057,-38.547998 C 18.994419,10.518874 17.9739,8.7612739 17.006548,8.1969749 16.53543,7.9221439 14.93808,7.8405549 10.028841,7.8405549 H 3.6621166 V 45.633551 l 6.5030724,0.0925 c 6.969239,0.0991 7.165795,0.13525 8.460023,1.5543 l 0.511039,0.5602 0.05533,-17.419998 c 0.03042,-9.5812 0.0029,-17.936001 -0.06128,-18.565001 z m 22.790177,19.093001 c 3.50457,-1.236401 4.272064,-2.368601 4.272064,-6.3019 v -3.0904 l -0.617082,0.51614 c -6.306443,5.2748 -6.421478,5.2958 -10.775063,1.9614 l -3.132843,-2.3994 -0.0539,2.9257 c -0.102018,5.5368 4.549281,8.419801 10.307176,6.388499 z m 7.5142,0.596561 c -0.357812,-0.600792 -0.185232,-3.870701 0.22316,-4.228201 0.795479,-0.69634 1.409045,1.745301 1.003878,3.994899 -0.125835,0.698651 -0.866026,0.83937 -1.226987,0.233281 z"
+     fill="#8d0a0a"
+     id="path138"
+     style="stroke-width:0.224133" />
+</svg>
