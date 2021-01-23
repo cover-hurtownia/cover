@@ -11,6 +11,6 @@ router.post("", adminAuthorization, resources.post("book_formats"));
 router.put("", adminAuthorization, resources.put("book_formats"));
 router.delete("", adminAuthorization, resources.delete("book_formats"));
 
-router.get("/:book_format_id", resources.getById("book_formats"));
+router.get("/:book_format_id", resources.getById("book_formats", "book_format_id"));
 router.put("/:book_format_id", adminAuthorization, resources.putById("book_formats", "book_format_id"));
 router.delete("/:book_format_id", adminAuthorization, resources.deleteById("book_formats", "book_format_id"));
