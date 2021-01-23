@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="105mm"
+   height="39mm"
+   viewBox="0 0 105 39"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="logo-text.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="176.2843"
+     inkscape:cy="144.08104"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="860"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     units="mm" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:33.1796px;line-height:0;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.829485"
+       x="58.010536"
+       y="23.594786"
+       id="text12"
+       transform="scale(0.89684255,1.1150229)"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:1.25;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';text-align:center;text-anchor:middle;stroke-width:0.829485"
+         sodipodi:role="line"
+         id="tspan90"
+         x="58.010536"
+         y="23.594786">COVER</tspan><tspan
+         sodipodi:role="line"
+         x="58.010536"
+         y="44.332035"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:1.25;font-family:'Palatino Linotype';-inkscape-font-specification:'Palatino Linotype';stroke-width:0.829485"
+         id="tspan14" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.20135px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.230034"
+       x="1.0406418"
+       y="47.021851"
+       id="text94"
+       transform="scale(1.2190493,0.82031138)"><tspan
+         sodipodi:role="line"
+         id="tspan92"
+         x="1.0406418"
+         y="47.021851"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS';stroke-width:0.230034">HURTOWNIA KSIĄŻEK</tspan></text>
+    <rect
+       style="fill:#800000;stroke-width:0.188229"
+       id="rect96"
+       width="105.83334"
+       height="0.95307082"
+       x="0.40944684"
+       y="29.423073" />
+  </g>
+</svg>

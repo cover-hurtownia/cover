@@ -110,7 +110,7 @@ export const CartApp = _ => {
             modal.showCard("Sukces", `Zamówienie #${response.id} zostało złożone pomyślnie.`, [
                 {
                     classList: ["is-primary"],
-                    textContent: "Przejdź do zamówień",
+                    textContent: "Przejdź do strony głównej",
                     onClick: _ => window.location = "/"
                 }
             ]);

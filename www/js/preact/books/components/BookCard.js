@@ -24,25 +24,25 @@ export const BookCard = ({ book }) => {
                     h("span", {}, utils.intersperse(book.authors.map(author => h("a", {
                         href: `/books.html?author=${author}`
                     }, author)), ", "))
-                ]),
-                h("footer", { className: "card-footer" }, [
-                    h("p", { className: "card-footer-item has-text-centered" }, [
-                        book.is_purchasable && book.quantity_available > 0
-                            ? h("div", {}, [
-                                h("div", {}, [
-                                    h("span", { className: "has-text-grey" }, "Cena: "),
-                                    "\u00A0",
-                                    h("span", { className: "has-text-weight-bold" }, utils.showPrice(book.price))
-                                ]),
-                                h("button", { className: "button is-small is-primary", onclick: _ => {
-                                    shoppingCart.add(book.product_id)
-                                    modal.showCard("Koszyk", `Produkt "${book.name}" został dodany do koszyka.`);
-                                } }, "Dodaj do koszyka")
-                            ])
-                            : [
-                                h("span", { className: "has-text-danger" }, "Produkt niedostępny.")
-                            ]
-                    ])
+                ])
+            ]),
+            h("footer", { className: "card-footer" }, [
+                h("p", { className: "card-footer-item has-text-centered" }, [
+                    book.is_purchasable && book.quantity_available > 0
+                        ? h("div", {}, [
+                            h("div", {}, [
+                                h("span", { className: "has-text-grey" }, "Cena: "),
+                                "\u00A0",
+                                h("span", { className: "has-text-weight-bold" }, utils.showPrice(book.price))
+                            ]),
+                            h("button", { className: "button is-small is-primary", onclick: _ => {
+                                shoppingCart.add(book.product_id)
+                                modal.showCard("Koszyk", `Produkt "${book.name}" został dodany do koszyka.`);
+                            } }, "Dodaj do koszyka")
+                        ])
+                        : [
+                            h("span", { className: "has-text-danger" }, "Produkt niedostępny.")
+                        ]
                 ])
             ])
         ])
