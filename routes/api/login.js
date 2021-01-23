@@ -52,7 +52,7 @@ export const login = respond(async request => {
     });
 
     // Update session, generates a session cookie and sends it back.
-    request.session.user = { username };
+    request.session.user = user;
 
     return [200, {
         status: "ok",

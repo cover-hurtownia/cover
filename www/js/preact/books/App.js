@@ -145,13 +145,12 @@ export const BooksApp = ({ query: initialQuery }) => {
                     ]),
                 ])
             ]),
-            response === null
-                ? h("progress", { className: "progress is-primary", max: "100" }, "0%")
-                : response.status !== "ok"
+            response 
+                ? response.status !== "ok"
                     ? h("article", { className: "message is-danger" }, [
                             h("div", { className: "message-body" }, [
                                 h("details", {}, [
-                                    h("summary", {}, `${utils.capitalizeFirst(response.error.userMessage)}.`),
+                                    h("summary", {}, `Błąd: ${utils.capitalizeFirst(response.error.userMessage)}.`),
                                     h("p", {}, `${utils.capitalizeFirst(response.error.devMessage)}.`)
                                 ])
                             ])
@@ -176,6 +175,7 @@ export const BooksApp = ({ query: initialQuery }) => {
                             h(Pagination, { topRef, total: response.total, limit: response.limit, offset: response.offset, delta: 2, updateSearch })
                         ]
                     ])
+                : h("progress", { className: "progress is-primary", max: "100" }, "0%")
         ])
     ]); 
 };

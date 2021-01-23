@@ -1,9 +1,8 @@
-import Knex from "knex";
 import logger from "../../../logger.js";
 
 import { respond } from "../../utilities.js";
 
-export const post = respond(async request => {
+export const placeOrder = respond(async request => {
     const database = request.app.get("database");
     
     const order = request.body;
@@ -89,11 +88,6 @@ export const post = respond(async request => {
         devMessage: "delivery_type_id is not a number"
     }];
 
-    if (typeof order.order_status_id !== "number") throw [400, {
-        userMessage: "błąd formularza",
-        devMessage: "order_status_id is not a number"
-    }];
-
     if (!(order.products instanceof Array)) throw [400, {
         userMessage: "błąd formularza",
         devMessage: "products is not an array"
@@ -141,9 +135,20 @@ export const post = respond(async request => {
 
         const delivery_type = deliveryTypes[0];
 
+        const orderStatus = await trx("order_status").where({ status: "placed" });
+
+        if (orderStatus.length === 0) {
+            throw [500, {
+                userMessage: `błąd serwera`,
+                devMessage: `order status "placed" doesn't exist`
+            }];
+        }
+
+        const statusPlaced = orderStatus[0];
+
         let query = trx("orders").insert({
             order_date: trx.fn.now(),
-            order_status_id: order_status_id,
+            order_status_id: statusPlaced.id,
             first_name: order.first_name,
             last_name: order.last_name,
             phone_number: order.phone_number,
@@ -153,7 +158,8 @@ export const post = respond(async request => {
             postal_code: order.postal_code,
             delivery_cost: delivery_type.price,
             delivery_type_id: order.delivery_type_id,
-            comment: order.comment
+            comment: order.comment,
+            user_id: request.session?.user?.id
         });
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
@@ -186,8 +192,15 @@ export const post = respond(async request => {
 
             if (!dbProduct.is_purchasable) {
                 throw [400, {
-                    userMessage: `produkt o id ${product.id} nie jest dostępny na sprzedaż`,
+                    userMessage: `produkt "${dbProduct.name}" nie jest dostępny na sprzedaż`,
                     devMessage: `product with id ${product.id} is not purchasable`
+                }];
+            }
+
+            if (dbProduct.quantity_available < product.quantity) {
+                throw [400, {
+                    userMessage: `produkt "${dbProduct.name}" nie jest dostępny w podanej ilości sztuk. Dostępna ilość: ${dbProduct.quantity_available}, ilość w koszyku: ${product.quantity}`,
+                    devMessage: `products with id ${product.id} available: ${dbProduct.quantity_available}, requested: ${product.quantity}`
                 }];
             }
 
@@ -204,6 +217,17 @@ export const post = respond(async request => {
                 logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
                 throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
             });
+
+            let productUpdateQuery = trx("products").update({
+                quantity_available: dbProduct.quantity_available - product.quantity,
+            }).where({ id: product.id });
+
+            logger.debug(`${request.method} ${request.originalUrl}: SQL: ${productUpdateQuery.toString()}`);
+
+            await productUpdateQuery.catch(error => {
+                logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+                throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
+            });
         }
         
         return id;
@@ -215,4 +239,4 @@ export const post = respond(async request => {
     }];
 });
 
-export default post;
+export default placeOrder;

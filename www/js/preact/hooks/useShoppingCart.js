@@ -19,7 +19,8 @@ export const useShoppingCart = () => {
         set: (id, quantity = 1) => setQuantity(id, quantity),
         add: (id, quantity = 1) => setQuantity(id, cart.hasOwnProperty(id) ? cart[id] + quantity : quantity),
         remove: (id, quantity = 1) => setQuantity(id, cart.hasOwnProperty(id) ? cart[id] - quantity : 0),
-        removeAll: id => setQuantity(id, 0)
+        removeAll: id => setQuantity(id, 0),
+        clear: () => setCart({}) 
     };
 };
 

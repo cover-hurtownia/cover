@@ -132,7 +132,7 @@ export const up = async db => {
 
             table.text("comment");
             
-            table.date("order_date").notNullable();
+            table.datetime("order_date").notNullable();
             table.decimal("delivery_cost", 13, 2).unsigned().notNullable();
             table.string("tracking_number");
 

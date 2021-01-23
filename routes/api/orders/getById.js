@@ -7,14 +7,14 @@ export const getOrderById = respond(async request => {
     const id = request.params.order_id;
 
     const { order, products } = await database.transaction(async trx => {
-        let query = database
+        let query = trx
             .select([
                 "orders.*",
                 "delivery_types.type as delivery_type",
                 "delivery_types.price as delivery_cost",
                 "order_status.status as status",
                 "users.username",
-                database.raw("SUM(order_products.price * order_products.quantity_ordered) + delivery_types.price as total_cost")
+                trx.raw("SUM(order_products.price * order_products.quantity_ordered) + delivery_types.price as total_cost")
             ])
             .from("orders")
             .where("orders.id", id)
@@ -31,11 +31,14 @@ export const getOrderById = respond(async request => {
             throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
         });
 
-        if (orders.length === 0) throw [404, `zamówienie o id ${id} nie istnieje`];
+        if (orders.length === 0) throw [404, {
+            userMessage: `zamówienie o id ${id} nie istnieje`,
+            devMessage: `order with id ${id} doesn't exist`
+        }];
 
         const order = orders[0];
 
-        let productsQuery = database
+        let productsQuery = trx
             .select([
                 "products.id", "products.price", "products.name", "products.description", "products.image_id",
                 "order_products.quantity_ordered", "order_products.price"

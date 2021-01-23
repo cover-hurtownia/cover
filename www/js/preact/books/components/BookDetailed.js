@@ -1,15 +1,20 @@
 import * as Preact from "/js/lib/Preact.js";
+import { useState } from "/js/lib/PreactHooks.js";
 import * as utils from "/js/utils.js";
 import useShoppingCart from "/js/preact/hooks/useShoppingCart.js";
+import * as modal from "/js/modal.js";
 
 const h = Preact.h;
 
 export const BookDetailed = ({ book }) => {
     const shoppingCart = useShoppingCart();
+    const [amount, setAmount] = useState(1);
+    
+    console.log(amount);
 
     return h("div", { className: "columns box my-4" }, [
         h("div", { className: "column is-3" }, [
-            h("figure", { className: "image box p-1" }, [
+            h("figure", { className: "image box p-1", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
                 h("img", { src: `/images/${book.image_id}`, loading: "lazy" })
             ])
         ]),
@@ -39,7 +44,7 @@ export const BookDetailed = ({ book }) => {
                 ]),
                 h("tr", {}, [
                     h("td", { className: "has-text-grey" }, "Data premiery: "),
-                    h("td", {}, h("time", { datetime: book.publication_date }, new Date(book.publication_date).toISOString().split('T')[0]))
+                    h("td", {}, h("time", { datetime: book.publication_date }, utils.showDate(book.publication_date)))
                 ]),
                 h("tr", {}, [
                     h("td", { className: "has-text-grey" }, "ISBN: "),
@@ -66,7 +71,28 @@ export const BookDetailed = ({ book }) => {
                         "\u00A0",
                         h("span", { className: "has-text-weight-bold" }, utils.showPrice(book.price))
                     ]),
-                    h("button", { className: "button is-primary", onclick: _ => shoppingCart.add(book.product_id) }, "Dodaj do koszyka")
+                    h("div", { className: "field has-addons" }, [
+                        h("div", { className: "control" }, [
+                            h("button", { className: "button is-primary", onclick: _ => {
+                                shoppingCart.add(book.product_id, amount);
+                                modal.showCard("Koszyk", `Produkt "${book.name}" (x${amount}) został dodany do koszyka.`);
+                            } }, "Dodaj do koszyka")
+                        ]),
+                        h("div", { className: "control" }, [
+                            h("input", {
+                                className: "input",
+                                value: amount,
+                                type: "number",
+                                min: 1,
+                                max: book.quantity_available,
+                                style: { width: "4em" },
+                                onchange: event => setAmount(isNaN(Number(event.target.value)) ? 1 : Number(event.target.value))
+                            })
+                        ]),
+                        h("div", { className: "control" }, [
+                            h("a", { className: "button is-static" }, "sztuk")
+                        ])
+                    ])
                 ])
                 : [
                     h("div", { className: "has-text-danger has-text-centered has-text-weight-bold" }, "Produkt niedostępny.")

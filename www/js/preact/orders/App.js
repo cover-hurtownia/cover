@@ -18,7 +18,7 @@ const emptyQuery = Object.freeze({
     phoneNumber: null,
     email: null,
     username: null,
-    street: null,
+    address: null,
     apartment: null,
     city: null,
     postalCode: null,
@@ -111,10 +111,16 @@ export const OrdersApp = ({ query: initialQuery }) => {
                     ? h("div", { className: "box notification is-danger" }, `Błąd: ${response.error.userMessage}.`)
                     : h("div", {}, [
                         isLoading
-                            ? h("div", { className: "box notification is-size-4" }, "Ładowanie wyników...")
+                            ? h("article", { className: "message" }, [
+                                h("div", { className: "message-body" }, "Ładowanie wyników...")
+                            ])
                             :   response.total === 0
-                                ? h("div", { className: "box notification is-warning is-size-4" }, "Brak wyników.")
-                                : h("div", { className: "box notification is-primary is-size-4" }, `Liczba wyników: ${response.total}`),
+                                ? h("article", { className: "message is-warning" }, [
+                                    h("div", { className: "message-body" }, "Brak wyników.")
+                                ])
+                                : h("article", { className: "message" }, [
+                                    h("div", { className: "message-body" }, `Liczba wyników: ${response.total}.`)
+                                ]),
                         response.total !== 0 && [
                             h(Pagination, { topRef, total: response.total, limit: response.limit, offset: response.offset, delta: 2, updateSearch }),
                             ...response.data.map(order => h(Order, { order })),

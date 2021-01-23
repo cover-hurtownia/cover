@@ -1,9 +1,12 @@
 import * as Preact from "/js/lib/Preact.js";
 import * as utils from "/js/utils.js";
 
+import * as API from "/js/api/index.js";
+import * as modal from "/js/modal.js";
+
 const h = Preact.h;
 
-export const Order = ({ order }) => h("div", { className: "box notification" }, [
+export const Order = ({ order }) => h("div", { className: "box" }, [
     h("div", { className: "is-size-3 has-text-weight-light" }, [
         h("span", { className: "has-text-grey" }, `Zamówienie #`),
         h("span", { className: "is-family-monospace" }, order.id)
@@ -11,7 +14,7 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
     h("div", { className: "columns" }, [
         h("div", { className: "column is-size-5 has-text-weight-light" }, [
             h("span", { className: "has-text-grey" }, "Data zamówienia: "),
-            h("time", { datetime: order.order_date }, order.order_date)
+            h("time", { datetime: order.order_date }, utils.showDateTime(order.order_date))
         ]),
         h("div", { className: "column has-text-right is-size-5 has-text-weight-light" }, [
             h("span", { className: "has-text-grey" }, "Łączny koszt: "),
@@ -41,7 +44,7 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
                     h("span", { className: "has-text-grey" }, "Użytkownik: "),
                     order.user_id === null
                         ? h("span", { className: "has-text-grey-light is-italic" }, "(brak)")
-                        : h("span", { className: "is-family-monospace" }, order.username)
+                        : h("span", { className: "is-family-monospace" }, h("a", { href: `orders.html?username=${order.username}` }, order.username))
                 ])
             ])
         ]),
@@ -49,7 +52,7 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
             h("ul", {}, [
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Adres: "),
-                    h("span", {}, order.street)
+                    h("span", {}, order.address)
                 ]),
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Lokal: "),
@@ -71,7 +74,7 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
             h("ul", {}, [
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Rodzaj dostawy: "),
-                    h("span", {}, order.delivery_type)
+                    h("span", {}, utils.showDelivery(order.delivery_type))
                 ]),
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Koszt dostawy: "),
@@ -85,11 +88,102 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
                 ]),
                 h("li", {}, [
                     h("span", { className: "has-text-grey" }, "Status zamówienia: "),
-                    h("span", { className: "tag is-primary is-light" }, order.status)
+                    h("span", { className: `tag ${utils.getStatusClassName(order.order_status)} is-light` }, utils.showStatus(order.order_status))
                 ])
             ])
         ])
     ]),
+    order.order_status !== "delivered" ? h("div", { className: "block" }, [
+        h("div", { className: "field has-addons"}, [
+            h("div", { className: "control" }, [
+                h("button", { className: "button is-static" }, "Zmień status zamówienia na ")
+            ]),
+            h("div", { className: "control" }, [
+                order.order_status === "placed" ? h("button", {
+                    className: `button ${utils.getStatusClassName("accepted")}`,
+                    onclick: async _ => {
+                        const response = await API.orders.accept(order.id);
+        
+                        if (response.status === "ok") {
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało zaakceptowane.`, [
+                                {
+                                    classList: ["is-primary"],
+                                    textContent: "Odśwież",
+                                    onClick: _ => window.location.reload()
+                                }
+                            ]);
+                        }
+                        else {
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            console.error(response.error.devMessage);
+                        }
+                    }
+                }, "Zaakceptowane") :
+                order.order_status === "accepted" ? h("button", {
+                    className: `button ${utils.getStatusClassName("sent")}`,
+                    onclick: async _ => {
+                        const response = await API.orders.send(order.id);
+        
+                        if (response.status === "ok") {
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało wysłane.`, [
+                                {
+                                    classList: ["is-primary"],
+                                    textContent: "Odśwież",
+                                    onClick: _ => window.location.reload()
+                                }
+                            ]);
+                        }
+                        else {
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            console.error(response.error.devMessage);
+                        }
+                    }
+                }, "Wysłane") :
+                order.order_status === "sent" ? h("button", {
+                    className: `button ${utils.getStatusClassName("delivered")}`,
+                    onclick: async _ => {
+                        const response = await API.orders.delivered(order.id);
+        
+                        if (response.status === "ok") {
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało dostarczone.`, [
+                                {
+                                    classList: ["is-primary"],
+                                    textContent: "Odśwież",
+                                    onClick: _ => window.location.reload()
+                                }
+                            ]);
+                        }
+                        else {
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            console.error(response.error.devMessage);
+                        }
+                    }
+                }, "Dostarczone") : []
+            ]),
+            h("div", { className: "control" }, [
+                h("button", {
+                    className: `button ${utils.getStatusClassName("cancelled")}`,
+                    onclick: async _ => {
+                        const response = await API.orders.cancel(order.id);
+        
+                        if (response.status === "ok") {
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało anulowane.`, [
+                                {
+                                    classList: ["is-primary"],
+                                    textContent: "Odśwież",
+                                    onClick: _ => window.location.reload()
+                                }
+                            ]);
+                        }
+                        else {
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            console.error(response.error.devMessage);
+                        }
+                    }
+                }, "Anulowane")
+            ])
+        ])
+    ]) : [],
     h("div", { className: "block" }, [
         ...order.products.map(product => h("div", { className: "columns is-vcentered" }, [
             h("div", { className: "column is-2" }, [
@@ -100,15 +194,15 @@ export const Order = ({ order }) => h("div", { className: "box notification" }, 
                 h("ul", {}, [
                     h("li", {}, [
                         h("span", { className: "has-text-grey" }, "Cena za sztukę: "),
-                        h("span", { className: "is-family-monospace" }, utils.showPrice(product.price))
+                        h("span", { className: "is-family-monospace" }, utils.showPrice(product.price_per_unit))
                     ]),
                     h("li", {}, [
                         h("span", { className: "has-text-grey" }, "Liczba sztuk: "),
-                        h("span", { className: "is-family-monospace" }, product.ordered_quantity)
+                        h("span", { className: "is-family-monospace" }, product.quantity_ordered)
                     ]),
                     h("li", {}, [
                         h("span", { className: "has-text-grey" }, "Razem: "),
-                        h("span", { className: "is-family-monospace" }, utils.showPrice(product.price * product.ordered_quantity))
+                        h("span", { className: "is-family-monospace" }, utils.showPrice(product.price_per_unit * product.quantity_ordered))
                     ]),
                     h("li", {}, [
                         h("span", { className: "has-text-grey" }, "ID produktu: "),

@@ -85,7 +85,7 @@ export const register = respond(async request => {
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${insertUserQuery.toString()}`)
 
-    await insertUserQuery.catch(error => {
+    const [id] = await insertUserQuery.catch(error => {
         logger.error(`/api/register: database error: ${insertUserQuery.toString()}: ${error}`);
         throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
@@ -93,7 +93,7 @@ export const register = respond(async request => {
     logger.info(`/api/register: new user registered: ${username}`);
 
     // Update session, generates a session cookie and sends it back.
-    request.session.user = { username };
+    request.session.user = { id, username };
 
     return [200, { status: "ok", user: { username, roles: [] } }];
 });

@@ -12,7 +12,7 @@ export const getOrder = respond(async request => {
         phoneNumber,
         email,
         username,
-        street,
+        address,
         apartment,
         city,
         postalCode,
@@ -78,7 +78,7 @@ export const getOrder = respond(async request => {
     if (phoneNumber) query = query.andWhere("orders.phone_number", "like", `%${phoneNumber}%`);
     if (email) query = query.andWhere("orders.email", "like", `%${email}%`);
     if (username) query = query.andWhere("users.username", "like", `%${username}%`);
-    if (street) query = query.andWhere("orders.street", "like", `%${street}%`);
+    if (address) query = query.andWhere("orders.address", "like", `%${address}%`);
     if (apartment) query = query.andWhere("orders.apartment", "like", `%${apartment}%`);
     if (city) query = query.andWhere("orders.city", "like", `%${city}%`);
     if (postalCode) query = query.andWhere("orders.postal_code", "like", `%${postalCode}%`);
