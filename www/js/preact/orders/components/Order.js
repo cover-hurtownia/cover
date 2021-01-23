@@ -93,7 +93,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
             ])
         ])
     ]),
-    order.order_status !== "delivered" ? h("div", { className: "block" }, [
+    order.order_status !== "delivered" && order.order_status !== "cancelled" ? h("div", { className: "block" }, [
         h("div", { className: "field has-addons"}, [
             h("div", { className: "control" }, [
                 h("button", { className: "button is-static" }, "Zmień status zamówienia na ")
