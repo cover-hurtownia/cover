@@ -1,6 +1,6 @@
 import express from "express";
 
-import { adminAuthorization } from "../../utilities.js";
+import { adminAuthorization, authenticated } from "../../utilities.js";
 import * as resources from "../resources/index.js";
 import getOrder from "./get.js";
 import postOrder from "./post.js";
@@ -11,10 +11,12 @@ import acceptOrder from "./accept.js";
 import sendOrder from "./send.js";
 import cancelOrder from "./cancel.js";
 import deliveredOrder from "./delivered.js";
+import getMyOrders from "./myOrders.js";
 
 export const router = express.Router();
 
 router.get("", adminAuthorization, getOrder);
+router.get("/my_orders", authenticated, getMyOrders);
 router.post("", adminAuthorization, postOrder);
 router.put("", adminAuthorization, resources.put("orders"));
 router.delete("", adminAuthorization, resources.delete("orders"));

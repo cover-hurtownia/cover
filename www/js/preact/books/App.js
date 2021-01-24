@@ -21,7 +21,7 @@ const emptyQuery = Object.freeze({
     priceAtLeast: null,
     priceAtMost: null,
     name: null,
-    title: null,
+    name: null,
     description: null,
     isPurchasable: null,
     bookFormat: [],

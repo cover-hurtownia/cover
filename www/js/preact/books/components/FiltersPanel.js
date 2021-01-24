@@ -15,10 +15,10 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                             h("input", {
                                 className: "input",
                                 type: "text",
-                                name: "title",
+                                name: "name",
                                 placeholder: "Tytuł",
-                                value: getQueryField("title"),
-                                oninput: event => setQueryField("title", event.target.value)
+                                value: getQueryField("name"),
+                                oninput: event => setQueryField("name", event.target.value)
                             })
                         ])
                     ]),
@@ -116,7 +116,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                             h("input", {
                                 className: "input",
                                 type: "text",
-                                name: "title",
+                                name: "publisher",
                                 placeholder: "Wydawnictwo",
                                 value: getQueryField("publisher"),
                                 oninput: event => setQueryField("publisher", event.target.value)

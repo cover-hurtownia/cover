@@ -115,11 +115,24 @@ app.get('/cart', (request, response) => {
     });
 });
 
-app.get('/admin/orders', (request, response) => {
+app.get('/orders', (request, response) => {
     response.render("orders", {
         meta: {
             url: request.protocol + '://' + process.env.DOMAIN,
-            title: "Cover Hurtownia - Zamówienia",
+            title: "Cover Hurtownia - Moje zamówienia",
+            description: "Wyszukiwanie zamówień",
+            image: "/assets/banner.png",
+            cookies: request.cookies
+        },
+        session: request.session?.user
+    });
+});
+
+app.get('/admin/orders', (request, response) => {
+    response.render("admin_orders", {
+        meta: {
+            url: request.protocol + '://' + process.env.DOMAIN,
+            title: "Cover Hurtownia - Zamówienia klientów",
             description: "Wyszukiwanie zamówień",
             image: "/assets/banner.png",
             cookies: request.cookies
