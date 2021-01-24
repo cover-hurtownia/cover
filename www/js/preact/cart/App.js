@@ -47,7 +47,7 @@ export const CartApp = _ => {
         email: (() => {
             if (emailRef.current) {
                 if (emailRef.current.validity.valueMissing) return "email nie może być pusty";
-                else if (emailRef.current.validity.patternMismatch) return "email nie jest poprawny";
+                else if (emailRef.current.validity.typeMismatch) return "email nie jest poprawny";
                 else return false;
             }
             else return "błąd formularza";

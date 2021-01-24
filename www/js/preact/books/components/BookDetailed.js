@@ -88,7 +88,7 @@ export const BookDetailed = ({ book }) => {
                             })
                         ]),
                         h("div", { className: "control" }, [
-                            h("a", { className: "button is-static" }, "sztuk")
+                            h("div", { className: "button is-static" }, "sztuk")
                         ])
                     ])
                 ])

@@ -6,7 +6,7 @@
                     <img class="book-image" loading="lazy" src="/images/{{book.image_id}}"></img>
                 </figure>
             </div>
-            <div class="column">
+            <div class="column is-9">
                 <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
                 <table class="table is-fullwidth is-striped">
                     <tbody>
@@ -62,6 +62,23 @@
                         </tr>
                     </tbody>
                 </table>
+                {{#if book.is_purchasable}}
+                    <div class="field has-addons">
+                        <div class="control">
+                            <button class="button is-primary">
+                                Dodaj do koszyka
+                            </button>
+                        </div>
+                        <div class="control">
+                            <input class="input" type="number" value="1" min="1" max="{{book.quantity_available}}" />
+                        </div>
+                        <div class="control">
+                            <div class="button is-static">sztuk</div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="has-text-danger has-text-weight-bold">Produkt niedostępny.</div>
+                {{/if}}
             </div>
         </div>
         <div>
