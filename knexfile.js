@@ -14,6 +14,7 @@ export default {
         extension: 'mjs',
         loadExtensions: ['.mjs']
     },
+    useNullAsDefault: true,
     pool: {
         min: 0
     }

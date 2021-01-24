@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/style.css" />
+
+        <title>Hurtownia Książek</title>
+        <style>
+            body.is-loading .logged-out,
+            body.is-loading .logged-out { 
+                display: none;
+            }
+
+            body.is-logged-in .logged-out {
+                display: none;
+            }
+            
+            body:not(.is-logged-in) .logged-in {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="is-loading">
+        <h1>Hurtownia książek</h1>
+
+        <fieldset class="logged-out">
+            <legend>Wylogowany</legend>
+
+            <form id="login">
+                <fieldset>
+                    <legend>Logowanie</legend>
+    
+                    <label for="login-username">Nazwa użytkownika</label>
+                    <input id="login-username" name="username" type="text" />
+    
+                    <label for="login-password">Hasło</label>
+                    <input id="login-password" name="password" type="password" />
+    
+                    <input type="submit" value="Zaloguj" />
+                </fieldset>
+            </form>
+    
+            <form id="register">
+                <fieldset>
+                    <legend>Rejestracja</legend>
+                    <label for="register-username">Nazwa użytkownika</label>
+                    <input id="register-username" name="username" type="text" />
+    
+                    <label for="register-password">Hasło</label>
+                    <input id="register-password" name="password" type="password" />
+    
+                    <input type="submit" value="Zarejestruj" />
+                </fieldset>
+            </form>
+        </fieldset>
+
+        <fieldset class="logged-in">
+            <legend>Zalogowany jako <b id="username"></b></legend>
+
+            <form id="logout">
+                    <input type="submit" value="Wyloguj" />
+            </form>
+        </fieldset>
+
+        <script type="module" defer>
+            import * as API from "/js/api/index.js";
+
+            document.getElementById("login").addEventListener("submit", async event => {
+                event.preventDefault();
+
+                const { username, password } = Object.fromEntries(new FormData(event.target));
+                const response = await API.login(username, password);
+
+                if (response.status === "ok") {
+                    console.info("Logowanie pomyślne.");
+                    
+                    document.getElementById("username").textContent = response.user.username;
+                    document.body.classList.add("is-logged-in");
+                }
+                else {
+                    console.warn(`Błąd logowania`, response.error);
+                }
+            });
+
+            document.getElementById("register").addEventListener("submit", async event => {
+                event.preventDefault();
+
+                const { username, password } = Object.fromEntries(new FormData(event.target));
+                const response = await API.register(username, password);
+
+                if (response.status === "ok") {
+                    console.info("Rejestracja pomyślna.");
+
+                    document.getElementById("username").textContent = response.user.username;
+                    document.body.classList.add("is-logged-in");
+                }
+                else {
+                    console.warn(`Błąd rejestracji`, response.error);
+                }
+            });
+
+            document.getElementById("logout").addEventListener("submit", async event => {
+                event.preventDefault();
+
+                const response = await API.logout();
+
+                if (response.status === "ok") {
+                    console.info("Wylogowanie pomyślne.");
+                    document.body.classList.remove("is-logged-in");
+                }
+                else {
+                    console.warn(`Błąd wylogowania:`, response.error);
+                }
+            });
+
+            (async () => {
+                const session = await API.session();
+
+                console.log(session);
+
+                if (session.status === "ok") {
+                    document.getElementById("username").textContent = session.user.username;
+                    document.body.classList.add("is-logged-in");
+                }
+                else {
+                    document.body.classList.remove("is-logged-in");
+                }
+
+                document.body.classList.remove("is-loading");
+            })();
+        </script>
+    </body>
+</html>

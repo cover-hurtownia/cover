@@ -1,38 +1,64 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const getImage = respond(async request => {
     const database = request.app.get("database");
     
     let {
-        filename,
+        id,
+        originalFilename,
+        contentType,
         orderBy,
         ordering = "desc",
         limit = 20,
         offset = 0,
     } = request.query;
 
-    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
+    limit = Math.trunc(Math.max(1, Math.min(50, 
+        typeof limit === "number"
+            ? limit
+            : typeof limit !== "string"
+                ? 20
+                : isNaN(Number(limit))
+                    ? 20
+                    : Number(limit)
+    )));
 
-    const [{ total }] = await database("images").count("id", { as: "total" });
+    offset = Math.trunc(Math.max(0, 
+        typeof offset === "number"
+            ? offset
+            : typeof offset !== "string"
+                ? 0
+                : isNaN(Number(offset))
+                    ? 0
+                    : Number(offset)
+    ));
+
+    if (id) {
+        if (Array.isArray(id)) query = query.whereIn("id", id);
+        else query = query.andWhere("id", "=", id);
+    }
+
+    ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
     let query = database
-        .select(["images.id", "images.type", "images.original_filename"])
+        .select(["images.id", "images.content_type", "images.original_filename"])
         .from("images")
-        .offset(Math.max(offset, 0))
-        .limit(Math.min(limit, 50));
 
-    if (filename) query = query.andWhere("images.original_filename", "like", `%${filename}%`);
+    if (originalFilename) query = query.andWhere("images.original_filename", "like", `%${originalFilename}%`);
+    if (contentType) query = query.andWhere("images.content_type", "like", `%${contentType}%`);
 
     if (orderBy === "id") query = query.orderBy("images.id", ordering);
-    else if (orderBy === "filename") query = query.orderBy("images.original_filename", ordering);
+    else if (orderBy === "originalFilename") query = query.orderBy("images.original_filename", ordering);
+
+    const total = (await query.clone()).length;
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const images = await query.catch(error => {
+    const images = await query.offset(offset).limit(limit).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
     return [200, {

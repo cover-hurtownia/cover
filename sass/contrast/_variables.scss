@@ -1,0 +1,109 @@
+$primary: #ffff00;
+
+$black:        #ffffff;
+$black-bis:    $black;
+$black-ter:    $black;
+
+$white:        #000000;
+$white-ter:    $white;
+$white-bis:    $white;
+
+$grey-darker:  $black;
+$grey-dark:    $black;
+$grey:         $primary;
+$grey-light:   $primary;
+$grey-lighter: $white;
+$grey-lightest: $white;
+
+$orange:       hsl(14,  100%, 53%);;
+$yellow:       hsl(48,  100%, 67%);;
+$green:        hsl(141, 100%,  53%);;
+$turquoise:    hsl(171, 100%, 41%);;
+$cyan:         hsl(204, 100%,  53%);;
+$blue:         hsl(217, 100%,  53%);;
+$purple:       hsl(271, 100%, 71%);;
+$red:          hsl(348, 100%, 61%);;
+
+$primary: $turquoise;
+
+$info: $cyan;
+$success: $green;
+$warning: $yellow;
+$danger: $red;
+
+$light: $white-ter;
+$dark: $grey-darker;
+
+// Invert colors
+$orange-invert: $black;
+$yellow-invert: $black;
+$green-invert: $black;
+$turquoise-invert: $black;
+$cyan-invert: $black;
+$blue-invert: $black;
+$purple-invert: $black;
+$red-invert: $black;
+
+$primary-invert: $black;
+$primary-light: $white;
+$primary-dark: $black;
+$info-invert: $black;
+$info-light: $white;
+$info-dark: $black;
+$success-invert: $white;
+$success-light: $white;
+$success-dark: $black;
+$warning-invert: $white;
+$warning-light: $white;
+$warning-dark: $black;
+$danger-invert: $white;
+$danger-light: $white;
+$danger-dark: $black;
+$light-invert: $black;
+$dark-invert: $white;
+
+// General colors
+$scheme-main: $white;
+$scheme-main-bis: $white-bis;
+$scheme-main-ter: $white-ter;
+$scheme-invert: $black;
+$scheme-invert-bis: $black-bis;
+$scheme-invert-ter: $black-ter;
+
+$background: $white-ter;
+
+$border: $grey-lighter;
+$border-hover: $grey-light;
+$border-light: $grey-lightest;
+$border-light-hover: $grey-light;
+
+// Text colors
+$text: $grey-dark;
+$text-invert: $text;
+$text-light: $grey;
+$text-strong: $grey-darker;
+
+// Code colors
+$code: darken($red, 15%);
+$code-background: $background;
+
+$pre: $text;
+$pre-background: $background;
+
+// Link colors
+$link: $blue;
+$link-invert: $link;
+$link-light: $link;
+$link-dark: $link;
+$link-visited: $purple;
+
+$link-hover: $grey-darker;
+$link-hover-border: $grey-light;
+
+$link-focus: $grey-darker;
+$link-focus-border: $blue;
+
+$link-active: $grey-darker;
+$link-active-border: $grey-dark;
+
+$border: $primary;

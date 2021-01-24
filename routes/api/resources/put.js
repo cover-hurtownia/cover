@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const putResource = table => respond(async request => {
@@ -7,7 +7,14 @@ export const putResource = table => respond(async request => {
     
     const rows = Array.isArray(request.body) ? request.body : [request.body];
 
-    if (rows.some(row => !(row instanceof Object) || row.id === undefined)) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
+    for (let i = 0; i < rows.length; ++i) {
+        const row = rows[i];
+
+        if (!(row instanceof Object)) throw [400, {
+            userMessage: "błąd formularza",
+            devMessage: `data at index ${i} is not an object`
+        }];
+    } 
 
     const updatedRows = await database.transaction(async trx => {
         let updatedRows = 0;
@@ -22,7 +29,7 @@ export const putResource = table => respond(async request => {
     
             updatedRows += await query.catch(error => {
                 logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-                throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+                throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
             });
     
             logger.info(`${request.method} ${request.originalUrl}: updated: ${id}`);
@@ -33,10 +40,7 @@ export const putResource = table => respond(async request => {
 
     logger.info(`${request.method} ${request.originalUrl}: updated rows: ${updatedRows}`);
 
-    return [200, {
-        status: "ok",
-        rows: updatedRows
-    }];
+    return [200, { status: "ok" }];
 });
 
 export default putResource;

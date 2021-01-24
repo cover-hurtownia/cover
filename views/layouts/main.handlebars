@@ -1,0 +1,222 @@
+{{#if meta.cookies.fontSize}}
+<html data-font-size="{{meta.cookies.fontSize}}">
+{{else}}
+<html>
+{{/if}}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{meta.description}}">
+    <meta name="robots" content="noindex,nofollow">
+
+    <meta property="og:title" content="{{meta.title}}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:description" content="{{meta.description}}">
+    <meta property="og:image" content="{{meta.url}}{{meta.image}}">
+
+    <link rel="icon" href="/assets/logo-small.svg" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <link rel="preload" href="/css/bulma-light.css" as="style" />
+    <link rel="preload" href="/css/bulma-dark.css" as="style" />
+    <link rel="preload" href="/css/bulma-contrast.css" as="style" />
+
+    {{#if meta.cookies.theme}}
+        <link id="bulma-theme" href="/css/bulma-{{meta.cookies.theme}}.css" type="text/css" rel="stylesheet" />
+    {{else}}
+        <link id="bulma-theme" href="/css/bulma-light.css" type="text/css" rel="stylesheet" />
+    {{/if}}
+    <link href="/css/style.css" type="text/css" rel="stylesheet" />
+    <title>{{meta.title}}</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <header>
+            <div class="container py-1">
+                <div class="container is-flex is-justify-content-flex-end">
+                    <div class="buttons are-small mx-2">
+                        <button value="light" class="button theme-button">
+                            <span class="material-icons">wb_sunny</span>
+                        </button>
+                        <button value="dark" class="button theme-button">
+                            <span class="material-icons">nights_stay</span>
+                        </button>
+                        <button value="contrast" class="button theme-button">
+                            <span class="material-icons">visibility</span>
+                        </button>
+                        <button value="large" class="button font-size-button">
+                            <span class="material-icons">add</span>
+                        </button>
+                        <button value="normal" class="button font-size-button">
+                            <span class="material-icons">remove</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item is-hidden-tablet" href="/cart">
+                            <span class="material-icons icon_color"> shopping_cart </span>
+                        </a>
+                        <div class="navbar-item is-hidden-mobile is-flex-grow-1 py-0">
+                            <a href="/">
+                                <img src="/assets/logo-wbgl.svg" class="logo-header-desktop is-hidden-touch" alt="Cover" />
+                                <img src="/assets/logo-text.svg" class="logo-header is-hidden-desktop" alt="Cover" />
+                            </a>
+                        </div>
+                        <div class="navbar-item is-hidden-tablet is-flex-grow-1 py-0 is-justify-content-center">
+                            <a class="logo-header" href="/">
+                                <img src="/assets/logo-text.svg" class="logo-header" alt="Cover" />
+                            </a>
+                        </div>
+                        {{#if session}}
+                        <a class="navbar-item navbar-item-anim is-hidden-desktop is-hidden-mobile" href="/orders">
+                            Zamówienia
+                            <span class="material-icons icon_color"> notes </span>
+                        </a>
+                        {{/if}}
+
+                        <a class="navbar-item navbar-item-anim is-hidden-desktop is-hidden-mobile" href="/cart">
+                            Koszyk
+                            <span class="material-icons icon_color"> shopping_cart </span>
+                        </a>
+                        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div id="navbar-burger-elements" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item navbar-item-anim" href="#">O Nas</a>
+                            <a class="navbar-item navbar-item-anim" href="/iamfeelinglucky">Szczęśliwy traf</a>
+                            <a class="navbar-item navbar-item-anim" href="/books">Produkty</a>
+                            <a class="navbar-item navbar-item-anim" href="#">Ranking</a>
+                            <a class="navbar-item navbar-item-anim" href="#">Kontakt</a>
+                        </div>
+                        <div class="navbar-end">
+                            {{#if session}}
+                            <a class="navbar-item navbar-item-anim" href="/orders">
+                                Zamówienia
+                                <span class="material-icons icon_color is-hidden-touch"> notes </span>
+                            </a>
+                            {{/if}}
+
+                            <a class="navbar-item navbar-item-anim" href="/cart">
+                                Koszyk
+                                <span class="material-icons icon_color is-hidden-touch"> shopping_cart </span>
+                            </a>
+
+                            {{#if session}}
+                                <form action="/logout" method="POST" class="navbar-item is-self-align-center m-0 p-0">
+                                    <button class="button m-1 is-primary">
+                                        Wyloguj
+                                    </button>
+                                </form>
+                            {{else}}
+                                <div class="navbar-item">
+                                    <a class="button m-1" href="/login.html">
+                                        Zaloguj
+                                    </a>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <!-- desktop -->
+                </div>
+            </nav>
+        </header>
+
+        {{> message message=message}}
+
+        {{{body}}}
+    </div>
+
+    <div class="hero is-primary py-1"></div>
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-tablet">
+                <div class="column is-3 px-4 py-4">
+                    <h4 class="title is-4">O Cover</h4>
+                    <p><a href="/about">O Nas</a></p>
+                    <p><a href="/books">Nasze produkty</a></p>
+                    <p><a href="#">Akcje promocyjne</a></p>
+                    <p><a href="#">Ranking</a></p>
+                    <p><a href="/iamfeelinglucky">Szczęśliwy traf</a></p>
+                </div>
+                <div class="column is-3 px-4 py-4">
+                    <div class="block">
+                        <h4 class="title is-4">Konto klienta</h4>
+                        
+                        {{#if session}}
+                            <p><a href="/orders">Moje zamówienia</a></p>
+                            <p><a href="/logout">Wyloguj</a></p>
+                        {{else}}
+                            <p><a href="/login">Logowanie</a></p>
+                            <p><a href="/register">Rejestracja</a></p>
+                        {{/if}}
+                    </div>
+                    
+                    {{#if session}}
+                        {{#if (hasRole "admin" session)}}
+                            <div class="block">
+                                <h4 class="title is-4">Konto pracownika</h4>
+                                <p><a href="/admin/orders">Zamówienia klientów</a></p>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                </div>
+                <div class="column is-3 px-4 py-4">
+                    <h4 class="title is-4">Informacje</h4>
+                    <p><a href="">Regulamin zakupów</a></p>
+                    <p><a href="">Płatności</a></p>
+                    <p><a href="">Faktury</a></p>
+                    <p><a href="">Koszty dostawy</a></p>
+                    <p><a href="">Dowóz</a></p>
+                    <p><a href="">FAQ</a></p>
+                    <p><a href="">Kontakt</a></p>
+                    <p><a href="">Zwroty i reklamacje</a></p>
+                </div>
+                <div
+                    class="column is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center">
+                    <h4 class="footer-social-heading title has-text-centered is-size-4 py-1">
+                        Znajdziesz nas również
+                    </h4>
+                    <div class="logo-footer py-3">
+                        <img src="/assets/logo-wbgl.svg" />
+                    </div>
+                    <div class="container is-justify-content-flex-start">
+                        <a href="https://www.facebook.com/COVER-Hurtownia-Ksi%C4%85%C5%BCek-105050578207430"
+                            class="px-2">
+                            <span class="icon">
+                                <img src="/assets/social-media/facebook/facebook.svg" />
+                            </span>
+                        </a>
+                        <a href="https://www.instagram.com/coverhurtownia/" class="px-2">
+                            <span class="icon">
+                                <img src="/assets/social-media/instagram/instagram.svg" />
+                            </span>
+                        </a>
+                        <a href="https://twitter.com/CoverHurtownia" class="px-2">
+                            <span class="icon">
+                                <img src="/assets/social-media/twitter/twitter.svg" />
+                            </span>
+                        </a>
+                    </div>
+                    <div class="container">
+                        <p class="px-1 py-2">© 2021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <button id="btn-to-top" class="button is-primary"><span class="material-icons"> keyboard_arrow_up </span></button>
+
+    <script src="/js/main.js" type="module" defer></script>
+</body>
+
+</html>

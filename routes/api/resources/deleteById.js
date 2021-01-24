@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const deleteResourceById = (table, param) => respond(async request => {
@@ -7,21 +7,23 @@ export const deleteResourceById = (table, param) => respond(async request => {
     
     const id = request.params[param];
 
-    let query = database(table).delete().where({ id });
+    await database.transaction(async trx => {
+        let query = trx(table).delete().where({ id });
 
-    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
+        logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
+    
+        const deletedRows = await query.catch(error => {
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
+        });
 
-    const deletedRows = await query.catch(error => {
-        logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        if (deletedRows === 0) throw [404, {
+            userMessage: `zasób o id ${id} nie istnieje`,
+            devMessage: `resource with id ${id} doesn't exist`
+        }];
     });
 
-    if (deletedRows === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
-
-    return [200, {
-        status: "ok",
-        rows: deletedRows
-    }];
+    return [200, { status: "ok" }];
 });
 
 export default deleteResourceById;

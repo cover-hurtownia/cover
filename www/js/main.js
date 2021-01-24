@@ -1,4 +1,4 @@
-const cookies = Object.fromEntries(document.cookie.split(";").map(_ => _.split("=")));
+const cookies = Object.fromEntries(document.cookie.split("; ").map(_ => _.split("=")));
 
 /*
     themes
@@ -14,12 +14,10 @@ const themeLinkElement = document.getElementById("bulma-theme");
 const themeButtons = document.querySelectorAll(".theme-button");
 const changeTheme = theme => {
     if (isThemeValid(theme)) {
-        document.cookie = `theme=${theme}`;
+        document.cookie = `theme=${theme}; path=/`;
         themeLinkElement.href = `/css/bulma-${theme}.css`;
     }
 };
-
-changeTheme(theme);
 
 for (const button of themeButtons) {
     button.addEventListener("click", _ => changeTheme(button.value));
@@ -38,12 +36,10 @@ const fontSize = isFontSizeValid(cookies.font_size) ? cookies.font_size : defaul
 const fontSizeButtons = document.querySelectorAll(".font-size-button");
 const changeFontSize = font => {
     if (isFontSizeValid(font)) {
-        document.cookie = `font_size=${font}`;
-        document.body.dataset.fontSize = font;
+        document.cookie = `fontSize=${font}; path=/`;
+        document.documentElement.dataset.fontSize = font;
     }
 };
-
-changeFontSize(fontSize);
 
 for (const button of fontSizeButtons) {
     button.addEventListener("click", _ => changeFontSize(button.value));
@@ -54,7 +50,7 @@ for (const button of fontSizeButtons) {
 */
 
 const burger = document.querySelector(".navbar-burger");
-const navbarMenu = document.querySelector("#navbar-burger-elements");
+const navbarMenu = document.getElementById("navbar-burger-elements");
 
 burger.addEventListener("click", _ => {
     navbarMenu.classList.toggle("is-active");

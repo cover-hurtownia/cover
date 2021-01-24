@@ -11,6 +11,6 @@ router.post("", adminAuthorization, resources.post("publishers"));
 router.put("", adminAuthorization, resources.put("publishers"));
 router.delete("", adminAuthorization, resources.delete("publishers"));
 
-router.get("/:id", resources.getById("publishers"));
-router.put("/:id", adminAuthorization, resources.putById("publishers"));
-router.delete("/:id", adminAuthorization, resources.deleteById("publishers"));
+router.get("/:publisher_id", resources.getById("publishers", "publisher_id"));
+router.put("/:publisher_id", adminAuthorization, resources.putById("publishers", "publisher_id"));
+router.delete("/:publisher_id", adminAuthorization, resources.deleteById("publishers", "publisher_id"));

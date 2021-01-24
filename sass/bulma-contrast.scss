@@ -1,6 +1,8 @@
 @charset "utf-8";
 
 @import "_fonts";
-@import "_contrast";
+@import "_variables";
+@import "./contrast/_variables";
 @import "../node_modules/bulma/bulma";
+@import "./contrast/_overrides";
 @import "_overrides";
