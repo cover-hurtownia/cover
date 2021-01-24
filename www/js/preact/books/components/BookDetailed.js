@@ -13,7 +13,7 @@ export const BookDetailed = ({ book }) => {
     return h("div", { className: "columns box my-4" }, [
         h("div", { className: "column is-3" }, [
             h("figure", { className: "image box p-1", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
-                h("img", { src: `/images/${book.image_id}`, loading: "lazy" })
+                h("img", { className: "is-clickable", onclick: event => modal.showImage(event.target.src), src: `/images/${book.image_id}`, loading: "lazy" })
             ])
         ]),
         h("div", { className: "column is-9" }, [

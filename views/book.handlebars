@@ -3,7 +3,7 @@
         <div class="columns is-vcentered">
             <div class="column is-3">
                 <figure class="image">
-                    <img class="book-image" loading="lazy" src="/images/{{book.image_id}}"></img>
+                    <img id="book-image" class="is-clickable" loading="lazy" src="/images/{{book.image_id}}"></img>
                 </figure>
             </div>
             <div class="column is-9">
@@ -108,5 +108,9 @@
         window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
 
         modal.showCard("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`);
+    });
+
+    document.getElementById("book-image").addEventListener("click", event => {
+        modal.showImage(event.target.src);
     });
 </script>

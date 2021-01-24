@@ -13,7 +13,7 @@ export const BookCard = ({ book }) => {
         h("div", { className: "card" }, [
             h("div", { className: "card-image" }, [
                 h("figure", { className: "image", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
-                    h("img", { src: `/images/${book.image_id}`, loading: "lazy" })
+                    h("img", { className: "is-clickable", onclick: event => modal.showImage(event.target.src), src: `/images/${book.image_id}`, loading: "lazy" })
                 ])
             ]),
             h("div", { className: "card-content" }, [

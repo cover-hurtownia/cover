@@ -19,6 +19,10 @@ body {
     min-height: 100vh;
 }
 
+.is-clickable {
+    cursor: pointer;
+}
+
 .logo-header {
     max-height: $logo-header-height !important;
 }
