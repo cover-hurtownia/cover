@@ -63,19 +63,21 @@
                     </tbody>
                 </table>
                 {{#if book.is_purchasable}}
+                <form id="add-to-cart">
+                    <input type="hidden" name="id" value="{{book.product_id}}"/>
+                    <input type="hidden" name="name" value="{{book.name}}"/>
                     <div class="field has-addons">
                         <div class="control">
-                            <button class="button is-primary">
-                                Dodaj do koszyka
-                            </button>
+                            <input type="submit" class="button is-primary" value="Dodaj do koszyka"/>
                         </div>
                         <div class="control">
-                            <input class="input" type="number" value="1" min="1" max="{{book.quantity_available}}" />
+                            <input class="input" type="number" name="quantity" value="1" min="1" max="{{book.quantity_available}}" />
                         </div>
                         <div class="control">
                             <div class="button is-static">sztuk</div>
                         </div>
                     </div>
+                </form>
                 {{else}}
                     <div class="has-text-danger has-text-weight-bold">Produkt niedostępny.</div>
                 {{/if}}
@@ -86,3 +88,25 @@
         </div>
     </div>
 </section>
+
+<script type="module" defer>
+    import * as modal from "/js/modal.js";
+
+    document.getElementById("add-to-cart").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const formData = Object.fromEntries(new FormData(event.target));
+        const cartItem = window.localStorage.getItem("shopping_cart");
+
+        let cart;
+        try { cart = cartItem ? JSON.parse(cartItem) : {}; }
+        catch (_) { cart = {}; }
+
+        if (cart.hasOwnProperty(formData.id)) { cart[formData.id] += Number(formData.quantity); }
+        else { cart[formData.id] = Number(formData.quantity); }
+
+        window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
+
+        modal.showCard("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`);
+    });
+</script>
