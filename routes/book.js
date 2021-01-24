@@ -42,7 +42,7 @@ export const book = async (request, response) => {
     response.status(200);
     response.render("book", {
         meta: {
-            url: request.protocol + '://' + request.get('host'),
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: `Cover Hurtownia - ${book.title}`,
             description: `${book.title} - ${book.authors.join(", ")} - ${book.publisher}`,
             image: `/images/${book.image_id}`

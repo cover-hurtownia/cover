@@ -75,7 +75,7 @@ app.use("/images", images);
 app.get('/', (request, response) => {
     response.render("home", {
         meta: {
-            url: request.protocol + '://' + request.get('host'),
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia",
             description: "Lorem ipsum",
             image: "/assets/banner.png"
@@ -91,7 +91,7 @@ app.post('/logout', logout);
 app.get('/books', (request, response) => {
     response.render("books", {
         meta: {
-            url: request.protocol + '://' + request.get('host'),
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Książki",
             description: "Wyszukiwanie książek",
             image: "/assets/banner.png"
@@ -103,7 +103,7 @@ app.get('/books', (request, response) => {
 app.get('/cart', (request, response) => {
     response.render("cart", {
         meta: {
-            url: request.protocol + '://' + request.get('host'),
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Koszyk",
             description: "Twój koszyk",
             image: "/assets/banner.png"
@@ -115,7 +115,7 @@ app.get('/cart', (request, response) => {
 app.get('/admin/orders', (request, response) => {
     response.render("orders", {
         meta: {
-            url: request.protocol + '://' + request.get('host'),
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Zamówienia",
             description: "Wyszukiwanie zamówień",
             image: "/assets/banner.png"
@@ -128,7 +128,7 @@ app.use('*', (request, response) => {
     response.status(404);
     response.render('message', {
         meta: {
-            url: request.protocol + '://' + request.get('host') + request.originalUrl,
+            url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - 404",
             description: "Błąd żądania",
             image: "/assets/banner.png"
