@@ -25,7 +25,8 @@ export const getBookById = respond(async request => {
         .leftJoin("authors", "authors.id", "book_authors.author_id")
         .leftJoin("book_tags", "books.id", "book_tags.book_id")
         .leftJoin("tags", "tags.id", "book_tags.tag_id")
-        .groupBy("books.id");
+        .groupBy("books.id")
+        .limit(1);
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 

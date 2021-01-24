@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -78,7 +78,8 @@ app.get('/', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia",
             description: "Lorem ipsum",
-            image: "/assets/banner.png"
+            image: "/assets/banner.png",
+            cookies: request.cookies
         },
         session: request.session?.user
     });
@@ -94,7 +95,8 @@ app.get('/books', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Książki",
             description: "Wyszukiwanie książek",
-            image: "/assets/banner.png"
+            image: "/assets/banner.png",
+            cookies: request.cookies
         },
         session: request.session?.user
     });
@@ -106,7 +108,8 @@ app.get('/cart', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Koszyk",
             description: "Twój koszyk",
-            image: "/assets/banner.png"
+            image: "/assets/banner.png",
+            cookies: request.cookies
         },
         session: request.session?.user
     });
@@ -118,7 +121,8 @@ app.get('/admin/orders', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Zamówienia",
             description: "Wyszukiwanie zamówień",
-            image: "/assets/banner.png"
+            image: "/assets/banner.png",
+            cookies: request.cookies
         },
         session: request.session?.user
     });
@@ -131,7 +135,8 @@ app.use('*', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - 404",
             description: "Błąd żądania",
-            image: "/assets/banner.png"
+            image: "/assets/banner.png",
+            cookies: request.cookies
         },
         message: {
             className: "is-danger",

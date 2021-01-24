@@ -14,7 +14,8 @@ export const logout = async (request, response) => {
                     url: request.protocol + '://' + request.get('host') + request.originalUrl,
                     title: "Cover Hurtownia",
                     description: "Błąd serwera",
-                    image: "/assets/banner.png"
+                    image: "/assets/banner.png",
+                    cookies: request.cookies
                 },
                 message: {
                     className: "is-danger",
@@ -38,7 +39,8 @@ export const logout = async (request, response) => {
                     url: request.protocol + '://' + request.get('host') + request.originalUrl,
                     title: "Cover Hurtownia",
                     description: "Wylogowano",
-                    image: "/assets/banner.png"
+                    image: "/assets/banner.png",
+                    cookies: request.cookies
                 },
                 message: {
                     className: "is-success",

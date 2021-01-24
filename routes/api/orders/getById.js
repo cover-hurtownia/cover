@@ -22,7 +22,8 @@ export const getOrderById = respond(async request => {
             .innerJoin("order_status", "orders.order_status_id", "order_status.id")
             .leftJoin("order_products", "orders.id", "order_products.order_id")
             .leftJoin("users", "orders.user_id", "users.id")
-            .groupBy("orders.id");
+            .groupBy("orders.id")
+            .limit(1);
 
         logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 

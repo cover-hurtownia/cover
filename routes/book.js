@@ -45,7 +45,8 @@ export const book = async (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: `Cover Hurtownia - ${book.title}`,
             description: `${book.title} - ${book.authors.join(", ")} - ${book.publisher}`,
-            image: `/images/${book.image_id}`
+            image: `/images/${book.image_id}`,
+            cookies: request.cookies
         },
         book,
         session: request.session?.user

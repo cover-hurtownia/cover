@@ -7,7 +7,7 @@ export const getResourceById = (table, param) => respond(async request => {
     
     const id = request.params[param];
 
-    let query = database(table).where({ id });
+    let query = database(table).where({ id }).limit(1);
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
 

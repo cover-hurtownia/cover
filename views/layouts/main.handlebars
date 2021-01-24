@@ -1,4 +1,8 @@
+{{#if meta.cookies.fontSize}}
+<html data-font-size="{{meta.cookies.fontSize}}">
+{{else}}
 <html>
+{{/if}}
 
 <head>
     <meta charset="utf-8">
@@ -19,7 +23,11 @@
     <link rel="preload" href="/css/bulma-dark.css" as="style" />
     <link rel="preload" href="/css/bulma-contrast.css" as="style" />
 
-    <link id="bulma-theme" href="/css/bulma-light.css" type="text/css" rel="stylesheet" />
+    {{#if meta.cookies.theme}}
+        <link id="bulma-theme" href="/css/bulma-{{meta.cookies.theme}}.css" type="text/css" rel="stylesheet" />
+    {{else}}
+        <link id="bulma-theme" href="/css/bulma-light.css" type="text/css" rel="stylesheet" />
+    {{/if}}
     <link href="/css/style.css" type="text/css" rel="stylesheet" />
     <title>{{meta.title}}</title>
 </head>

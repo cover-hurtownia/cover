@@ -184,10 +184,16 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
             ])
         ])
     ]) : [],
+    order.comment
+        ? h("div", { className: "block box" }, [
+            h("h3", { className: "title is-size-3" }, "Wiadomość od klienta"),
+            h("p", { className: "is-italic" }, order.comment)
+        ])
+        : [],
     h("div", { className: "block" }, [
         ...order.products.map(product => h("div", { className: "columns is-vcentered" }, [
             h("div", { className: "column is-2" }, [
-                h("img", { className: "box", src: `/images/${product.image_id}` })
+                h("img", { className: "box p-1", src: `/images/${product.image_id}` })
             ]),
             h("div", { className: "column" }, [
                 h("div", { className: "is-size-4 has-text-weight-light" }, product.name),
