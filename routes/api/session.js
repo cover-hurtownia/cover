@@ -1,8 +1,9 @@
+import logger from "../../logger.js";
 import { authenticated } from "../utilities.js";
 import { respond } from "../utilities.js";
 
 export const session = [authenticated, respond(async request => {
-    const database = request.get("database");
+    const database = request.app.get("database");
     
     const rolesQuery = database
         .select("roles.role")

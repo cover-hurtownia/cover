@@ -1,39 +1,38 @@
-$width-logo-desktop: 8em;
-$height-logo-desktop: 7em;
-$width-logo-mobile-tablet: 6em;
-$height-logo-mobile-tablet: 8em;
-$width-logo-footer: 15em;
-$height-logo-footer: 12em;
+$logo-header-height: 2.5rem;
+$logo-header-desktop-height: 4.0rem;
 
 html {
     scroll-behavior: smooth;
 }
 
-body[data-font-size="large"] {
-    font-size: 1.5em;
+html[data-font-size="large"] {
+    font-size: 1.25em !important;
 }
 
-body[data-font-size="normal"] {
-    font-size: 1.0em;
+html[data-font-size="normal"] {
+    font-size: 1.0em !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.logo-header {
+    max-height: $logo-header-height !important;
+}
+
+.logo-header-desktop {
+    max-height: $logo-header-desktop-height !important;
+}
+
+#wrapper {
+    flex-grow: 1;
 }
 
 summary {
     cursor: pointer;
-}
-
-.logo-footer {
-    max-width: $width-logo-footer;
-    max-height: $height-logo-footer;
-}
-
-.logo-header-mobile-tablet {
-    max-width: $width-logo-mobile-tablet;
-    max-height: $height-logo-mobile-tablet;
-}
-
-.logo-header-desktop {
-    max-width: $width-logo-desktop;
-    max-height: $height-logo-desktop;
 }
 
 .navbar-item-anim {

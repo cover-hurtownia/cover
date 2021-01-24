@@ -22,7 +22,7 @@ export const BookCard = ({ book }) => {
                 ]),
                 h("div", { className: "has-text-centered" }, [
                     h("span", {}, utils.intersperse(book.authors.map(author => h("a", {
-                        href: `/books.html?author=${author}`
+                        href: `/books?author=${author}`
                     }, author)), ", "))
                 ])
             ]),

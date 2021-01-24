@@ -7805,26 +7805,28 @@ h6 {
 html {
   scroll-behavior: smooth; }
 
-body[data-font-size="large"] {
-  font-size: 1.5em; }
+html[data-font-size="large"] {
+  font-size: 1.25em !important; }
 
-body[data-font-size="normal"] {
-  font-size: 1.0em; }
+html[data-font-size="normal"] {
+  font-size: 1.0em !important; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; }
+
+.logo-header {
+  max-height: 2.5rem !important; }
+
+.logo-header-desktop {
+  max-height: 4rem !important; }
+
+#wrapper {
+  flex-grow: 1; }
 
 summary {
   cursor: pointer; }
-
-.logo-footer {
-  max-width: 15em;
-  max-height: 12em; }
-
-.logo-header-mobile-tablet {
-  max-width: 6em;
-  max-height: 8em; }
-
-.logo-header-desktop {
-  max-width: 8em;
-  max-height: 7em; }
 
 .navbar-item-anim {
   position: relative; }

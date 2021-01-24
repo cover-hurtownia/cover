@@ -1,0 +1,71 @@
+<section class="section">
+    <div class="container box">
+        <div class="columns is-vcentered">
+            <div class="column is-3">
+                <figure class="image">
+                    <img class="book-image" loading="lazy" src="/images/{{book.image_id}}"></img>
+                </figure>
+            </div>
+            <div class="column">
+                <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
+                <table class="table is-fullwidth is-striped">
+                    <tbody>
+                        <tr>
+                            <td class="has-text-grey-dark">Tytuł</td>
+                            <td>{{book.title}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Autorzy</td>
+                            <td>
+                                <ul>
+                                    {{#each book.authors}}
+                                        <li>{{> author author=this}}</li>
+                                    {{/each}}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Wydawca</td>
+                            <td>{{> publisher publisher=book.publisher}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Kategorie</td>
+                            <td>
+                                {{#if book.tags}}
+                                    {{#each book.tags}}
+                                        {{> tag tag=this}}
+                                    {{/each}}
+                                {{else}}
+                                    <span class="is-italic has-text-grey">(brak)</span>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Format</td>
+                            <td>{{showFormat book.book_format}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">ISBN</td>
+                            <td>{{book.isbn}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Strony</td>
+                            <td>{{book.pages}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-grey-dark">Ilość</td>
+                            <td>{{book.quantity_available}}</td>
+                        </tr>
+                        <tr class="has-text-weight-bold">
+                            <td class="has-text-grey-dark">Cena</td>
+                            <td>{{showPrice book.price}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <div class="book-description">{{book.description}}</div>
+        </div>
+    </div>
+</section>

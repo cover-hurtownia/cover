@@ -13,7 +13,6 @@ const themeLinkElement = document.getElementById("bulma-theme");
 
 const themeButtons = document.querySelectorAll(".theme-button");
 const changeTheme = theme => {
-    console.log("changetheme", theme, cookies);
     if (isThemeValid(theme)) {
         document.cookie = "theme=" + theme;
         themeLinkElement.href = `/css/bulma-${theme}.css`;
@@ -40,7 +39,7 @@ const fontSizeButtons = document.querySelectorAll(".font-size-button");
 const changeFontSize = font => {
     if (isFontSizeValid(font)) {
         document.cookie = `font_size=${font}`;
-        document.body.dataset.fontSize = font;
+        document.documentElement.dataset.fontSize = font;
     }
 };
 
@@ -55,7 +54,7 @@ for (const button of fontSizeButtons) {
 */
 
 const burger = document.querySelector(".navbar-burger");
-const navbarMenu = document.querySelector("#navbar-burger-elements");
+const navbarMenu = document.getElementById("navbar-burger-elements");
 
 burger.addEventListener("click", _ => {
     navbarMenu.classList.toggle("is-active");

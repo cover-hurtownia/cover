@@ -102,4 +102,4 @@ export const respond = handler => async (request, response) => {
             response.send(body);
         }
     }
-}
+};

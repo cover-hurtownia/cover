@@ -20,7 +20,7 @@ export const Product = ({ productId, response }) => {
                         ])
                     ]),
                     h("div", { className: "column is-5" }, [
-                        h("span", { className: "title is-3" }, h("a", { href: `/books.html?name=${response.data.name}` }, response.data.name))
+                        h("span", { className: "title is-3" }, h("a", { href: `/books?name=${response.data.name}` }, response.data.name))
                     ]),
                     h("div", { className: "column is-3" }, [
                         h("div", { className: "field has-addons" }, [

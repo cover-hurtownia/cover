@@ -93,7 +93,7 @@ export const register = respond(async request => {
     logger.info(`/api/register: new user registered: ${username}`);
 
     // Update session, generates a session cookie and sends it back.
-    request.session.user = { id, username };
+    request.session.user = { id, username, roles: [] };
 
     return [200, { status: "ok", user: { username, roles: [] } }];
 });

@@ -1,7 +1,8 @@
 @charset "utf-8";
 
 @import "_fonts";
+@import "_variables";
 @import "./light/_variables";
 @import "../node_modules/bulma/bulma";
 @import "./light/_overrides";
-@import "_style";
+@import "_overrides";

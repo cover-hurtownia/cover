@@ -117,6 +117,8 @@
             (async () => {
                 const session = await API.session();
 
+                console.log(session);
+
                 if (session.status === "ok") {
                     document.getElementById("username").textContent = session.user.username;
                     document.body.classList.add("is-logged-in");

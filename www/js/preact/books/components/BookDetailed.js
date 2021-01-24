@@ -9,8 +9,6 @@ const h = Preact.h;
 export const BookDetailed = ({ book }) => {
     const shoppingCart = useShoppingCart();
     const [amount, setAmount] = useState(1);
-    
-    console.log(amount);
 
     return h("div", { className: "columns box my-4" }, [
         h("div", { className: "column is-3" }, [
@@ -24,19 +22,19 @@ export const BookDetailed = ({ book }) => {
             ]),
             h("div", { className: "" }, [
                 utils.intersperse(book.authors.map(author => h("a", {
-                    href: `/books.html?author=${author}`
+                    href: `/books?author=${author}`
                 }, author)), ", ")
             ]),
             h("table", { className: "table is-fullwidth" }, [
                 h("tr", {}, [
                     h("td", { className: "has-text-grey" }, "Wydawnictwo: "),
-                    h("td", {}, h("a", { href: `/books.html?publisher=${book.publisher}` }, book.publisher))
+                    h("td", {}, h("a", { href: `/books?publisher=${book.publisher}` }, book.publisher))
                 ]),
                 h("tr", {}, [
                     h("td", { className: "has-text-grey" }, "Kategorie: "),
                     h("td", {}, book.tags.length === 0
                         ? h("span", { className: "is-italic has-text-grey" }, "(brak)")
-                        : book.tags.map(tag => h("a", { className: "tag m-1", href: `/books.html?tag=${tag}` }, utils.showTag(tag))))
+                        : book.tags.map(tag => h("a", { className: "tag m-1", href: `/books?tag=${tag}` }, utils.showTag(tag))))
                 ]),
                 h("tr", {}, [
                     h("td", { className: "has-text-grey" }, "Format: "),

@@ -44,7 +44,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                     h("span", { className: "has-text-grey" }, "Użytkownik: "),
                     order.user_id === null
                         ? h("span", { className: "has-text-grey-light is-italic" }, "(brak)")
-                        : h("span", { className: "is-family-monospace" }, h("a", { href: `orders.html?username=${order.username}` }, order.username))
+                        : h("span", { className: "is-family-monospace" }, h("a", { href: `/admin/orders?username=${order.username}` }, order.username))
                 ])
             ])
         ]),

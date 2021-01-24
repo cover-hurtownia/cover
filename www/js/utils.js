@@ -1,4 +1,4 @@
-import * as constants from "/js/constants.js";
+import * as constants from "./constants.js";
 
 export const showPrice = price => `${(price).toFixed(2).replace(".", ",")}zł`
 export const showTag = tag => (constants.tags)?.[tag] ?? "???";
