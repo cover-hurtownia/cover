@@ -28,16 +28,111 @@ export const book = async (request, response) => {
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
-    const books = await query.then(books => books.map(book => ({ 
-        ...book,
-        authors: book.authors?.split(";") ?? [],
-        tags: book.tags?.split(";") ?? []
-    }))).catch(error => {
+    let books
+
+    try {
+        books = await query.then(books => books.map(book => ({ 
+            ...book,
+            authors: book.authors?.split(";") ?? [],
+            tags: book.tags?.split(";") ?? []
+        })))
+    }
+    catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
-    });
+        
+        response.status(503);
+        response.render('message', {
+            meta: {
+                url: request.protocol + '://' + process.env.DOMAIN,
+                title: "Cover Hurtownia - 503",
+                description: "Błąd serwera",
+                image: "/assets/banner.png",
+                cookies: request.cookies
+            },
+            message: {
+                className: "is-danger",
+                title: "Błąd",
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
+                buttons: [
+                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
+                ]
+            },
+            session: request.session?.user
+        });
+
+        return;
+    }
+
+    if (books.length === 0) {
+        response.status(404);
+        response.render('message', {
+            meta: {
+                url: request.protocol + '://' + process.env.DOMAIN,
+                title: "Cover Hurtownia - 404",
+                description: "Błąd żądania",
+                image: "/assets/banner.png",
+                cookies: request.cookies
+            },
+            message: {
+                className: "is-danger",
+                title: "Błąd",
+                content: "Błąd 404: Wybrana książka nie istnieje.",
+                buttons: [
+                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
+                ]
+            },
+            session: request.session?.user
+        });
+
+        return;
+    }
 
     const book = books[0];
+
+    const similarProductsQuery = database
+        .select(["products.*"])
+        .from(database
+            .select(["order_products.*"])
+            .from("order_products")
+            .where("order_products.product_id", "=", book.product_id)
+            .as("orders_with_product")
+        )
+        .innerJoin("order_products", "orders_with_product.order_id", "order_products.order_id")
+        .innerJoin("products", "products.id", "order_products.product_id")
+        .where("products.id", "!=", book.product_id)
+        .groupBy("products.id")
+        .limit(12);
+
+    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${similarProductsQuery.toString()}`);
+
+    let similarProducts;
+
+    try { similarProducts = await similarProductsQuery; }
+    catch (error) {
+        logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+
+        response.status(503);
+        response.render('message', {
+            meta: {
+                url: request.protocol + '://' + process.env.DOMAIN,
+                title: "Cover Hurtownia - 503",
+                description: "Błąd serwera",
+                image: "/assets/banner.png",
+                cookies: request.cookies
+            },
+            message: {
+                className: "is-danger",
+                title: "Błąd",
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
+                buttons: [
+                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
+                ]
+            },
+            session: request.session?.user
+        });
+
+        return;
+    };
 
     response.status(200);
     response.render("book", {
@@ -49,6 +144,7 @@ export const book = async (request, response) => {
             cookies: request.cookies
         },
         book,
+        similarProducts,
         session: request.session?.user
     });
 };

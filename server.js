@@ -52,7 +52,10 @@ app.engine("handlebars", handlebars({
         equals: (arg1, arg2) => {
             console.log(arg1, arg2);
             return arg1 == arg2
-        }
+        },
+        not: p => !p,
+        and: (p, q) => p && q,
+        or: (p, q) => p || q
     }
 }));
 app.use(session({

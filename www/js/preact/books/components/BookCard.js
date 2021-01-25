@@ -12,8 +12,10 @@ export const BookCard = ({ book }) => {
     return h("div", { className: "column is-2-fullhd is-3-widescreen is-4-desktop is-6-tablet" }, [
         h("div", { className: "card" }, [
             h("div", { className: "card-image" }, [
-                h("figure", { className: "image", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
-                    h("img", { className: "is-clickable", onclick: event => modal.showImage(event.target.src), src: `/images/${book.image_id}`, loading: "lazy" })
+                h("a", { href: `/book/${book.id}` }, [
+                    h("figure", { className: "image", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
+                        h("img", { src: `/images/${book.image_id}`, loading: "lazy" })
+                    ])
                 ])
             ]),
             h("div", { className: "card-content" }, [
