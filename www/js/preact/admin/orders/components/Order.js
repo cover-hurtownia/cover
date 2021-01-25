@@ -105,16 +105,16 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.accept(order.id);
         
                         if (response.status === "ok") {
-                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało zaakceptowane.`, [
+                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało zaakceptowane.`, "is-success", [
                                 {
-                                    classList: ["is-primary"],
+                                    classList: [],
                                     textContent: "Odśwież",
                                     onClick: _ => window.location.reload()
                                 }
                             ]);
                         }
                         else {
-                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -125,16 +125,16 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.send(order.id);
         
                         if (response.status === "ok") {
-                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało wysłane.`, [
+                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało wysłane.`, "is-success", [
                                 {
-                                    classList: ["is-primary"],
+                                    classList: [],
                                     textContent: "Odśwież",
                                     onClick: _ => window.location.reload()
                                 }
                             ]);
                         }
                         else {
-                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -145,16 +145,16 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.delivered(order.id);
         
                         if (response.status === "ok") {
-                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało dostarczone.`, [
+                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało dostarczone.`, "is-success", [
                                 {
-                                    classList: ["is-primary"],
+                                    classList: [],
                                     textContent: "Odśwież",
                                     onClick: _ => window.location.reload()
                                 }
                             ]);
                         }
                         else {
-                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -167,16 +167,16 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.cancel(order.id);
         
                         if (response.status === "ok") {
-                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało anulowane.`, [
+                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało anulowane.`, "is-success", [
                                 {
-                                    classList: ["is-primary"],
+                                    classList: [],
                                     textContent: "Odśwież",
                                     onClick: _ => window.location.reload()
                                 }
                             ]);
                         }
                         else {
-                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
                             console.error(response.error.devMessage);
                         }
                     }

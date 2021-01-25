@@ -62,7 +62,7 @@
                         </tr>
                     </tbody>
                 </table>
-                {{#if book.is_purchasable}}
+                {{#if (and book.is_purchasable (not (equals book.quantity_available 0)))}}
                 <form id="add-to-cart">
                     <input type="hidden" name="id" value="{{book.product_id}}"/>
                     <input type="hidden" name="name" value="{{book.name}}"/>
@@ -83,16 +83,39 @@
                 {{/if}}
             </div>
         </div>
+        {{#if book.description}}
         <div>
+            <div class="subtitle">Opis</div>
             <div class="book-description">{{book.description}}</div>
         </div>
+        {{/if}}
+        {{#if similarProducts}}
+        <div>
+            <div class="subtitle">Klienci którzy zakupili ten produkt kupili również:</div>
+            <div class="columns">
+                {{#each similarProducts as |product|}}
+                    <div class="column is-1">
+                        <div class="card">
+                            <div class="card-image">
+                                <a href="/books?name={{product.name}}" class="m-0 p-0" title="{{product.name}}">
+                                    <figure class="image">
+                                        <img src="/images/{{product.image_id}}" />
+                                    </figure>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
     </div>
 </section>
 
 <script type="module" defer>
     import * as modal from "/js/modal.js";
 
-    document.getElementById("add-to-cart").addEventListener("submit", event => {
+    document.getElementById("add-to-cart")?.addEventListener("submit", event => {
         event.preventDefault();
 
         const formData = Object.fromEntries(new FormData(event.target));
@@ -107,7 +130,7 @@
 
         window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
 
-        modal.showCard("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`);
+        modal.showMessage("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`, "is-success");
     });
 
     document.getElementById("book-image").addEventListener("click", event => {

@@ -60,10 +60,12 @@ export const CartApp = _ => {
             }
             else return "błąd formularza";
         })(),
+        deliveryType: getField("deliveryType") ? false : "wybierz metodę wysyłki",
         termsOfService: getField("termsOfService") ? false : "wymagana akceptacja regulaminu"
     };
 
     const isFormCorrect = Object.values(formValidationErrors).reduce((correct, error) => correct ? !error : correct, true);
+    const formProgress = Object.values(formValidationErrors).reduce((sum, error) => error ? sum : sum + 1, 0) / Object.keys(formValidationErrors).length;
     
     useEffect(async () => {
         const responses = await Promise.all(Object.keys(shoppingCart.products).map(id => {
@@ -107,9 +109,9 @@ export const CartApp = _ => {
         });
 
         if (response.status === "ok") {
-            modal.showCard("Sukces", `Zamówienie #${response.id} zostało złożone pomyślnie.`, [
+            modal.showMessage("Sukces", `Zamówienie #${response.id} zostało złożone pomyślnie.`, "is-success", [
                 {
-                    classList: ["is-primary"],
+                    classList: [],
                     textContent: "Przejdź do strony głównej",
                     onClick: _ => window.location = "/"
                 }
@@ -117,7 +119,7 @@ export const CartApp = _ => {
             shoppingCart.clear();
         }
         else {
-            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
             console.error(response.error.devMessage);
         }
 
@@ -139,6 +141,7 @@ export const CartApp = _ => {
                     h("div", { className: "block" }, [
                         Object.keys(shoppingCart.products).map(id => h(Product, { productId: id, response: cachedProducts[id] }))
                     ]),
+                    h("progress", { className: `progress is-large ${formProgress === 1.0 ? "is-success" : "is-danger"}`, value: (formProgress * 100.0).toString(), max: "100" }),
                     h("div", { className: "columns" }, [
                         h("div", { className: "column is-8" }, [
                             h("div", { className: "box" }, [
@@ -323,7 +326,10 @@ export const CartApp = _ => {
                                                         ])
                                                     ])
                                                 ])
-                                            ])
+                                            ]),
+                                            formValidationErrors.deliveryType
+                                                ? h("p", { className: "help is-danger" }, formValidationErrors.deliveryType)
+                                                : []
                                         ])
                                         : h("article", { className: "message is-danger" }, [
                                             h("div", { className: "message-body" }, [

@@ -18,6 +18,7 @@ import book from "./routes/book.js";
 import logout from "./routes/logout.js";
 
 import * as utils from "./www/js/utils.js"; 
+import ranking from "./routes/ranking.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -46,7 +47,15 @@ app.engine("handlebars", handlebars({
         showDate: utils.showDate,
         showDatetime: utils.showDateTime,
         getStatusClassName: utils.getStatusClassName,
-        hasRole: (role, user) => user.roles.includes(role) 
+        hasRole: (role, user) => user.roles.includes(role),
+        inc: x => Number(x) + 1,
+        equals: (arg1, arg2) => {
+            console.log(arg1, arg2);
+            return arg1 == arg2
+        },
+        not: p => !p,
+        and: (p, q) => p && q,
+        or: (p, q) => p || q
     }
 }));
 app.use(session({
@@ -114,6 +123,8 @@ app.get('/cart', (request, response) => {
         session: request.session?.user
     });
 });
+
+app.get('/ranking', ranking);
 
 app.get('/aboutUs', (request, response) => {
     response.render("aboutUs", {

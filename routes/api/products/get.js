@@ -44,7 +44,11 @@ export const getProduct = respond(async request => {
 
     ordering = (ordering !== "desc" && ordering !== "asc") ? "asc" : ordering;
     
-    let query = database("products");
+    let query = database("products")
+        .select("products.*")
+        .count("order_products.product_id", { as: "orders" })
+        .leftJoin("order_products", "order_products.product_id", "products.id")
+        .groupBy("products.id");
 
     if (id) {
         if (Array.isArray(id)) query = query.whereIn("id", id);
@@ -68,6 +72,7 @@ export const getProduct = respond(async request => {
     else if (orderBy === "quantity") query = query.orderBy("products.quantity_available", ordering);
     else if (orderBy === "name") query = query.orderBy("products.title", ordering);
     else if (orderBy === "price") query = query.orderBy("products.price", ordering);
+    else if (orderBy === "orders") query = query.orderBy("orders", ordering);
 
     const total = (await query.clone()).length;
 

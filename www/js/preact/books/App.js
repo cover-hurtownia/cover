@@ -124,7 +124,8 @@ export const BooksApp = ({ query: initialQuery }) => {
                     price: "Ceny",
                     title: "Tytułu",
                     pages: "Liczby stron",
-                    quantity: "Liczby sztuk"
+                    quantity: "Liczby sztuk",
+                    orders: "Liczby zamówień"
                 },
             }, [
                 h("div", { className: "field has-addons" }, [
