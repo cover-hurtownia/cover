@@ -65,6 +65,7 @@ export const getBook = respond(async request => {
             database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])
+        .count("order_products.product_id", { as: "orders" })
         .from("books")
         .innerJoin("products", "books.product_id", "products.id")
         .innerJoin("publishers", "books.publisher_id", "publishers.id")
@@ -73,6 +74,7 @@ export const getBook = respond(async request => {
         .leftJoin("authors", "authors.id", "book_authors.author_id")
         .leftJoin("book_tags", "books.id", "book_tags.book_id")
         .leftJoin("tags", "tags.id", "book_tags.tag_id")
+        .leftJoin("order_products", "order_products.product_id", "products.id")
         .groupBy("books.id");
 
     if (id) {
@@ -138,6 +140,7 @@ export const getBook = respond(async request => {
     else if (orderBy === "price") query = query.orderBy("products.price", ordering);
     else if (orderBy === "pages") query = query.orderBy("books.pages", ordering);
     else if (orderBy === "publicationDate") query = query.orderBy("books.publication_date", ordering);
+    else if (orderBy === "orders") query = query.orderBy("orders", ordering);
 
     const total = (await query.clone()).length;
 
