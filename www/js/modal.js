@@ -78,6 +78,54 @@ export const showImage = src => {
     return modalEl;
 };
 
+export const showMessage = (title, body, className, buttons = []) => {
+    const modalEl = document.createElement("div");
+    modalEl.classList.add("modal", "is-active");
+
+    const messageEl = document.createElement("div");
+    messageEl.classList.add("message", "box", "p-0", className);
+
+    const messageHeaderEl = document.createElement("div");
+    messageHeaderEl.classList.add("message-header");
+
+    const messageTitleEl = document.createElement("p");
+    messageTitleEl.textContent = title;
+
+    const buttonEl = document.createElement("button");
+    buttonEl.classList.add("delete");
+
+    messageHeaderEl.append(messageTitleEl, buttonEl);
+
+    const messageBodyEl = document.createElement("div");
+    messageBodyEl.classList.add("message-body");
+    messageBodyEl.textContent = body;
+
+    messageEl.append(messageHeaderEl, messageBodyEl);
+
+    const buttonsEl = document.createElement("footer");
+    buttonsEl.classList.add("m-2");
+
+    for (const button of buttons) {
+        const buttonEl = document.createElement("button");
+        buttonEl.classList.add("button", "is-small", ...(button.classList ?? []));
+        buttonEl.textContent = button.textContent;
+
+        if (button.onClick) buttonEl.addEventListener("click", button.onClick);
+        buttonsEl.append(buttonEl);
+    }
+
+    messageEl.append(buttonsEl);
+
+    modalEl.append(messageEl);
+
+    buttonEl.addEventListener("click", _ => {
+        modalEl.remove();
+    });
+
+    document.body.append(modalEl);
+    return modalEl;
+};
+
 export const showCard = (title, body, buttons = []) => {
     const modalEl = document.createElement("div");
     modalEl.classList.add("modal", "is-active", "is-danger");

@@ -107,7 +107,7 @@
 
         window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
 
-        modal.showCard("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`);
+        modal.showMessage("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`, "is-success");
     });
 
     document.getElementById("book-image").addEventListener("click", event => {

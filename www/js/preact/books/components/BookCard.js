@@ -37,7 +37,7 @@ export const BookCard = ({ book }) => {
                             ]),
                             h("button", { className: "button is-small is-primary", onclick: _ => {
                                 shoppingCart.add(book.product_id)
-                                modal.showCard("Koszyk", `Produkt "${book.name}" został dodany do koszyka.`);
+                                modal.showMessage("Koszyk", `Produkt "${book.name}" został dodany do koszyka.`, "is-success");
                             } }, "Dodaj do koszyka")
                         ])
                         : [

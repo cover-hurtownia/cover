@@ -109,9 +109,9 @@ export const CartApp = _ => {
         });
 
         if (response.status === "ok") {
-            modal.showCard("Sukces", `Zamówienie #${response.id} zostało złożone pomyślnie.`, [
+            modal.showMessage("Sukces", `Zamówienie #${response.id} zostało złożone pomyślnie.`, "is-success", [
                 {
-                    classList: ["is-primary"],
+                    classList: [],
                     textContent: "Przejdź do strony głównej",
                     onClick: _ => window.location = "/"
                 }
@@ -119,7 +119,7 @@ export const CartApp = _ => {
             shoppingCart.clear();
         }
         else {
-            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
+            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
             console.error(response.error.devMessage);
         }
 

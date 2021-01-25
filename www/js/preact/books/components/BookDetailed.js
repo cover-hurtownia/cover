@@ -73,7 +73,7 @@ export const BookDetailed = ({ book }) => {
                         h("div", { className: "control" }, [
                             h("button", { className: "button is-primary", onclick: _ => {
                                 shoppingCart.add(book.product_id, amount);
-                                modal.showCard("Koszyk", `Produkt "${book.name}" (x${amount}) został dodany do koszyka.`);
+                                modal.showMessage("Koszyk", `Produkt "${book.name}" (x${amount}) został dodany do koszyka.`, "is-success");
                             } }, "Dodaj do koszyka")
                         ]),
                         h("div", { className: "control" }, [
