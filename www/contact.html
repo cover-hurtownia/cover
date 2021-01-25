@@ -15,78 +15,59 @@
   <title>Cover Hurtownia</title>
 </head>
 <body>
-  {{header}}
+  <!-- {{header}} -->
   <main>
-    <section class="hero is-primary">
-      <div class="hero-body py-2">
-          <div class="container is-max-desktop">
-                  <div class="columns">
-                      <div class="column is-8 is-offset-2">
-                              <div class="field">
-
-                              </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
-    <section class="section px-0 py-2" id='search-bar-section'>
-      <div class="container is-max-desktop" >
-        <div class="column is-offset-one-quarter is-half is-desktop">
-        </div>
-      </div>
-    </section>
     <section class="hero hero-body my-4">
       <div class="container is-flex is-justify-content-center">
         <div class="column is-four-fifths">
           <div class="box">
             <h1 class="is-title is-size-2 has-text-centered my-5">Kontakt</h1>
-          <form id="contact" class="my-4 px-5">
-            <div class="field py-3">
-              <label class="label">Imię:</label>
-              <div class="control">
-                <input class="input" type="text" id="user-name" name="userName" placeholder="Adam">
+            <form id="contact-form" class="my-4 px-5" method="POST" action="">
+              <div class="field py-3">
+                <label for="user-name" class="label">Imię:</label>
+                <div class="control">
+                  <input class="input" type="text" id="user-name" name="userName" placeholder="Jan" required/>
+                </div>
               </div>
-            </div>
-            <div class="field py-3">
-              <label class="label">Adres e-mail:</label>
-              <div class="control">
-                <input class="input" type="email" id="user-email" name="userEmail" placeholder="jankowalski@mail.pl" value="">
+              <div class="field py-3">
+                <label for="user-email" class="label">Adres e-mail:</label>
+                <div class="control">
+                  <input class="input" type="email" id="user-email" name="userEmail" placeholder="jankowalski@mail.pl" 
+                  required/>
+                </div>
               </div>
-            </div>
-            <div class="field py-3">
-              <label class="label">Twoja wiadomość:</label>
-              <div class="control">
-                <textarea class="textarea" id="message" name="message" placeholder="Treść wiadomości"></textarea>
+              <div class="field py-3">
+                <label for="message" class="label">Twoja wiadomość:</label>
+                <div class="control">
+                  <textarea class="textarea" id="message" name="message" placeholder="Treść wiadomości" requred></textarea>
+                </div>
               </div>
-            </div>
-            <div class="field py-2">
-              <div class="control">
-                <label class="checkbox py-2">
-                  <input type="checkbox" id="regulation" name="regulation">
-                  Akceptuje warunki <a href="regulation.html">regulaminu</a>
-                </label>
+              <div class="field py-2">
+                <div class="regulation">
+                  <label for="user-email" class="checkbox py-2">
+                    <input type="checkbox" id="regulation" name="regulation" required/>
+                    Akceptuje warunki <a href="regulation.html">regulaminu</a>
+                  </label>
+                </div>
+                <div class="control">
+                  <label for="user-email" class="checkbox py-2">
+                    <input type="checkbox" id="rodo" name="rodo" required/>
+                    Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi mojego zapytania z formularza kontaktowego. Udzielenie zgody jest dobrowolne, jednakże niezbędne do korzystania z tego formularza.*
+                  </label>
+                </div>
               </div>
-              <div class="control">
-                <label class="checkbox py-2">
-                  <input type="checkbox" id="RODO" name="RODO">
-                  Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi mojego zapytania z formularza kontaktowego. Udzielenie zgody jest dobrowolne, jednakże niezbędne do korzystania z tego formularza.*
-                </label>
+              <div class="field">
+                <div class="control">
+                  <button class="button is-primary" type="submit">Wyślij</button>
+                </div>
               </div>
-            </div>
-            <div class="field">
-              <div class="control">
-                <button class="button is-primary" type="submit">Wyślij</button>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
   </main>
-{{footer}}
+<!-- {{footer}} -->
 <button id="btn-to-top" class="button is-primary"><span class="material-icons"> keyboard_arrow_up </span></button>
 <!-- <script src="js/main.js" defer></script> -->
 <script src="js/contact.js" defer></script>
