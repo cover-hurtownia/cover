@@ -47,7 +47,12 @@ app.engine("handlebars", handlebars({
         showDate: utils.showDate,
         showDatetime: utils.showDateTime,
         getStatusClassName: utils.getStatusClassName,
-        hasRole: (role, user) => user.roles.includes(role) 
+        hasRole: (role, user) => user.roles.includes(role),
+        inc: x => Number(x) + 1,
+        equals: (arg1, arg2) => {
+            console.log(arg1, arg2);
+            return arg1 == arg2
+        }
     }
 }));
 app.use(session({
