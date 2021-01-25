@@ -18,6 +18,7 @@ import book from "./routes/book.js";
 import logout from "./routes/logout.js";
 
 import * as utils from "./www/js/utils.js"; 
+import ranking from "./routes/ranking.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -114,6 +115,8 @@ app.get('/cart', (request, response) => {
         session: request.session?.user
     });
 });
+
+app.get('/ranking', ranking);
 
 app.get('/aboutUs', (request, response) => {
     response.render("aboutUs", {

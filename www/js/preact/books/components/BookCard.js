@@ -9,7 +9,7 @@ const h = Preact.h;
 export const BookCard = ({ book }) => {
     const shoppingCart = useShoppingCart();
 
-    return h("div", { className: "column is-3" }, [
+    return h("div", { className: "column is-2-fullhd is-3-widescreen is-4-desktop is-6-tablet" }, [
         h("div", { className: "card" }, [
             h("div", { className: "card-image" }, [
                 h("figure", { className: "image", style: !book.is_purchasable || book.quantity_available === 0 ? { opacity: 0.5, filter: "grayscale(50%)" } : undefined }, [
