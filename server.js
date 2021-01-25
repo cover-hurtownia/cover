@@ -115,6 +115,19 @@ app.get('/cart', (request, response) => {
     });
 });
 
+app.get('/aboutUs', (request, response) => {
+    response.render("aboutUs", {
+        meta: {
+            url: request.protocol + '://' + process.env.DOMAIN,
+            title: "Cover Hurtownia - O nas",
+            description: "O naszej hurtowni",
+            image: "/assets/banner.png",
+            cookies: request.cookies
+        },
+        session: request.session?.user
+    });
+});
+
 app.get('/orders', (request, response) => {
     response.render("orders", {
         meta: {
@@ -129,7 +142,7 @@ app.get('/orders', (request, response) => {
 });
 
 app.get('/admin/orders', (request, response) => {
-    response.render("admin_orders", {
+    response.render("adminOrders", {
         meta: {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Zamówienia klientów",
