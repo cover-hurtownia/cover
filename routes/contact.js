@@ -9,7 +9,7 @@ export const get = async (request, response) => {
         meta: {
             url: request.protocol + '://' + request.get('host') + request.originalUrl,
             title: "Cover Hurtownia - Kontakt",
-            description: "Skontakuj się z nami!",
+            description: "Skontaktuj się z nami!",
             image: "/assets/banner.png",
             cookies: request.cookies
         },
@@ -52,7 +52,7 @@ export const post = async (request, response) => {
         meta: {
             url: request.protocol + '://' + request.get('host') + request.originalUrl,
             title: "Cover Hurtownia - Kontakt",
-            description: "Skontakuj się z nami!",
+            description: "Skontaktuj się z nami!",
             image: "/assets/banner.png",
             cookies: request.cookies
         },
