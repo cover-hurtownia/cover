@@ -14,3 +14,4 @@ export { images } from "./images.js";
 export { delivery_types as deliveryTypes } from "./delivery_types.js";
 export { order_status as orderStatus } from "./order_status.js";
 export { orders } from "./orders.js";
+export { client_messages as clientMessages } from "./client_messages.js";

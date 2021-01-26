@@ -70,7 +70,7 @@ export const OrdersApp = ({ query: initialQuery }) => {
     }, []);
 
     useEffect(async () => {
-        const onPopState = async ({ state: { query, state } }) => {
+        const onPopState = async ({ state: { query } }) => {
             setQuery(query);
             await getOrders(utils.ungroupParams(query));
         };
@@ -79,11 +79,11 @@ export const OrdersApp = ({ query: initialQuery }) => {
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
 
-    return h("div", { ref: topRef, className: "columns" }, [
+    return h("div", { className: "columns" }, [
         h("div", { className: "column is-narrow" }, [
             h(FiltersPanel, { getQueryField, setQueryField, resetSearch, newSearch })
         ]),
-        h("div", { className: "column" }, [
+        h("div", { ref: topRef, className: "column" }, [
             h(OrderingPanel, {
                 getQueryField,
                 setQueryField,

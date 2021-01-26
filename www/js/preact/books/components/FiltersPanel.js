@@ -8,7 +8,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
         h("nav", { className: "panel is-primary" }, [
             h("p", { className: "panel-heading" }, "Filtry"),
             h("div", { className: "panel-block" }, [
-                h("div", {}, [
+                h("div", { className: "is-flex-grow-1" }, [
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Tytuł"),
                         h("div", { className: "control" }, [
@@ -40,7 +40,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                         h("div", { className: "control" }, [
                             h("a", { className: "button is-static" }, "więcej niż")
                         ]),
-                        h("div", { className: "control" }, [
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -56,7 +56,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                         h("div", { className: "control" }, [
                             h("a", { className: "button is-static" }, "mniej niż")
                         ]),
-                        h("div", { className: "control" }, [
+                        h("div", { className: "control is-expanded" }, [
                             h("input", {
                                 className: "input",
                                 type: "number",
@@ -71,7 +71,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                 ])
             ]),
             h("div", { className: "panel-block" }, [
-                h("details", {}, [
+                h("details", { className: "is-flex-grow-1" }, [
                     h("summary", {}, "Kategorie"),
                     h("div", { className: "field" }, [
                         h("input", { type: "hidden", name: "tag", value: "", checked: true }),
@@ -95,7 +95,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                 ])
             ]),
             h("div", { className: "panel-block" }, [
-                h("details", {}, [
+                h("details", { className: "is-flex-grow-1" }, [
                     h("summary", {}, "Szczegóły"),
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "ISBN"),

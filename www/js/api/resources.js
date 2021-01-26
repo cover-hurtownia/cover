@@ -23,10 +23,10 @@ export const resources = name => ({
         body: JSON.stringify(Array.isArray(resources) ? resources : [resources])
     }).then(_ => _.json()),
 
-    updateById: (id, author) => fetch(`/api/resources/${id}`, {
+    updateById: (id, body) => fetch(`/api/${name}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(author)
+        body: JSON.stringify(body)
     }).then(_ => _.json())
 });
 

@@ -8,8 +8,8 @@ $white:        #000000;
 $white-ter:    $white;
 $white-bis:    $white;
 
-$grey-darker:  $black;
-$grey-dark:    $black;
+$grey-darker:  $primary;
+$grey-dark:    $primary;
 $grey:         $primary;
 $grey-light:   $primary;
 $grey-lighter: $white;
@@ -78,13 +78,13 @@ $border-light: $grey-lightest;
 $border-light-hover: $grey-light;
 
 // Text colors
-$text: $grey-dark;
-$text-invert: $text;
-$text-light: $grey;
-$text-strong: $grey-darker;
+$text: $black;
+$text-invert: $white;
+$text-light: $yellow;
+$text-strong: $black;
 
 // Code colors
-$code: darken($red, 15%);
+$code: $primary;
 $code-background: $background;
 
 $pre: $text;
