@@ -8,7 +8,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
         h("nav", { className: "panel is-primary" }, [
             h("p", { className: "panel-heading" }, "Filtry"),
             h("div", { className: "panel-block" }, [
-                h("div", {}, [
+                h("div", { className: "is-flex-grow-1" }, [
                     h("div", { className: "field" }, [
                             h("label", { className: "label" }, "ID zamówienia"),
                             h("div", { className: "control" }, [
@@ -87,7 +87,7 @@ export const FiltersPanel = ({ getQueryField, setQueryField, newSearch, resetSea
                 ])
             ]),
             h("div", { className: "panel-block" }, [
-                h("details", {}, [
+                h("details", { className: "is-flex-grow-1" }, [
                     h("summary", {}, "Klient"),
                     h("div", { className: "field" }, [
                         h("label", { className: "label" }, "Imię"),

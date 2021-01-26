@@ -21,7 +21,6 @@ const emptyQuery = Object.freeze({
     priceAtLeast: null,
     priceAtMost: null,
     name: null,
-    name: null,
     description: null,
     isPurchasable: null,
     bookFormat: [],
@@ -101,7 +100,7 @@ export const BooksApp = ({ query: initialQuery }) => {
     }, []);
 
     useEffect(async () => {
-        const onPopState = async ({ state: { query, state } }) => {
+        const onPopState = async ({ state: { query } }) => {
             setQuery(query);
             await getBooks(utils.ungroupParams(query));
         };
@@ -110,11 +109,11 @@ export const BooksApp = ({ query: initialQuery }) => {
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
 
-    return h("div", { ref: topRef, className: "columns" }, [
+    return h("div", { className: "columns" }, [
         h("div", { className: "column is-narrow" }, [
             h(FiltersPanel, { getQueryField, setQueryField, resetSearch, newSearch })
         ]),
-        h("div", { className: "column" }, [
+        h("div", { ref: topRef, className: "column" }, [
             h(OrderingPanel, {
                 getQueryField,
                 setQueryField,

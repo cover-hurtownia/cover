@@ -17,6 +17,7 @@ import { router as tagsRouter } from "./tags/router.js";
 import { router as ordersRouter } from "./orders/router.js";
 import { router as deliveryTypesRouter } from "./delivery_types/router.js";
 import { router as orderStatusRouter } from "./order_status/router.js";
+import { router as messagesRouter } from "./client_messages/router.js";
 
 export const router = express.Router();
 
@@ -29,13 +30,14 @@ router.post("/session" , session );
 router.post("/roles"   , roles   );
 router.post("/echo"    , echo    );
 
-router.use("/products",       productsRouter     );
-router.use("/authors",        authorsRouter      );
-router.use("/publishers",     publishersRouter   );
-router.use("/book_formats",  bookFormatsRouter );
-router.use("/books",          booksRouter        );
-router.use("/images",         imagesRouter       );
-router.use("/tags",           tagsRouter         );
-router.use("/orders",         ordersRouter       );
-router.use("/delivery_types", deliveryTypesRouter);
-router.use("/order_status",   orderStatusRouter  );
+router.use("/products",                productsRouter     );
+router.use("/authors",                 authorsRouter      );
+router.use("/publishers",              publishersRouter   );
+router.use("/book_formats",            bookFormatsRouter  );
+router.use("/books",                   booksRouter        );
+router.use("/images",                  imagesRouter       );
+router.use("/tags",                    tagsRouter         );
+router.use("/orders",                  ordersRouter       );
+router.use("/delivery_types",          deliveryTypesRouter);
+router.use("/order_status",            orderStatusRouter  );
+router.use("/client_messages",         messagesRouter     );

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { request } from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -16,6 +16,7 @@ import { router as images } from "./routes/images.js";
 import IAmFeelingLucky from "./routes/iamfeelinglucky.js";
 import book from "./routes/book.js";
 import logout from "./routes/logout.js";
+import { router as contact } from "./routes/contact.js";
 
 import * as utils from "./www/js/utils.js"; 
 import ranking from "./routes/ranking.js";
@@ -80,6 +81,8 @@ app.use("/", express.static("www"));
 
 app.use("/api", api);
 app.use("/images", images);
+app.use('/contact', contact);
+app.get('/ranking', ranking);
 
 app.get('/', (request, response) => {
     response.render("home", {
@@ -124,8 +127,6 @@ app.get('/cart', (request, response) => {
     });
 });
 
-app.get('/ranking', ranking);
-
 app.get('/aboutUs', (request, response) => {
     response.render("aboutUs", {
         meta: {
@@ -158,6 +159,19 @@ app.get('/admin/orders', (request, response) => {
             url: request.protocol + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Zamówienia klientów",
             description: "Wyszukiwanie zamówień",
+            image: "/assets/banner.png",
+            cookies: request.cookies
+        },
+        session: request.session?.user
+    });
+});
+
+app.get('/admin/client_messages', (request, response) => {
+    response.render("clientMessages", {
+        meta: {
+            url: request.protocol + '://' + process.env.DOMAIN,
+            title: "Cover Hurtownia - Wiadomości klientów",
+            description: "Wiadomości klientów z formularza kontaktowego",
             image: "/assets/banner.png",
             cookies: request.cookies
         },

@@ -6,6 +6,56 @@ import bcrypt from "bcryptjs";
 import logger from "../logger.js";
 import * as constants from "../www/js/constants.js";
 
+const randomNames = [
+    "Mercedes Redmond",
+    "Nikola Bright",
+    "Harriet Holden",
+    "Sydney Davie",
+    "Nyah Hartley",
+    "Evelyn Dickens",
+    "Jeremy Mckenzie",
+    "Diogo Evans",
+    "Michele Sanders",
+    "Rio Galvan",
+    "Habibah Choi",
+    "Laura Bird",
+    "Tashan Marin",
+    "Louise Singh",
+    "Wilma Churchill",
+    "Arbaaz Barnard",
+    "Alberto Devine",
+    "Keegan Marshall",
+    "Mattie Douglas",
+    "Rhydian Diaz",
+    "Sorcha Holt",
+    "Logan Reed",
+    "William Trevino",
+    "Rahul Thomas",
+    "Fergus Coles"
+];
+
+const randomEmails = randomNames.map(name => name.split(" ").map(_ => _.toLowerCase()).join("@") + ".com");
+
+const messages = Array(0xFF).fill().map((_, i) => {
+    const rngValue = Math.floor(Math.random() * randomNames.length);
+
+    return {
+        name: randomNames[rngValue],
+        email: randomEmails[rngValue],
+        title: Boolean(Math.floor(Math.random() * 2)) ? `Wiadomość wygenerowana automatycznie #${i}` : null,
+        read: Boolean(Math.floor(Math.random() * 2)),
+        message: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In augue sem, lobortis et finibus vel, finibus vel purus. Maecenas non neque auctor, feugiat nisl non, tincidunt tellus. Aenean volutpat, ligula id interdum aliquam, turpis metus porttitor lorem, quis mollis massa nisi ac turpis. Vestibulum vehicula massa a turpis lobortis, vitae molestie turpis scelerisque. Donec malesuada in metus id semper. Nam elementum tellus ac magna posuere euismod. Maecenas vel tincidunt risus. Cras congue nunc eu leo efficitur, vitae tempus eros vulputate. Nunc vitae feugiat nibh. Vivamus porttitor pretium ante eu maximus. Pellentesque elementum elit a dui pretium efficitur. Duis ac mollis leo, ac aliquam mi. Praesent efficitur nisi urna, in maximus lectus feugiat a.
+        
+        In dui purus, lobortis sed eros et, bibendum commodo mi. Fusce in vestibulum nibh. Nam vel lobortis arcu. Duis facilisis accumsan commodo. Sed vitae malesuada nibh. Suspendisse a tellus sollicitudin, eleifend nibh at, malesuada urna. Vestibulum at nunc pellentesque lorem posuere dictum ac quis ex.
+        
+        Mauris rutrum purus non massa laoreet rhoncus. Phasellus ultricies quam enim, quis vehicula lacus varius a. Sed bibendum dui at libero faucibus, at auctor quam pharetra. Etiam porta finibus orci, non blandit nunc egestas sit amet. Maecenas vehicula orci eu leo venenatis, et blandit neque gravida. Integer porttitor gravida nisi porttitor fermentum. Cras egestas laoreet arcu eu condimentum.
+        
+        Aliquam quis nisl tincidunt, pellentesque erat non, elementum elit. Maecenas in porttitor nunc. Ut nulla dui, luctus in varius eget, vulputate non purus. Cras sit amet feugiat enim. Quisque tempor justo vitae diam tempus, in tincidunt nibh hendrerit. Praesent euismod laoreet tellus, at rhoncus nunc pretium eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac quam ipsum. Fusce condimentum, leo eget fermentum ultricies, diam felis elementum sapien, euismod aliquam sem nisi vel odio. Ut auctor aliquet pellentesque.
+        
+        Pellentesque vehicula vehicula nunc, in faucibus eros malesuada id. Suspendisse potenti. Aliquam varius, enim ut blandit porttitor, ligula leo volutpat neque, non lobortis orci elit nec urna. Aliquam vitae elit eu sem aliquet condimentum quis ut orci. In hac habitasse platea dictumst. Integer nisl risus, blandit a ex et, fermentum suscipit risus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut leo diam, finibus ut dignissim at, lacinia quis dui. In gravida tellus eu augue lobortis, nec luctus ligula blandit.`
+    };
+});
+
 const books = [
     
     {
@@ -536,6 +586,7 @@ export const seed = async db => {
         await db("roles").delete();
         await db("users").delete();
         await db("sessions").delete();
+        await db("client_messages").delete();
 
 
         /*
@@ -654,6 +705,17 @@ export const seed = async db => {
             return book_id;
         };
 
+        const addMessage = async ({
+            name,
+            email,
+            message,
+            title,
+            date,
+            read = false
+        }) => {
+            await db("client_messages").insert({ name, email, message, title, date: date ? date : db.fn.now(), read });
+        };
+
 
         /*
             users
@@ -692,6 +754,10 @@ export const seed = async db => {
 
         for (const book of books) {
             await addBook(book);
+        }
+
+        for (const message of messages) {
+            await addMessage(message);
         }
     });
 };

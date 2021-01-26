@@ -2,7 +2,7 @@ import * as Preact from "/js/lib/Preact.js";
 
 const h = Preact.h;
 
-export const Pagination = ({ total, limit, offset, delta, updateSearch, topRef }) => {
+export const Pagination = ({ total, limit, offset, delta, updateSearch, topRef, className = "", ...props }) => {
     const pages = Math.ceil(total / limit);
     const current = Math.ceil(offset / limit);
 
@@ -39,7 +39,7 @@ export const Pagination = ({ total, limit, offset, delta, updateSearch, topRef }
         list.push(h("li", {}, h("a", {
             className: "pagination-link",
             onclick: _ => {
-                updateSearch({ offset: pages - limit, limit });
+                updateSearch({ offset: (pages * limit) - limit, limit });
                 topRef.current.scrollIntoView();
             }
         }, pages)));
@@ -59,7 +59,7 @@ export const Pagination = ({ total, limit, offset, delta, updateSearch, topRef }
         }, "1")));
     }
 
-    return h("nav", { className: "pagination is-centered m-2" }, [
+    return h("nav", { className: "pagination is-centered m-2 " + className, ...props }, [
         h("a", {
                 className: "pagination-previous",
                 disabled: current <= 0,
