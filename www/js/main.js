@@ -4,7 +4,7 @@ const cookies = Object.fromEntries(document.cookie.split("; ").map(_ => _.split(
     themes
 */
 
-const validThemes = ["light", "dark", "contrast"];
+const validThemes = ["light", "contrast"];
 const isThemeValid = theme => validThemes.includes(theme);
 const defaultTheme = "light";
 
