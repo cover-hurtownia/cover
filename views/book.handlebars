@@ -8,7 +8,14 @@
                     </figure>
                 </div>
                 <div class="column is-9">
-                    <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
+                        </div>
+                        <div class="column is-narrow">
+                            <button class="button is-primary" id="share-book" data-book-name="{{book.name}}">Udostępnij</button>
+                        </div>
+                    </div>
                     <table class="table is-fullwidth is-striped">
                         <tbody>
                             <tr>
@@ -137,5 +144,23 @@
 
     document.getElementById("book-image").addEventListener("click", event => {
         modal.showImage(event.target.src);
+    });
+
+    document.getElementById("share-book").addEventListener("click", async event => {
+        const bookName = event.target.dataset.bookName;
+
+        if (navigator.share) {
+            await navigator.share({
+                title: `Cover Hurtownia - ${bookName}`,
+                url: document.location
+            });
+        }
+        else {
+            const result = await navigator.permissions.query({ name: "clipboard-write" });
+            
+            if (result.state == "granted" || result.state == "prompt") {
+                await navigator.clipboard.writeText(`Cover Hurtownia - ${bookName} - ${document.location}`);
+            }
+        }
     });
 </script>
