@@ -103,3 +103,64 @@ export const respond = handler => async (request, response) => {
         }
     }
 };
+
+export const render = handler => async (request, response) => {
+    logger.debug(`${request.method} ${request.originalUrl}`);
+
+    try {
+        const [status, view, data] = (await handler(request, response)) ?? [];
+
+        if (status) response.status(status);
+        if (view && data) response.render(view, {
+            ...data,
+            meta: {
+                url: request.protocol + '://' + request.get('host') + request.originalUrl,
+                image: "/assets/banner.png",
+                cookies: request.cookies,
+                ...data.meta
+            },
+            session: request.session?.user
+        });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            logger.error(`${request.method} ${request.originalUrl}: ${error.toString()}`);
+
+            response.status(500);
+            response.render("message", {
+                meta: {
+                    url: request.protocol + '://' + request.get('host') + request.originalUrl,
+                    title: "Cover Hurtownia",
+                    description: "Błąd serwera",
+                    image: "/assets/banner.png",
+                    cookies: request.cookies
+                },
+                message: {
+                    className: "is-danger",
+                    title: "Błąd",
+                    content: "Błąd 500: Błąd serwera. Spróbuj ponownie później.",
+                    buttons: [
+                        { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
+                    ]
+                },
+                session: request.session?.user
+            });
+        }
+        else {
+            const [status, view, data] = error;
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]`);
+
+            response.status(status);
+            response.render(view, {
+                ...data,
+                meta: {
+                    url: request.protocol + '://' + request.get('host') + request.originalUrl,
+                    image: "/assets/banner.png",
+                    cookies: request.cookies,
+                    ...data.meta
+                },
+                session: request.session?.user
+            });
+        }
+    }
+};

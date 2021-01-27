@@ -1,6 +1,8 @@
 import logger from "../logger.js";
 
-export const book = async (request, response) => {
+import { render } from "./utilities.js";
+
+export const book = render(async request => {
     const database = request.app.get("database");
     
     const id = request.params.book_id;
@@ -40,51 +42,31 @@ export const book = async (request, response) => {
     catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
         
-        response.status(503);
-        response.render('message', {
+        throw [503, "message", {
             meta: {
-                url: request.protocol + '://' + process.env.DOMAIN,
-                title: "Cover Hurtownia - 503",
-                description: "Błąd serwera",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                title: "Cover Hurtownia",
+                description: "Błąd bazy danych"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
-
-        return;
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później."
+            }
+        }];
     }
 
     if (books.length === 0) {
-        response.status(404);
-        response.render('message', {
+        throw [404, "message", {
             meta: {
-                url: request.protocol + '://' + process.env.DOMAIN,
                 title: "Cover Hurtownia - 404",
-                description: "Błąd żądania",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd żądania"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 404: Wybrana książka nie istnieje.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
-
-        return;
+                content: "Błąd 404: Wybrana książka nie istnieje."
+            }
+        }];
     }
 
     const book = books[0];
@@ -111,42 +93,28 @@ export const book = async (request, response) => {
     catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
 
-        response.status(503);
-        response.render('message', {
+        throw [503, "message", {
             meta: {
-                url: request.protocol + '://' + process.env.DOMAIN,
-                title: "Cover Hurtownia - 503",
-                description: "Błąd serwera",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                title: "Cover Hurtownia",
+                description: "Błąd bazy danych"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
-
-        return;
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później."
+            }
+        }];
     };
 
-    response.status(200);
-    response.render("book", {
+    return [200, "book", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
             title: `Cover Hurtownia - ${book.title}`,
             description: `${book.title} - ${book.authors.join(", ")} - ${book.publisher}`,
-            image: `/images/${book.image_id}`,
-            cookies: request.cookies
+            image: `/images/${book.image_id}`
         },
         book,
-        similarProducts,
-        session: request.session?.user
-    });
-};
+        similarProducts
+    }];
+});
 
 export default book;
