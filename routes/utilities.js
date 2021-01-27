@@ -114,7 +114,7 @@ export const render = handler => async (request, response) => {
         if (view && data) response.render(view, {
             ...data,
             meta: {
-                url: request.protocol + '://' + process.env.DOMAIN,
+                url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
                 image: "/assets/banner.png",
                 cookies: request.cookies,
                 ...data.meta
@@ -129,7 +129,7 @@ export const render = handler => async (request, response) => {
             response.status(500);
             response.render("message", {
                 meta: {
-                    url: request.protocol + '://' + process.env.DOMAIN,
+                    url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
                     title: "Cover Hurtownia",
                     description: "Błąd serwera",
                     image: "/assets/banner.png",
@@ -154,7 +154,7 @@ export const render = handler => async (request, response) => {
             response.render(view, {
                 ...data,
                 meta: {
-                    url: request.protocol + '://' + process.env.DOMAIN,
+                    url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
                     image: "/assets/banner.png",
                     cookies: request.cookies,
                     ...data.meta

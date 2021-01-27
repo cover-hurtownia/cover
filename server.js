@@ -91,7 +91,7 @@ app.use('/register', register);
 app.get('/', (request, response) => {
     response.render("home", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia",
             description: "Lorem ipsum",
             image: "/assets/banner.png",
@@ -109,7 +109,7 @@ app.post('/logout', logout);
 app.get('/books', (request, response) => {
     response.render("books", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Książki",
             description: "Wyszukiwanie książek",
             image: "/assets/banner.png",
@@ -122,7 +122,7 @@ app.get('/books', (request, response) => {
 app.get('/cart', (request, response) => {
     response.render("cart", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Koszyk",
             description: "Twój koszyk",
             image: "/assets/banner.png",
@@ -135,7 +135,7 @@ app.get('/cart', (request, response) => {
 app.get('/aboutUs', (request, response) => {
     response.render("aboutUs", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - O nas",
             description: "O naszej hurtowni",
             image: "/assets/banner.png",
@@ -148,7 +148,7 @@ app.get('/aboutUs', (request, response) => {
 app.get('/orders', (request, response) => {
     response.render("orders", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Moje zamówienia",
             description: "Wyszukiwanie zamówień",
             image: "/assets/banner.png",
@@ -161,7 +161,7 @@ app.get('/orders', (request, response) => {
 app.get('/admin/orders', (request, response) => {
     response.render("adminOrders", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Zamówienia klientów",
             description: "Wyszukiwanie zamówień",
             image: "/assets/banner.png",
@@ -174,7 +174,7 @@ app.get('/admin/orders', (request, response) => {
 app.get('/terms', (request, response) => {
     response.render("termsAndConditions", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Regulamin",
             description: "Regulamin hurtowni książek Cover",
             image: "/assets/banner.png",
@@ -187,7 +187,7 @@ app.get('/terms', (request, response) => {
 app.get('/privacy', (request, response) => {
     response.render("privacyPolicy", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Polityka prywatności",
             description: "Polityka prywatności hurtowni książek Cover",
             image: "/assets/banner.png",
@@ -200,7 +200,7 @@ app.get('/privacy', (request, response) => {
 app.get('/admin/client_messages', (request, response) => {
     response.render("clientMessages", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Wiadomości klientów",
             description: "Wiadomości klientów z formularza kontaktowego",
             image: "/assets/banner.png",
@@ -214,7 +214,7 @@ app.use('*', (request, response) => {
     response.status(404);
     response.render('message', {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - 404",
             description: "Błąd żądania",
             image: "/assets/banner.png",

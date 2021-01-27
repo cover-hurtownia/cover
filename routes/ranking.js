@@ -40,7 +40,7 @@ export const ranking = async (request, response) => {
     response.status(200);
     response.render("ranking", {
         meta: {
-            url: request.protocol + '://' + process.env.DOMAIN,
+            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
             title: "Cover Hurtownia - Ranking",
             description: "Najczęściej kupowane produkty",
             image: `/assets/banner.png`,
