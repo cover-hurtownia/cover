@@ -15,61 +15,66 @@
   <title>Cover Hurtownia</title>
 </head>
 <body>
-  <!-- {{header}} -->
   <main>
     <section class="hero hero-body my-4">
-      <div class="container is-flex is-justify-content-center">
-        <div class="column is-four-fifths">
-          <div class="box">
-            <h1 class="is-title is-size-2 has-text-centered my-5">Kontakt</h1>
-            <form id="contact-form" class="my-4 px-5" method="POST" action="">
-              <div class="field py-3">
-                <label for="user-name" class="label">Imię:</label>
-                <div class="control">
-                  <input class="input" type="text" id="user-name" name="userName" placeholder="Jan" required/>
+      <div class="columns">
+        <div class="container is-flex is-justify-content-center">
+          <div class="column is-half">
+            <div class="box">
+              <h1 class="is-title is-size-2 has-text-centered my-5">Kontakt</h1>
+              <form id="contact-form" class="my-4 px-5" method="POST" action="">
+                <div class="field py-3">
+                  <label class="label">Imię*:</label>
+                  <div class="control">
+                    <input class="input" id="form-contact-userName-input"  type="text"  name="userName" maxlength="25" placeholder="Adam" required>
+                  </div>
                 </div>
-              </div>
-              <div class="field py-3">
-                <label for="user-email" class="label">Adres e-mail:</label>
-                <div class="control">
-                  <input class="input" type="email" id="user-email" name="userEmail" placeholder="jankowalski@mail.pl" 
-                  required/>
+                <div class="field py-3">
+                  <label class="label">Adres e-mail*:</label>
+                  <div class="control">
+                    <input class="input" id="form-contact-userEmail-input" type="email"  name="userEmail" placeholder="jankowalski@mail.pl"
+                      reduired>
+                  </div>
                 </div>
-              </div>
-              <div class="field py-3">
-                <label for="message" class="label">Twoja wiadomość:</label>
-                <div class="control">
-                  <textarea class="textarea" id="message" name="message" placeholder="Treść wiadomości" requred></textarea>
+                <div class="field py-3">
+                  <label class="label">Temat*:</label>
+                  <div class="control">
+                    <input class="input" id="form-contact-messageTopic-input" name="messageTopic" placeholder="Płatność/Zamówienie/Inne" required/>
+                  </div>
                 </div>
-              </div>
-              <div class="field py-2">
-                <div class="regulation">
-                  <label for="user-email" class="checkbox py-2">
-                    <input type="checkbox" id="regulation" name="regulation" required/>
-                    Akceptuje warunki <a href="regulation.html">regulaminu</a>
-                  </label>
+                <div class="field py-3">
+                  <label class="label">Twoja wiadomość*:</label>
+                  <div class="control">
+                    <textarea class="textarea" id="form-contact-userMessage-input" name="userMessage" maxlength="500" placeholder="Treść wiadomości: "></textarea>
+                  </div>
                 </div>
-                <div class="control">
-                  <label for="user-email" class="checkbox py-2">
-                    <input type="checkbox" id="rodo" name="rodo" required/>
-                    Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi mojego zapytania z formularza kontaktowego. Udzielenie zgody jest dobrowolne, jednakże niezbędne do korzystania z tego formularza.*
-                  </label>
+                <div class="field py-2">
+                  <div class="title is-5 py-3"><h2>Zgody*</h2></div>
+                  <div class="control">
+                    <label class="checkbox py-2">
+                      <input type="checkbox" id="form-contact-regulation-input" name="regulation">
+                      Zapoznałem się i akceptuje <a href="/terms"></a>regulamin serwisu.</a>
+                    </label>
+                  </div>
+                  <div class="control">
+                    <label class="checkbox py-2">
+                      <input type="checkbox" id="form-contact-rodo-input" name="rodo">
+                      Zapoznałem się i akceptuje <a href="/privacy"></a>politykę prywatości.</a>
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <button class="button is-primary" type="submit">Wyślij</button>
+                <div class="field">
+                  <div class="control">
+                    <button class="button is-primary" type="submit">Wyślij</button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
-<!-- {{footer}} -->
-<button id="btn-to-top" class="button is-primary"><span class="material-icons"> keyboard_arrow_up </span></button>
-<!-- <script src="js/main.js" defer></script> -->
 <script src="js/contact.js" defer></script>
 </body>
 </html>
