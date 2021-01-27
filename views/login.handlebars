@@ -9,20 +9,20 @@
                             <div class="field">
                                 <label class="label">Nazwa użytkownika</label>
                                 <div class="control">
-                                    <input class="input" name="username" type="text" placeholder="Nazwa użytkownika">
+                                    <input id="form-login-username-input" class="input" name="username" type="text" placeholder="Nazwa użytkownika" required min="3" max="24">
                                 </div>
                                 <p id="form-login-username-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <label class="label">Hasło</label>
                                 <div class="control">
-                                    <input class="input" name="password" type="password" placeholder="password">
+                                    <input id="form-login-password-input" class="input" name="password" type="password" placeholder="password" required>
                                 </div>
                                 <p id="form-login-password-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <input type="submit" class="button" value="Zaloguj" />
+                                    <input id="form-login-submit" type="submit" class="button" value="Zaloguj" />
                                 </div>
                             </div>
                         </form>
@@ -61,14 +61,16 @@
                                         Zapoznałem się z <a href="/terms">regulaminem</a> serwisu.
                                     </label>
                                 </div>
+                                <p id="form-register-terms-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                    <input name="terms" type="checkbox">
+                                    <input name="privacy" type="checkbox">
                                         Zapoznałem się z <a href="/privacy">polityką prywatności</a> serwisu.
                                     </label>
                                 </div>
+                                <p id="form-register-privacy-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <div class="control">
@@ -82,3 +84,110 @@
         </div>
     </div>
 </section>
+
+<script type="module" defer>
+    /*
+
+        LOGIN FORM
+
+    */
+    const formLogin = document.getElementById("form-login");
+
+    // LOGIN FORM - SUBMIT BUTTON
+    const formLoginSubmit = document.getElementById("form-login-submit");
+
+    // LOGIN FORM - USERNAME FIELD
+    const formLoginUsernameInput = document.getElementById("form-login-username-input");
+    const formLoginUsernameHelp = document.getElementById("form-login-username-help");
+
+    // LOGIN FORM - PASSWORD FIELD
+    const formLoginPasswordInput = document.getElementById("form-login-password-input");
+    const formLoginPasswordHelp = document.getElementById("form-login-password-help");
+
+    // LOGIN FORM - IS USERNAME CORRECT FLAG
+    let isLoginUsernameCorrect = false;
+
+    // LOGIN FORM - IS PASSWORD CORRECT FLAG
+    let isLoginPasswordCorrect = false;
+
+    const resetFormLoginSubmit = () => {
+        if (isLoginPasswordCorrect && isLoginUsernameCorrect) {
+            formLoginSubmit.classList.remove("is-disabled");
+            formLoginSubmit.disabled = false;
+        }
+        else {
+            formLoginSubmit.classList.add("is-disabled");
+            formLoginSubmit.disabled = true;
+        }
+    };
+
+    // LOGIN FORM - ON USERNAME INPUT
+    const onFormLoginUsername = event => {
+        if (formLoginUsernameInput.value.length < 3) {
+            formLoginUsernameInput.classList.remove("is-success");
+            formLoginUsernameInput.classList.add("is-danger");
+
+            formLoginUsernameHelp.classList.remove("is-success");
+            formLoginUsernameHelp.classList.add("is-danger");
+            formLoginUsernameHelp.textContent = "nazwa użytkownika musi składać się z minimalnie 3 znaków";
+
+            isLoginUsernameCorrect = false;
+        }
+        else if (formLoginUsernameInput.value.length > 24) {
+            formLoginUsernameInput.classList.remove("is-success");
+            formLoginUsernameInput.classList.add("is-danger");
+
+            formLoginUsernameHelp.classList.remove("is-success");
+            formLoginUsernameHelp.classList.add("is-danger");
+            formLoginUsernameHelp.textContent = "nazwa użytkownika musi składać się z maksymalnie 24 znaków";
+
+            isLoginUsernameCorrect = false;
+        }
+        else {
+            formLoginUsernameInput.classList.remove("is-danger");
+            formLoginUsernameInput.classList.add("is-success");
+
+            formLoginUsernameHelp.classList.remove("is-danger");
+            formLoginUsernameHelp.classList.add("is-success");
+            formLoginUsernameHelp.textContent = "";
+
+            isLoginUsernameCorrect = true;
+        }
+
+        resetFormLoginSubmit();
+    };
+
+    // LOGIN FORM - ON PASSWORD INPUT
+    const onFormLoginPassword = event => {
+        if (formLoginPasswordInput.value.length === 0) {
+            formLoginPasswordInput.classList.remove("is-success");
+            formLoginPasswordInput.classList.add("is-danger");
+
+            formLoginPasswordHelp.classList.remove("is-success");
+            formLoginPasswordHelp.classList.add("is-danger");
+            formLoginPasswordHelp.textContent = "hasło nie może być puste";
+
+            isLoginPasswordCorrect = false;
+        }
+        else {
+            formLoginPasswordInput.classList.remove("is-danger");
+            formLoginPasswordInput.classList.add("is-success");
+
+            formLoginPasswordHelp.classList.remove("is-danger");
+            formLoginPasswordHelp.classList.add("is-success");
+            formLoginPasswordHelp.textContent = "";
+
+            isLoginPasswordCorrect = true;
+        }
+
+        resetFormLoginSubmit();
+    };
+
+    // INITIAL CHECK
+    onFormLoginUsername();
+    onFormLoginPassword();
+
+    // ATTACH HANDLERS
+    formLoginUsernameInput.addEventListener("input", onFormLoginUsername);
+    formLoginPasswordInput.addEventListener("input", onFormLoginPassword);
+</script>

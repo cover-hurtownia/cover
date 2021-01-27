@@ -148,7 +148,7 @@ export const render = handler => async (request, response) => {
         }
         else {
             const [status, view, data] = error;
-            logger.warn(`${request.method} ${request.originalUrl}: [${status}]: ${JSON.stringify(errorBody)}`);
+            logger.warn(`${request.method} ${request.originalUrl}: [${status}]`);
 
             response.status(status);
             response.render(view, {
