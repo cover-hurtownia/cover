@@ -1,23 +1,17 @@
 import express from "express";
 import logger from "../logger.js";
+import { render } from "./utilities.js";
 
 export const router = express.Router();
 
-export const get = async (request, response) => {
-    response.status(200);
-    response.render("contact", {
-        meta: {
-            url: request.protocol + '://' + request.get('host') + request.originalUrl,
-            title: "Cover Hurtownia - Kontakt",
-            description: "Skontaktuj się z nami!",
-            image: "/assets/banner.png",
-            cookies: request.cookies
-        },
-        session: request.session?.user
-    });
-};
+export const get = render(async _ => [200, "contact", {
+    meta: {
+        title: "Cover Hurtownia - Kontakt",
+        description: "Skontaktuj się z nami!"
+    }
+}]);
 
-export const post = async (request, response) => {
+export const post = render(async request => {
     const database = request.app.get("database");
 
     const query = database("client_messages").insert({ ...request.body, date: database.fn.now(), read: false });
@@ -26,35 +20,23 @@ export const post = async (request, response) => {
     catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
 
-        response.status(503);
-        response.render('message', {
+        throw [503, "contact", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd bazy danych",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd bazy danych"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później."
+            }
+        }];
     }
 
-    response.status(200);
-    response.render("contact", {
+    return [200, "contact", {
         meta: {
-            url: request.protocol + '://' + request.get('host') + request.originalUrl,
             title: "Cover Hurtownia - Kontakt",
-            description: "Skontaktuj się z nami!",
-            image: "/assets/banner.png",
-            cookies: request.cookies
+            description: "Skontaktuj się z nami!"
         },
         message: {
             className: "is-success",
@@ -63,10 +45,9 @@ export const post = async (request, response) => {
             buttons: [
                 { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
             ]
-        },
-        session: request.session?.user
-    });
-};
+        }
+    }];
+});
 
 router.get("", get);
 router.post("", post);

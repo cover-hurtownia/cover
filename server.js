@@ -86,7 +86,6 @@ app.use("/images", images);
 app.use('/contact', contact);
 app.use('/login', login);
 
-app.get('/ranking', ranking);
 
 app.get('/', (request, response) => {
     response.render("home", {
@@ -101,6 +100,7 @@ app.get('/', (request, response) => {
     });
 });
 
+app.get('/ranking', ranking);
 app.get("/iamfeelinglucky", IAmFeelingLucky);
 app.get('/book/:book_id', book);
 app.post('/logout', logout);

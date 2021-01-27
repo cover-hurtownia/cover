@@ -2,8 +2,6 @@ import logger from "../logger.js";
 
 export const IAmFeelingLucky = async (request, response) => {
     const database = request.app.get("database");
-    
-    const id = request.params.book_id;
 
     let query = database
         .select(["books.id"])

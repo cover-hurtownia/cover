@@ -1,8 +1,84 @@
-<section class="hero is-light is-large">
+<section class="hero is-light">
     <div id="contact" class="hero-body">
         <div class="container">
-            <div class="title">Tutaj będzie logowanie/rejestracja</div>
-            <div class="subtitle">Ale na razie nie ma</div>
+            <div class="columns is-justify-content-center">
+                <div class="column is-4">
+                    <div class="box">
+                        <h1 class="title">Zaloguj się</h1>
+                        <form id="form-login" action="/login" method="POST">
+                            <div class="field">
+                                <label class="label">Nazwa użytkownika</label>
+                                <div class="control">
+                                    <input class="input" name="username" type="text" placeholder="Nazwa użytkownika">
+                                </div>
+                                <p id="form-login-username-help" class="help"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Hasło</label>
+                                <div class="control">
+                                    <input class="input" name="password" type="password" placeholder="password">
+                                </div>
+                                <p id="form-login-password-help" class="help"></p>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <input type="submit" class="button" value="Zaloguj" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="column is-4">
+                    <div class="box">
+                        <h1 class="title">Zarejestruj się</h1>
+                        <form id="form-register" action="/register" method="POST">
+                            <div class="field">
+                                <label class="label">Nazwa użytkownika</label>
+                                <div class="control">
+                                    <input class="input" name="username" type="text" placeholder="Nazwa użytkownika">
+                                </div>
+                                <p id="form-register-username-help" class="help"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Hasło</label>
+                                <div class="control">
+                                    <input class="input" name="password" type="password" placeholder="password">
+                                </div>
+                                <p id="form-register-password-help" class="help"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Powtórz hasło</label>
+                                <div class="control">
+                                    <input class="input" name="repeated_password" type="password" placeholder="password">
+                                </div>
+                                <p id="form-register-repeated_password-help" class="help"></p>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                    <input name="terms" type="checkbox">
+                                        Zapoznałem się z <a href="/terms">regulaminem</a> serwisu.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                    <input name="terms" type="checkbox">
+                                        Zapoznałem się z <a href="/privacy">polityką prywatności</a> serwisu.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <input type="submit" class="button" value="Zaloguj" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

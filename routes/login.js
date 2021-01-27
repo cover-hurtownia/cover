@@ -2,30 +2,23 @@ import express from "express";
 
 import bcrypt from "bcryptjs";
 import logger from "../logger.js";
+import { render } from "./utilities.js";
 
 export const router = express.Router();
 
-export const get = async (request, response) => {
-    response.status(200);
-    response.render("login", {
-        meta: {
-            url: request.protocol + '://' + request.get('host') + request.originalUrl,
-            title: "Cover Hurtownia - Logowanie/Rejestracja",
-            description: "Logowanie/Rejestracja",
-            image: "/assets/banner.png",
-            cookies: request.cookies
-        },
-        session: request.session?.user
-    });
-};
+export const get = render(async _ => [200, "login", {
+    meta: {
+        title: "Cover Hurtownia - Logowanie/Rejestracja",
+        description: "Logowanie/Rejestracja"
+    }
+}]);
 
-export const post = async (request, response) => {
+export const post = render(async (request, response) => {
     const database = request.app.get("database");
 
-    const username = request.body.username ?? ""; // If no username in request body, then default to empty string.
-    const password = request.body.password ?? ""; // If no password in request body, then default to empty string.
+    const username = request.body.username ?? "";
+    const password = request.body.password ?? "";
 
-    // Check if username exists.
     const usersInDatabaseQuery = database('users').where({ username });
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${usersInDatabaseQuery.toString()}`)
@@ -35,96 +28,63 @@ export const post = async (request, response) => {
     catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
         
-        response.status(503);
-        response.render("login", {
+        throw [503, "login", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd bazy danych",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd bazy danych"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później."
+            }
+        }];
     };
 
     if (usersInDatabase.length != 1) {
-        response.status(401);
-        response.render("login", {
+        throw [401, "login", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd logowania",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd logowania"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Nazwa użytkownika nie istnieje lub podane hasło jest nieprawidłowe.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Nazwa użytkownika nie istnieje lub podane hasło jest nieprawidłowe."
+            }
+        }];
     }
 
     const user = usersInDatabase[0];
 
-    // Compare the hashes.
     let passwordMatches 
     try { passwordMatches = await bcrypt.compare(password, user.password_hash); }
     catch (error) {
-        response.status(500);
-        response.render("login", {
+        throw [500, "login", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd logowania",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd serwera"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 500: Błąd serwera. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Błąd 500: Błąd serwera. Spróbuj ponownie później."
+            }
+        }];
     };
 
     if (!passwordMatches) {
-        response.status(401);
-        response.render("login", {
+        throw [401, "login", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd logowania",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd logowania"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Nazwa użytkownika nie istnieje lub podane hasło jest nieprawidłowe.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Nazwa użytkownika nie istnieje lub podane hasło jest nieprawidłowe."
+            }
+        }];
     }
 
     logger.info(`${request.method} ${request.originalUrl}: user logged in: ${username}`);
@@ -143,31 +103,22 @@ export const post = async (request, response) => {
     catch (error) {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${usersInDatabaseQuery.toString()}: ${error}`);
         
-        response.status(503);
-        response.render("login", {
+        throw [503, "login", {
             meta: {
-                url: request.protocol + '://' + request.get('host') + request.originalUrl,
                 title: "Cover Hurtownia",
-                description: "Błąd bazy danych",
-                image: "/assets/banner.png",
-                cookies: request.cookies
+                description: "Błąd bazy danych"
             },
             message: {
                 className: "is-danger",
                 title: "Błąd",
-                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później.",
-                buttons: [
-                    { href: "/", content: "Przejdź do strony głównej", className: "is-primary" }
-                ]
-            },
-            session: request.session?.user
-        });
+                content: "Błąd 503: Błąd bazy danych. Spróbuj ponownie później."
+            }
+        }];
     };
 
-    // Update session, generates a session cookie and sends it back.
     request.session.user = { ...user, roles };
     response.redirect("/");
-};
+});
 
 router.get("", get);
 router.post("", post);
