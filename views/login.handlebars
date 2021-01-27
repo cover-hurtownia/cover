@@ -262,7 +262,26 @@
 
     // REGISTER FORM - ON USERNAME INPUT
     const onFormRegisterUsername = event => {
-        if (formRegisterUsernameInput.value.length < 3) {
+        if (!Array.from(formRegisterUsernameInput.value).every(character => {
+            const code = character.charCodeAt(0);
+
+            const isNumeric    = code > 47 && code < 58;
+            const isUpperAlpha = code > 64 && code < 91;
+            const isLowerAlpha = code > 96 && code < 123;
+            const isUnderscore = character === "_";
+
+            return isNumeric || isUpperAlpha || isLowerAlpha || isUnderscore;
+        })) {
+            formRegisterUsernameInput.classList.remove("is-success");
+            formRegisterUsernameInput.classList.add("is-danger");
+
+            formRegisterUsernameHelp.classList.remove("is-success");
+            formRegisterUsernameHelp.classList.add("is-danger");
+            formRegisterUsernameHelp.textContent = "nazwa użytkownika musi się składać tylko ze znaków alfanumerycznych i podkreślnika";
+
+            isRegisterUsernameCorrect = false;
+        }
+        else if (formRegisterUsernameInput.value.length < 3) {
             formRegisterUsernameInput.classList.remove("is-success");
             formRegisterUsernameInput.classList.add("is-danger");
 
