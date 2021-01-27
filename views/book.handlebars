@@ -156,10 +156,29 @@
             });
         }
         else {
-            const result = await navigator.permissions.query({ name: "clipboard-write" });
+            try {
+                const result = await navigator.permissions.query({ name: "clipboard-write" });
+                
+                if (result.state == "granted" || result.state == "prompt") {
+                    await navigator.clipboard.writeText(document.location);
+                }
+
+                 modal.showMessage("", `Skopiowano link!`, "is-success");
+            }
+            catch (error) {
+                const text = document.createElement("textarea");
+
+                document.body.append(text);
+                
+                text.style = "position: absolute; bottom: -9999px; left: 0;";
+                text.textContent = document.location;
+                text.select();
             
-            if (result.state == "granted" || result.state == "prompt") {
-                await navigator.clipboard.writeText(`Cover Hurtownia - ${bookName} - ${document.location}`);
+                document.execCommand("copy");
+
+                text.remove();
+
+                modal.showMessage("", `Skopiowano link!`, "is-success");
             }
         }
     });
