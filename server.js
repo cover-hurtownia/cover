@@ -15,6 +15,7 @@ import { router as api } from "./routes/api/router.js";
 import { router as images } from "./routes/images.js";
 import { router as contact } from "./routes/contact.js";
 import { router as login } from "./routes/login.js";
+import { router as register } from "./routes/register.js";
 
 import IAmFeelingLucky from "./routes/iamfeelinglucky.js";
 import book from "./routes/book.js";
@@ -85,7 +86,7 @@ app.use("/api", api);
 app.use("/images", images);
 app.use('/contact', contact);
 app.use('/login', login);
-
+app.use('/register', register);
 
 app.get('/', (request, response) => {
     response.render("home", {
