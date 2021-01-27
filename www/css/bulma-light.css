@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* latin-ext */
 @font-face {
   font-family: 'News Cycle';
@@ -7866,3 +7867,11 @@ summary {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(-3em); }
+
+.legal {
+  counter-reset: item;
+  list-style-type: none !important; }
+
+.legal > li:before {
+  content: "§" counter(item, decimal) ". ";
+  counter-increment: item; }

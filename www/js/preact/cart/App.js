@@ -61,7 +61,8 @@ export const CartApp = _ => {
             else return "błąd formularza";
         })(),
         deliveryType: getField("deliveryType") ? false : "wybierz metodę wysyłki",
-        termsOfService: getField("termsOfService") ? false : "wymagana akceptacja regulaminu"
+        termsOfService: getField("termsOfService") ? false : "wymagana akceptacja regulaminu",
+        privacyPolicy: getField("privacyPolicy") ? false : "wymagana akceptacja polityki prywatności"
     };
 
     const isFormCorrect = Object.values(formValidationErrors).reduce((correct, error) => correct ? !error : correct, true);
@@ -347,18 +348,37 @@ export const CartApp = _ => {
                             ]),
                             h("div", { className: "box" }, [
                                 h("div", { className: "title" }, "Zgody"),
-                                h("label", { className: "checkbox" }, [
-                                    h("input", {
-                                        type: "checkbox",
-                                        required: true,
-                                        onchange: event => setField("termsOfService", event.target.checked)
-                                    }),
-                                    "Zapoznałem się i akceptuję ",
-                                    h("a", { href: "#" }, "regulamin serwisu"),
-                                    ".",
-                                    formValidationErrors.termsOfService
-                                        ? h("p", { className: "help is-danger" }, formValidationErrors.termsOfService)
-                                        : []
+                                h("div", {}, [
+                                    h("label", { className: "checkbox" }, [
+                                        h("input", {
+                                            type: "checkbox",
+                                            required: true,
+                                            className: "mx-2",
+                                            onchange: event => setField("termsOfService", event.target.checked)
+                                        }),
+                                        "Zapoznałem się i akceptuję ",
+                                        h("a", { href: "/terms" }, "regulamin serwisu"),
+                                        ".",
+                                        formValidationErrors.termsOfService
+                                            ? h("p", { className: "help is-danger" }, formValidationErrors.termsOfService)
+                                            : []
+                                    ])
+                                ]),
+                                h("div", {}, [
+                                    h("label", { className: "checkbox" }, [
+                                        h("input", {
+                                            type: "checkbox",
+                                            required: true,
+                                            className: "mx-2",
+                                            onchange: event => setField("privacyPolicy", event.target.checked)
+                                        }),
+                                        "Zapoznałem się z ",
+                                        h("a", { href: "/privacy" }, "polityką prywatności"),
+                                        ".",
+                                        formValidationErrors.privacyPolicy
+                                            ? h("p", { className: "help is-danger" }, formValidationErrors.privacyPolicy)
+                                            : []
+                                    ])
                                 ])
                             ])
                         ]),

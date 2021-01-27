@@ -87,3 +87,13 @@ summary {
         transform: translateY(-3em);
     }
 }
+
+.legal {
+    counter-reset: item;
+    list-style-type: none !important;
+}
+
+.legal > li:before {
+    content: '§ ' counter(item, decimal) '. ';
+    counter-increment: item;
+}
