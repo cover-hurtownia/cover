@@ -166,6 +166,32 @@ app.get('/admin/orders', (request, response) => {
     });
 });
 
+app.get('/terms', (request, response) => {
+    response.render("termsAndConditions", {
+        meta: {
+            url: request.protocol + '://' + process.env.DOMAIN,
+            title: "Cover Hurtownia - Regulamin",
+            description: "Regulamin hurtowni książek Cover",
+            image: "/assets/banner.png",
+            cookies: request.cookies
+        },
+        session: request.session?.user
+    });
+});
+
+app.get('/privacy', (request, response) => {
+    response.render("privacyPolicy", {
+        meta: {
+            url: request.protocol + '://' + process.env.DOMAIN,
+            title: "Cover Hurtownia - Polityka prywatności",
+            description: "Polityka prywatności hurtowni książek Cover",
+            image: "/assets/banner.png",
+            cookies: request.cookies
+        },
+        session: request.session?.user
+    });
+});
+
 app.get('/admin/client_messages', (request, response) => {
     response.render("clientMessages", {
         meta: {
