@@ -14,7 +14,14 @@ export const get = render(async _ => [200, "contact", {
 export const post = render(async request => {
     const database = request.app.get("database");
 
-    const query = database("client_messages").insert({ ...request.body, date: database.fn.now(), read: false });
+    const query = database("client_messages").insert({
+        name: request.body.name,
+        email: request.body.email,
+        title: request.body.title,
+        message: request.body.message,
+        date: database.fn.now(),
+        read: false
+    });
 
     try { await query; }
     catch (error) {
