@@ -36,28 +36,28 @@
                             <div class="field">
                                 <label class="label">Nazwa użytkownika</label>
                                 <div class="control">
-                                    <input class="input" name="username" type="text" placeholder="Nazwa użytkownika">
+                                    <input id="form-register-username-input" class="input" name="username" type="text" placeholder="Nazwa użytkownika">
                                 </div>
                                 <p id="form-register-username-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <label class="label">Hasło</label>
                                 <div class="control">
-                                    <input class="input" name="password" type="password" placeholder="password">
+                                    <input id="form-register-password-input" class="input" name="password" type="password" placeholder="password">
                                 </div>
                                 <p id="form-register-password-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <label class="label">Powtórz hasło</label>
                                 <div class="control">
-                                    <input class="input" name="repeated_password" type="password" placeholder="password">
+                                    <input id="form-register-repeated_password-input" class="input" name="repeated_password" type="password" placeholder="password">
                                 </div>
                                 <p id="form-register-repeated_password-help" class="help"></p>
                             </div>
                             <div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                    <input name="terms" type="checkbox">
+                                    <input id="form-register-terms-input" name="terms" type="checkbox">
                                         Zapoznałem się z <a href="/terms">regulaminem</a> serwisu.
                                     </label>
                                 </div>
@@ -66,7 +66,7 @@
                             <div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                    <input name="privacy" type="checkbox">
+                                    <input id="form-register-privacy-input" name="privacy" type="checkbox">
                                         Zapoznałem się z <a href="/privacy">polityką prywatności</a> serwisu.
                                     </label>
                                 </div>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <input type="submit" class="button" value="Zaloguj" />
+                                    <input id="form-register-submit" type="submit" class="button" value="Zarejestruj" />
                                 </div>
                             </div>
                         </form>
@@ -190,4 +190,227 @@
     // ATTACH HANDLERS
     formLoginUsernameInput.addEventListener("input", onFormLoginUsername);
     formLoginPasswordInput.addEventListener("input", onFormLoginPassword);
+
+
+    //
+    //
+    //
+    //
+    //
+
+    /*
+
+        REGISTER FORM
+
+    */
+    const formRegister = document.getElementById("form-register");
+
+    // REGISTER FORM - SUBMIT BUTTON
+    const formRegisterSubmit = document.getElementById("form-register-submit");
+
+    // REGISTER FORM - USERNAME FIELD
+    const formRegisterUsernameInput = document.getElementById("form-register-username-input");
+    const formRegisterUsernameHelp = document.getElementById("form-register-username-help");
+
+    // REGISTER FORM - PASSWORD FIELD
+    const formRegisterPasswordInput = document.getElementById("form-register-password-input");
+    const formRegisterPasswordHelp = document.getElementById("form-register-password-help");
+
+    // REGISTER FORM - REPEATED PASSWORD FIELD
+    const formRegisterRepeatedPasswordInput = document.getElementById("form-register-repeated_password-input");
+    const formRegisterRepeatedPasswordHelp = document.getElementById("form-register-repeated_password-help");
+
+    // REGISTER FORM - TERMS ACCEPTANCE FIELD
+    const formRegisterTermsInput = document.getElementById("form-register-terms-input");
+    const formRegisterTermsHelp = document.getElementById("form-register-terms-help");
+
+    // REGISTER FORM - PRIVACY ACCEPTANCE FIELD
+    const formRegisterPrivacyInput = document.getElementById("form-register-privacy-input");
+    const formRegisterPrivacyHelp = document.getElementById("form-register-privacy-help");
+
+    // REGISTER FORM - IS USERNAME CORRECT FLAG
+    let isRegisterUsernameCorrect = false;
+
+    // REGISTER FORM - IS PASSWORD CORRECT FLAG
+    let isRegisterPasswordCorrect = false;
+
+    // REGISTER FORM - IS REPEATED PASSWORD CORRECT FLAG
+    let isRegisterRepeatedPasswordCorrect = false;
+
+    // REGISTER FORM - ARE TERMS ACCEPTED FLAG
+    let areRegisterTermsAccepted = false;
+
+    // REGISTER FORM - IS POLICY ACCEPTED FLAG
+    let isRegisterPrivacyAccepted = false;
+
+    const resetFormRegisterSubmit = () => {
+        if ([
+            isRegisterPasswordCorrect,
+            isRegisterUsernameCorrect,
+            isRegisterRepeatedPasswordCorrect,
+            areRegisterTermsAccepted,
+            isRegisterPrivacyAccepted
+        ].every(_ => _)) {
+            formRegisterSubmit.classList.remove("is-disabled");
+            formRegisterSubmit.disabled = false;
+        }
+        else {
+            formRegisterSubmit.classList.add("is-disabled");
+            formRegisterSubmit.disabled = true;
+        }
+    };
+
+    // REGISTER FORM - ON USERNAME INPUT
+    const onFormRegisterUsername = event => {
+        if (formRegisterUsernameInput.value.length < 3) {
+            formRegisterUsernameInput.classList.remove("is-success");
+            formRegisterUsernameInput.classList.add("is-danger");
+
+            formRegisterUsernameHelp.classList.remove("is-success");
+            formRegisterUsernameHelp.classList.add("is-danger");
+            formRegisterUsernameHelp.textContent = "nazwa użytkownika musi składać się z minimalnie 3 znaków";
+
+            isRegisterUsernameCorrect = false;
+        }
+        else if (formRegisterUsernameInput.value.length > 24) {
+            formRegisterUsernameInput.classList.remove("is-success");
+            formRegisterUsernameInput.classList.add("is-danger");
+
+            formRegisterUsernameHelp.classList.remove("is-success");
+            formRegisterUsernameHelp.classList.add("is-danger");
+            formRegisterUsernameHelp.textContent = "nazwa użytkownika musi składać się z maksymalnie 24 znaków";
+
+            isRegisterUsernameCorrect = false;
+        }
+        else {
+            formRegisterUsernameInput.classList.remove("is-danger");
+            formRegisterUsernameInput.classList.add("is-success");
+
+            formRegisterUsernameHelp.classList.remove("is-danger");
+            formRegisterUsernameHelp.classList.add("is-success");
+            formRegisterUsernameHelp.textContent = "";
+
+            isRegisterUsernameCorrect = true;
+        }
+
+        resetFormRegisterSubmit();
+    };
+
+    // REGISTER FORM - ON PASSWORD INPUT
+    const onFormRegisterPassword = event => {
+        if (formRegisterPasswordInput.value.length === 0) {
+            formRegisterPasswordInput.classList.remove("is-success");
+            formRegisterPasswordInput.classList.add("is-danger");
+
+            formRegisterPasswordHelp.classList.remove("is-success");
+            formRegisterPasswordHelp.classList.add("is-danger");
+            formRegisterPasswordHelp.textContent = "hasło nie może być puste";
+
+            isRegisterPasswordCorrect = false;
+        }
+        else {
+            formRegisterPasswordInput.classList.remove("is-danger");
+            formRegisterPasswordInput.classList.add("is-success");
+
+            formRegisterPasswordHelp.classList.remove("is-danger");
+            formRegisterPasswordHelp.classList.add("is-success");
+            formRegisterPasswordHelp.textContent = "";
+
+            isRegisterPasswordCorrect = true;
+        }
+
+        resetFormRegisterSubmit();
+    };
+
+    // REGISTER FORM - ON REPEATED PASSWORD INPUT
+    const onFormRegisterRepeatedPassword = event => {
+        if (formRegisterRepeatedPasswordInput.value !== formRegisterPasswordInput.value) {
+            formRegisterRepeatedPasswordInput.classList.remove("is-success");
+            formRegisterRepeatedPasswordInput.classList.add("is-danger");
+
+            formRegisterRepeatedPasswordHelp.classList.remove("is-success");
+            formRegisterRepeatedPasswordHelp.classList.add("is-danger");
+            formRegisterRepeatedPasswordHelp.textContent = "podane hasła nie są takie same";
+
+            isRegisterRepeatedPasswordCorrect = false;
+        }
+        else {
+            formRegisterRepeatedPasswordInput.classList.remove("is-danger");
+            formRegisterRepeatedPasswordInput.classList.add("is-success");
+
+            formRegisterRepeatedPasswordHelp.classList.remove("is-danger");
+            formRegisterRepeatedPasswordHelp.classList.add("is-success");
+            formRegisterRepeatedPasswordHelp.textContent = "";
+
+            isRegisterRepeatedPasswordCorrect = true;
+        }
+
+        resetFormRegisterSubmit();
+    };
+
+    // REGISTER FORM - ON TERMS ACCEPTANCE CHANGE
+    const onFormRegisterTerms = event => {
+        if (!formRegisterTermsInput.checked) {
+            formRegisterTermsInput.classList.remove("is-success");
+            formRegisterTermsInput.classList.add("is-danger");
+
+            formRegisterTermsHelp.classList.remove("is-success");
+            formRegisterTermsHelp.classList.add("is-danger");
+            formRegisterTermsHelp.textContent = "musisz zaakceptować regulamin serwisu";
+
+            areRegisterTermsAccepted = false;
+        }
+        else {
+            formRegisterTermsInput.classList.remove("is-danger");
+            formRegisterTermsInput.classList.add("is-success");
+
+            formRegisterTermsHelp.classList.remove("is-danger");
+            formRegisterTermsHelp.classList.add("is-success");
+            formRegisterTermsHelp.textContent = "";
+
+            areRegisterTermsAccepted = true;
+        }
+
+        resetFormRegisterSubmit();
+    };
+
+    // REGISTER FORM - ON POLICY ACCEPTANCE CHANGE
+    const onFormRegisterPrivacy = event => {
+        if (!formRegisterPrivacyInput.checked) {
+            formRegisterPrivacyInput.classList.remove("is-success");
+            formRegisterPrivacyInput.classList.add("is-danger");
+
+            formRegisterPrivacyHelp.classList.remove("is-success");
+            formRegisterPrivacyHelp.classList.add("is-danger");
+            formRegisterPrivacyHelp.textContent = "musisz zaakceptować politykę prywatności serwisu";
+
+            isRegisterPrivacyAccepted = false;
+        }
+        else {
+            formRegisterPrivacyInput.classList.remove("is-danger");
+            formRegisterPrivacyInput.classList.add("is-success");
+
+            formRegisterPrivacyHelp.classList.remove("is-danger");
+            formRegisterPrivacyHelp.classList.add("is-success");
+            formRegisterPrivacyHelp.textContent = "";
+
+            isRegisterPrivacyAccepted = true;
+        }
+
+        resetFormRegisterSubmit();
+    };
+
+    // INITIAL CHECK
+    onFormRegisterUsername();
+    onFormRegisterPassword();
+    onFormRegisterRepeatedPassword();
+    onFormRegisterTerms();
+    onFormRegisterPrivacy();
+
+    // ATTACH HANDLERS
+    formRegisterUsernameInput.addEventListener("input", onFormRegisterUsername);
+    formRegisterPasswordInput.addEventListener("input", onFormRegisterPassword);
+    formRegisterRepeatedPasswordInput.addEventListener("input", onFormRegisterRepeatedPassword);
+    formRegisterTermsInput.addEventListener("input", onFormRegisterTerms);
+    formRegisterPrivacyInput.addEventListener("input", onFormRegisterPrivacy);
 </script>
