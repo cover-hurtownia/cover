@@ -2,127 +2,224 @@
 const form = document.querySelector("#contact-form");
 
 // inputs
-const userName = document.querySelector("#form-contact-userName-input");
-const userEmail = document.querySelector("#form-contact-userEmail-input");
-const messageTopic = document.querySelector("#form-contact-messageTopic-input")
-const userMessage = document.querySelector("#form-contact-userMessage-input");
+const formContactUserNameInput = document.querySelector("#form-contact-userName-input");
+const formContactUserNameHelp = document.querySelector("#form-contact-userName-help");
+
+const formContactUserEmailInput = document.querySelector("#form-contact-userEmail-input");
+const formContactUserEmailHelp  = document.querySelector("#form-contact-userEmail-help");
+
+const formContactMessageTopicInput = document.querySelector("#form-contact-messageTopic-input");
+const formContactMessageTopicHelp = document.querySelector("#form-contact-messageTopic-help");
+
+const formContactUserMessageInput = document.querySelector("#form-contact-userMessage-input");
+const formContactUserMessageHelp = document.querySelector("#form-contact-userMessage-help");
+
 
 // checkboxes
-const regulation = document.querySelector("#form-contact-regulation-input");
-const privacy = document.querySelector("#form-contact-privacy-input");
+const formContactCheckboxRegulationInput = document.querySelector("#form-contact-regulation-input");
+const formContactCheckboxRegulationHelp = document.querySelector("#form-contact-regulation-help");
+const formContactCheckboxPrivacyInput = document.querySelector("#form-contact-privacy-input");
+const formContactCheckboxPrivacyHelp = document.querySelector("#form-contact-privacy-help");
 
-const isError = [];
 
-const submitButtonActive = document.querySelector("button.button");
-submitButtonActive.disabled = true;
+// submit button
+const formContactSubmitButton = document.querySelector("button.button");
 
-let ifUserNameIsError = true;
-let ifUserEmailIsError = true;
-let ifMessageTopicIsError = true;
-let ifRegulationIsError = true;
-let ifPrivacyIsError = true;
+let isUserNameIsFill = false;
 
-const formInputElements = [userName, userEmail, messageTopic, userMessage]; 
+let isUserEmailIsFill = false;
 
-const writeInputWarning = (fieldId) => {
-        const box = document.createElement("div");
-        box.classList.add("container");
-        box.classList.add(`form-info-${fieldId}`);
-        const p = document.createElement("p");
-        box.append(p);
-        p.classList.add("has-text-danger");
-        p.innerText = `Wypełnienie powyższego pola jest wymagane`;
-        return box
-}
+let isMessageTopicIsFill = false;
 
-const isWarningDisplayed = (parenContainer, infoContainer, value, id) => {
-    if( parenContainer.contains(infoContainer) === false && (
-        infoContainer === null || 
-        infoContainer === 'undefined')){
-        if( (value === null) || 
-            (value === undefined) ||
-            (value === ""))
-                {
-                    const elementName = parenContainer.firstElementChild.innerText;
-                    isError.push(`Wymagane jest poprawne wypełnienie ${elementName}`)
-                    return parenContainer.append(writeInputWarning(id));
-                }
-    }else if(parenContainer.contains(infoContainer) === true){
-        if( (value.length > 0)){
-            isError.pop();
-            return parenContainer.removeChild(infoContainer);
-        }
+let isUserMessageIsFill = false;
+
+let isRegulationIsAccepted = false;
+
+let isPrivacyIsAccepted = false;
+
+// ----------------------------------------------------------------------------
+
+const resetFormContact = () => {
+    if((isUserNameIsFill        &&  
+        isUserEmailIsFill       &&  
+        isMessageTopicIsFill    &&  
+        isUserMessageIsFill     &&  
+        isRegulationIsAccepted  && 
+        isPrivacyIsAccepted)){
+        formContactSubmitButton.classList.remove("is-disabled");
+        formContactSubmitButton.disabled = false;
+    }else{
+        formContactSubmitButton.classList.add("is-disabled");
+        formContactSubmitButton.disabled = true;
     }
 }
 
-//  Czas wysłania wiadomości 
-// const date = () => {
-//     const ifSingleChar = (n) => {
-    //         return (n < 10) ? `0${n}` : `${n}`;
-    //     }
-    //     const now = new Date();
-    //     const hours = ifSingleChar(now.getHours());
-    //     const minutes = ifSingleChar(now.getMinutes());
-    //     const sek = ifSingleChar(now.getSeconds());
-    //     const day = ifSingleChar(now.getDate());
-    //     const month = ifSingleChar(now.getMonth() + 1);
-    //     const year = ifSingleChar(now.getFullYear());
-    //     return `${hours}/${minutes}/${sek}/${day}/${month}/${year}`
-    // }
+const onContactFormUserName = event => {
+    if(formContactUserNameInput.value.length < 1){
+        formContactUserNameInput.classList.remove("is-success");
+        formContactUserNameInput.classList.add("is-danger");
+        formContactUserNameHelp.classList.remove("is-success");
+        formContactUserNameHelp.classList.add("is-danger");
+        formContactUserNameHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        isUserNameIsFill = false;
 
-const checkCheckbox = () => {
-    if(privacy.checked !== true){
-        writeInputWarning()
-        isError.push(`Wymagane jest poprawne wypełnienie ${elementName}`);
+    }else if(formContactUserNameInput.value.length > 40){
+        formContactUserNameInput.classList.remove("is-success");
+        formContactUserNameInput.classList.add("is-danger");
+        formContactUserNameHelp.classList.remove("is-success");
+        formContactUserNameHelp.classList.add("is-danger");
+        formContactUserNameHelp.textContent = `Maksymalna dopuszczalna liczba znaków jest równa 40`;
+        isUserNameIsFill = false;
     }else{
-        isError.pop();
+        formContactUserNameInput.classList.remove("is-danger");
+        formContactUserNameInput.classList.add("is-success");
+        formContactUserNameHelp.classList.remove("is-danger");
+        formContactUserNameHelp.classList.add("is-success");
+        formContactUserNameHelp.textContent = ``;
+        isUserNameIsFill = true;
     }
-    
-    if(regulation.checked !== true){
-        isError.push(`Wymagane jest poprawne wypełnienie ${elementName}`);
-    }else{
-    isError.pop();
-    }   
-}
+    resetFormContact();
+};
 
-const ifError = (isError) => {
-    if(isError.length === 0){
-        console.log(isError);
-        console.log("OK");
-        submitButtonActive.disabled = false;
-    }else if(isError.length !== 0){
-        console.log("STOP");
-        console.log(isError);
-        submitButtonActive.disabled = true;
+const onContactFormUserEmail = event => {
+    if(formContactUserEmailInput.value.length < 1 && 
+        !formContactUserEmailInput.value.includes("@")){
+        formContactUserEmailInput.classList.remove("is-success");
+        formContactUserEmailInput.classList.add("is-danger");
         
+        formContactUserEmailHelp.classList.remove("is-success");
+        formContactUserEmailHelp.classList.add("is-danger");
+        formContactUserEmailHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        isUserEmailIsFill = false;
+
+    }else if(formContactUserEmailInput.value.length > 60 && 
+        !formContactUserEmailInput.value.includes("@")){
+        formContactUserEmailInput.classList.remove("is-success");
+        formContactUserEmailInput.classList.add("is-danger");
+
+        formContactUserEmailHelp.classList.remove("is-success");
+        formContactUserEmailHelp.classList.add("is-danger");
+        formContactUserEmailHelp.textContent = `Maksymalna dopuszczalna liczba znaków jest równa 60`;
+        isUserEmailIsFill = false;
+    }else{
+        formContactUserEmailInput.classList.remove("is-danger");
+        formContactUserEmailInput.classList.add("is-success");
+
+        formContactUserEmailHelp.classList.remove("is-danger");
+        formContactUserEmailHelp.classList.add("is-success");
+        formContactUserEmailHelp.textContent = ``;
+        isUserEmailIsFill = true;
     }
+    resetFormContact();
+};
+
+const onContactFormMessageTopic = event => {
+    if(formContactMessageTopicInput.value.length < 1){
+        formContactMessageTopicInput.classList.remove("is-success");
+        formContactMessageTopicInput.classList.add("is-danger");
+        formContactMessageTopicHelp.classList.remove("is-success");
+        formContactMessageTopicHelp.classList.add("is-danger");
+        formContactMessageTopicHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        isMessageTopicIsFill = false;
+
+    }else if(formContactMessageTopicInput.value.length > 40){
+        formContactMessageTopicInput.classList.remove("is-success");
+        formContactMessageTopicInput.classList.add("is-danger");
+        formContactMessageTopicHelp.classList.remove("is-success");
+        formContactMessageTopicHelp.classList.add("is-danger");
+        formContactMessageTopicHelp.textContent = `Maksymalna liczba znaków jest równa 40`;
+        isMessageTopicIsFill = false;
+    }else{
+        formContactMessageTopicInput.classList.remove("is-danger");
+        formContactMessageTopicInput.classList.add("is-success");
+        formContactMessageTopicHelp.classList.remove("is-danger");
+        formContactMessageTopicHelp.classList.add("is-success");
+        formContactMessageTopicHelp.textContent = ``;
+        isMessageTopicIsFill = true;
+    }
+    resetFormContact();
+};
+
+const onContactFormUserMessage = event => {
+    if(formContactUserMessageInput.value.length < 1){
+        formContactUserMessageInput.classList.remove("is-success");
+        formContactUserMessageInput.classList.add("is-danger");
+        formContactUserMessageHelp.classList.remove("is-success");
+        formContactUserMessageHelp.classList.add("is-danger");
+        formContactUserMessageHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        isUserMessageIsFill = false;
+
+    }else if(formContactUserMessageInput.value.length > 500){
+        formContactUserMessageInput.classList.remove("is-success");
+        formContactUserMessageInput.classList.add("is-danger");
+        formContactUserMessageHelp.classList.remove("is-success");
+        formContactUserMessageHelp.classList.add("is-danger");
+        formContactUserMessageHelp.textContent = `Maksymalna liczba znaków jest równa 500`;
+        isUserMessageIsFill = false;
+    }else{
+        formContactUserMessageInput.classList.remove("is-danger");
+        formContactUserMessageInput.classList.add("is-success");
+        formContactUserMessageHelp.classList.remove("is-danger");
+        formContactUserMessageHelp.classList.add("is-success");
+        formContactUserMessageHelp.textContent = ``;
+        isUserMessageIsFill = true;
+    }
+    resetFormContact();
+};
+
+
+const onContactFormRegulation = event => {
+    if(!formContactCheckboxRegulationInput.checked){
+            formContactCheckboxRegulationInput.classList.remove("is-success");
+            formContactCheckboxRegulationInput.classList.add("is-danger");
+            formContactCheckboxRegulationHelp.classList.remove("is-success");
+            formContactCheckboxRegulationHelp.classList.add("is-danger");
+            formContactCheckboxRegulationHelp.textContent = `Wymagane jest zaakceptowanie regulaminu serwisu`
+            isRegulationIsAccepted = false;
+        }
+        else{
+            formContactCheckboxRegulationInput.classList.remove("is-danger");
+            formContactCheckboxRegulationInput.classList.add("is-success");
+            formContactCheckboxRegulationHelp.classList.remove("is-danger");
+            formContactCheckboxRegulationHelp.classList.add("is-success");
+            formContactCheckboxRegulationHelp.textContent = ``
+            isRegulationIsAccepted = true;
+    }
+    resetFormContact();
 }
 
-const checkFromElements = (elements) => {
-    elements.forEach(element => {
-        element.addEventListener("focusout", _ => {
-            const {id, value} = element;
-            const parenContainer= element.closest("div.field");
-            const componentId = id;
-            const infoContainer = document.querySelector(`div.field div.form-info-${componentId}`);
-            isWarningDisplayed(parenContainer, infoContainer, value, componentId);
-            ifError(isError)
-        })
-    })
+const onContactFormPrivacy = event => {
+    if(!formContactCheckboxPrivacyInput.checked){
+        formContactCheckboxPrivacyInput.classList.remove("is-success");
+        formContactCheckboxPrivacyInput.classList.add("is-danger");
+        formContactCheckboxPrivacyHelp.classList.remove("is-success");
+        formContactCheckboxPrivacyHelp.classList.add("is-danger");
+        formContactCheckboxPrivacyHelp.textContent = `Wymagane jest zaakceptowanie polityki prywatności`
+        isPrivacyIsAccepted = false;
+    }
+    else{
+        formContactCheckboxPrivacyInput.classList.remove("is-danger");
+        formContactCheckboxPrivacyInput.classList.add("is-success");
+        formContactCheckboxPrivacyHelp.classList.remove("is-danger");
+        formContactCheckboxPrivacyHelp.classList.add("is-success");
+        formContactCheckboxPrivacyHelp.textContent = ``
+        isPrivacyIsAccepted = true;
+    }
+    resetFormContact();
 }
 
-checkFromElements(formInputElements);
 
-form.addEventListener("submit", e => {
-    if(isError.length === 0){
-        e.preventDefault();
-        console.log(isError);
-        console.log("OK");
-        // do wyslania
-        const message = formInputElements.map(el => el.value.trim());
-    }else if(isError.length !==0){
-        console.log("STOP");
-        console.log(isError);
-        // document.querySelector("button.button").
-    }
-})
+onContactFormUserName();
+onContactFormUserEmail();
+onContactFormMessageTopic();
+onContactFormUserMessage();
+onContactFormRegulation();
+onContactFormPrivacy();
+
+
+formContactUserNameInput.addEventListener("input", onContactFormUserName);
+formContactUserEmailInput.addEventListener("input", onContactFormUserEmail);
+formContactMessageTopicInput.addEventListener("input", onContactFormMessageTopic);
+formContactUserMessageInput.addEventListener("input", onContactFormUserMessage);
+formContactCheckboxRegulationInput.addEventListener("input", onContactFormRegulation);
+formContactCheckboxPrivacyInput.addEventListener("input", onContactFormPrivacy);

@@ -26,8 +26,9 @@
                 <div class="field py-3">
                   <label class="label">Imię*:</label>
                   <div class="control">
-                    <input class="input" id="form-contact-userName-input"  type="text"  name="userName" maxlength="50" placeholder="Adam" required>
+                    <input class="input is-success" id="form-contact-userName-input"  type="text"  name="userName" placeholder="Adam">
                   </div>
+                  <p id="form-contact-userName-help" class="help"></p>
                 </div>
                 <div class="field py-3">
                   <label class="label">Adres e-mail*:</label>
@@ -35,18 +36,21 @@
                     <input class="input" id="form-contact-userEmail-input" type="email"  name="userEmail" placeholder="jankowalski@mail.pl"
                       reduired>
                   </div>
+                  <p id="form-contact-userEmail-help" class="help"></p>
                 </div>
                 <div class="field py-3">
                   <label class="label">Temat*:</label>
                   <div class="control">
                     <input class="input" id="form-contact-messageTopic-input" name="messageTopic" placeholder="Płatność/Zamówienie/Inne" required/>
                   </div>
+                  <p id="form-contact-messageTopic-help" class="help"></p>
                 </div>
                 <div class="field py-3">
                   <label class="label">Twoja wiadomość*:</label>
                   <div class="control">
                     <textarea class="textarea" id="form-contact-userMessage-input" name="userMessage" maxlength="500" placeholder="Treść wiadomości: "></textarea>
                   </div>
+                  <p id="form-contact-userMessage-help" class="help"></p>
                 </div>
                 <div class="field py-2">
                   <div class="title is-5 py-3"><h2>Zgody*</h2></div>
@@ -55,12 +59,14 @@
                       <input type="checkbox" id="form-contact-regulation-input" name="regulation">
                       Zapoznałem się i akceptuje <a href="/terms"></a>regulamin serwisu.</a>
                     </label>
+                    <p id="form-contact-regulation-help" class="help"></p>
                   </div>
                   <div class="control">
                     <label class="checkbox py-2">
                       <input type="checkbox" id="form-contact-privacy-input" name="privacy">
                       Zapoznałem się i akceptuje <a href="/privacy"></a>politykę prywatości.</a>
                     </label>
+                    <p id="form-contact-privacy-help" class="help"></p>
                   </div>
                 </div>
                 <div class="field">
