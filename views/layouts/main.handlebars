@@ -56,7 +56,14 @@
                 <div class="container">
                     <div class="navbar-brand">
                         <a class="navbar-item is-hidden-tablet" href="/cart">
-                            <span class="material-icons icon_color"> shopping_cart </span>
+                            <div style="position: relative;">
+                                <span class="material-icons icon_color"> shopping_cart </span>
+                                <span
+                                    class="navbar-cart-counter p-0 has-background-primary has-text-white is-size-7 is-text-weight-bold is-hidden"
+                                    style="border-radius: 1.0rem; position: absolute; top: 50%; left: 50%; height: 1.0rem; min-width: 1.0rem; line-height: 1.0rem; text-align: center;"
+                                >
+                                </span>
+                            </div>
                         </a>
                         <div class="navbar-item is-hidden-mobile is-flex-grow-1 py-0">
                             <a href="/">
@@ -78,7 +85,14 @@
 
                         <a class="navbar-item navbar-item-anim is-hidden-desktop is-hidden-mobile" href="/cart">
                             Koszyk
-                            <span class="material-icons icon_color"> shopping_cart </span>
+                            <div style="position: relative;">
+                                <span class="material-icons icon_color"> shopping_cart </span>
+                                <span
+                                    class="navbar-cart-counter p-0 has-background-primary has-text-white is-size-7 is-text-weight-bold is-hidden"
+                                    style="border-radius: 1.0rem; position: absolute; top: 50%; left: 50%; height: 1.0rem; min-width: 1.0rem; line-height: 1.0rem; text-align: center;"
+                                >
+                                </span>
+                            </div>
                         </a>
                         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                             <span aria-hidden="true"></span>
@@ -104,7 +118,14 @@
 
                             <a class="navbar-item navbar-item-anim" href="/cart">
                                 Koszyk
-                                <span class="material-icons icon_color is-hidden-touch"> shopping_cart </span>
+                                <div style="position: relative;" class="is-hidden-touch">
+                                    <span class="material-icons icon_color"> shopping_cart </span>
+                                    <span
+                                        class="navbar-cart-counter p-0 has-background-primary has-text-white is-size-7 is-text-weight-bold is-hidden"
+                                        style="border-radius: 1.0rem; position: absolute; top: 50%; left: 50%; height: 1.0rem; min-width: 1.0rem; line-height: 1.0rem; text-align: center;"
+                                    >
+                                    </span>
+                                </div>
                             </a>
 
                             {{#if session}}
