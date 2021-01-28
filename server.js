@@ -20,9 +20,10 @@ import { router as register } from "./routes/register.js";
 import IAmFeelingLucky from "./routes/iamfeelinglucky.js";
 import book from "./routes/book.js";
 import logout from "./routes/logout.js";
+import ranking from "./routes/ranking.js";
+import home from "./routes/home.js";
 
 import * as utils from "./www/js/utils.js"; 
-import ranking from "./routes/ranking.js";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -82,24 +83,12 @@ app.use(bodyParser.json());
 app.use(fileUpload());
 app.use("/", express.static("www"));
 
+app.get('/', home);
 app.use("/api", api);
 app.use("/images", images);
 app.use('/contact', contact);
 app.use('/login', login);
 app.use('/register', register);
-
-app.get('/', (request, response) => {
-    response.render("home", {
-        meta: {
-            url: process.env.PROTOCOL + '://' + process.env.DOMAIN,
-            title: "Cover Hurtownia",
-            description: "Lorem ipsum",
-            image: "/assets/banner.png",
-            cookies: request.cookies
-        },
-        session: request.session?.user
-    });
-});
 
 app.get('/ranking', ranking);
 app.get("/iamfeelinglucky", IAmFeelingLucky);
