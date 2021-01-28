@@ -28,28 +28,28 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 40vh;
+    height: 400vh;
 "></section>
 
-<section class="hero">
+<section class="hero is-primary">
     <div class="hero-body">
-        <div class="container">
+        <div id="stats" class="container">
             <div class="columns is-align-items-stretch">
                 <div class="column">
-                    <div class="box notification is-light has-text-centered" style="height: 100%;">
-                        <div id="stat-products-sold" class="is-size-2 has-text-weight-bold" data-value="{{stats.products}}">{{stats.products}}</div>
+                    <div class="box notification is-light has-text-centered">
+                        <div id="stat-products-sold" class="is-size-2 has-text-weight-bold stat-counter" data-value="{{stats.products}}">{{stats.products}}</div>
                         <p class="is-italic">produktów w katalogu</p>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="box notification is-light has-text-centered" style="height: 100%;">
-                        <div id="stat-orders-placed" class="is-size-2 has-text-weight-bold" data-value="{{stats.orders}}">{{stats.orders}}</div>
+                    <div class="box notification is-light has-text-centered">
+                        <div id="stat-orders-placed" class="is-size-2 has-text-weight-bold stat-counter" data-value="{{stats.orders}}">{{stats.orders}}</div>
                         <p class="is-italic">złożonych zamówień</p>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="box notification is-light has-text-centered" style="height: 100%;">
-                        <div id="stat-users-registered" class="is-size-2 has-text-weight-bold" data-value="{{stats.users}}">{{stats.users}}</div>
+                    <div class="box notification is-light has-text-centered">
+                        <div id="stat-users-registered" class="is-size-2 has-text-weight-bold stat-counter" data-value="{{stats.users}}">{{stats.users}}</div>
                         <p class="is-italic">zarejestrowanych użytkowników</p>
                     </div>
                 </div>
@@ -57,3 +57,48 @@
         </div>
     </div>
 </section>
+
+<script type="module" defer>
+    const stats = document.getElementById("stats");
+    const statCounters = document.getElementsByClassName("stat-counter");
+
+    const makeCounterAnimation = (duration, timeFunction) => () => {
+        let start = null;
+
+        const frame = timestamp => {
+            if (start === null) start = timestamp;
+
+            if (timestamp - start < duration) {
+                for (const counter of statCounters) {
+                    counter.textContent = Math.ceil(counter.dataset.value * timeFunction((timestamp - start) / duration));
+                }
+
+                window.requestAnimationFrame(frame);
+            }
+            else {
+                for (const counter of statCounters) {
+                    counter.textContent = counter.dataset.value;
+                }
+            }
+        };
+
+        window.requestAnimationFrame(frame);
+    };
+
+    const animateCounters = makeCounterAnimation(2000, x => 1 - (1 - x) ** 3);
+
+    new IntersectionObserver((entries, observer) => {
+        for (const entry of entries) {
+            if (entry.isIntersecting) {
+                console.log("intersecting");
+                animateCounters();
+                observer.unobserve(entry.target);
+
+                break;
+            }
+            else {
+                console.log("not intersecting")
+            }
+        }
+    }, { threshold: 0.0 }).observe(stats);
+</script>
