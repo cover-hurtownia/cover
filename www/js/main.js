@@ -73,3 +73,35 @@ document.addEventListener("scroll", _ => {
         toTopButton.classList.remove("active");
     }
 });
+
+/*
+    navbar cart counters
+*/
+
+const cartCounters = document.getElementsByClassName("navbar-cart-counter");
+const onCartChange = products => {
+    const totalNumberOfProducts = Object.values(products).reduce((x, y) => x + y, 0);
+
+    if (totalNumberOfProducts === 0) {
+        for (const counter of cartCounters) {
+            counter.classList.add("is-hidden");
+            counter.textContent = "";
+        }
+    }
+    else {
+        for (const counter of cartCounters) {
+            counter.classList.remove("is-hidden");
+            counter.textContent = totalNumberOfProducts
+        }
+    }
+};
+
+window.addEventListener("storage", event => event.key === "shopping_cart" && onCartChange(JSON.parse(event.newValue)));
+window.addEventListener("WINDOW_STORAGE", event => event.detail.key === "shopping_cart" && onCartChange(event.detail.value));
+
+onCartChange((() => {
+    const item = window.localStorage.getItem("shopping_cart");
+    
+    try { return item ? JSON.parse(item) : {}; }
+    catch (_) { return {}; }
+})());

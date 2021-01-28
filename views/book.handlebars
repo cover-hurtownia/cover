@@ -138,6 +138,7 @@
         else { cart[formData.id] = Number(formData.quantity); }
 
         window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
+        window.dispatchEvent(new CustomEvent("WINDOW_STORAGE", { detail: { key: "shopping_cart", value: cart } }));
 
         modal.showMessage("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`, "is-success");
     });
