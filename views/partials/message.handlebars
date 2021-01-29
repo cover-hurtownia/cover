@@ -1,0 +1,22 @@
+{{#if message}}
+<section class="hero {{message.className}}">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                {{message.title}}
+            </h1>
+            <h2 class="subtitle">
+                {{message.content}}
+            </h2>
+            <div class="buttons">
+                {{#if message.buttons}}
+                {{#each message.buttons as |button|}}
+                <a class="button {{button.className}}" href="{{button.href}}">{{button.content}}</a>
+                {{/each}}
+                {{/if}}
+                <a class="button" href="#" onclick="history.go(-1)">Powrót</a>
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}

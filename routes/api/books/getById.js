@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const getBookById = respond(async request => {
@@ -10,22 +10,23 @@ export const getBookById = respond(async request => {
     let query = database
         .select([
             "books.id", "books.title", "books.publication_date", "books.isbn", "books.pages",
-            "books.product_id", "products.quantity", "products.name", "products.description", "products.price", "products.available", "products.image_id",
-            "publishers.publisher",
-            "binding_types.type",
-            database.raw("GROUP_CONCAT(DISTINCT authors.author SEPARATOR ?) as ?", [";", "authors"]),
+            "books.product_id", "products.quantity_available", "products.name", "products.description", "products.price", "products.is_purchasable", "products.image_id",
+            "publishers.name as publisher",
+            "book_formats.format as book_format",
+            database.raw("GROUP_CONCAT(DISTINCT authors.name SEPARATOR ?) as ?", [";", "authors"]),
             database.raw("GROUP_CONCAT(DISTINCT tags.tag SEPARATOR ?) as ?", [";", "tags"])
         ])
         .from("books")
         .where("books.id", id)
         .innerJoin("products", "books.product_id", "products.id")
         .innerJoin("publishers", "books.publisher_id", "publishers.id")
-        .innerJoin("binding_types", "books.binding_type_id", "binding_types.id")
+        .innerJoin("book_formats", "books.book_format_id", "book_formats.id")
         .leftJoin("book_authors", "books.id", "book_authors.book_id")
         .leftJoin("authors", "authors.id", "book_authors.author_id")
         .leftJoin("book_tags", "books.id", "book_tags.book_id")
         .leftJoin("tags", "tags.id", "book_tags.tag_id")
-        .groupBy("books.id");
+        .groupBy("books.id")
+        .limit(1);
 
     logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`);
 
@@ -35,10 +36,13 @@ export const getBookById = respond(async request => {
         tags: book.tags?.split(";") ?? []
     }))).catch(error => {
         logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
+        throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
     });
 
-    if (books.length === 0) throw [404, errorCodes.RESOURCE_NOT_FOUND];
+    if (books.length === 0) throw [404, {
+        userMessage: "nie znaleziono zasobu",
+        devMessage: `book with id ${id} doesn't exist`
+    }];
 
     const book = books[0];
 

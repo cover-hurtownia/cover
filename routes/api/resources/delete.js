@@ -1,5 +1,5 @@
 import logger from "../../../logger.js";
-import * as errorCodes from "../../../www/js/common/errorCodes.js";
+
 import { respond } from "../../utilities.js";
 
 export const deleteResource = table => respond(async request => {
@@ -7,24 +7,48 @@ export const deleteResource = table => respond(async request => {
 
     const ids = Array.isArray(request.body) ? request.body : [request.body];
 
-    console.log(ids);
-    if (ids.some(id => typeof id !== "number")) throw [400, errorCodes.RESOURCE_INVALID_REQUEST];
+    for (let i = 0; i < ids.length; ++i) {
+        const id = ids[i];
 
-    const query = database(table).delete().whereIn("id", ids);
+        if (typeof id !== "number") throw [400, {
+            userMessage: `błąd formularza`,
+            devMessage: `resource id at index ${i} is not a number`
+        }]; 
+    } 
 
-    logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
+    await database.transaction(async trx => {
+        const resources = await trx(table).whereIn("id", ids).catch(error => {
+            logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+            throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
+        });
 
-    const deletedRows = await query.catch(error => {
-        logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
-        throw [503, errorCodes.DATABASE_ERROR, { debug: error }];
-    });
+        for (const id of ids) {
+            let ok = false;
 
-    logger.info(`${request.method} ${request.originalUrl}: deleted rows: ${deletedRows}`);
+            for (const resource of resources) {
+                if (resource.id === id) {
+                    ok = true;
+                    break;
+                }
+            }
 
-    return [200, {
-        status: "ok",
-        rows: deletedRows
-    }];
+            if (!ok) throw [404, {
+                userMessage: `zasób o id ${id} nie istnieje`,
+                devMessage: `resource with id ${id} doesn't exist`
+            }];
+
+            let query = trx(table).delete().where({ id });
+
+            logger.debug(`${request.method} ${request.originalUrl}: SQL: ${query.toString()}`)
+    
+            await query.catch(error => {
+                logger.error(`${request.method} ${request.originalUrl}: database error: ${query.toString()}: ${error}`);
+                throw [503, { userMessage: "błąd bazy danych", devMessage: error.toString() }];
+            });
+        }
+    })
+
+    return [200, { status: "ok" }];
 });
 
 export default deleteResource;

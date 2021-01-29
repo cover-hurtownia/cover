@@ -1,43 +1,99 @@
-// Overrides
+$logo-header-height: 2.5rem;
+$logo-header-desktop-height: 4.0rem;
 
-$family-heading: "News Cycle", "Arial Narrow Bold", sans-serif;
-
-.button {
-  font-family: $family-heading;
-  font-weight: 700;
-  padding-left: 1em;
-  padding-right: 1em;
+html {
+    scroll-behavior: smooth;
 }
 
-.card-header-title,
-.navbar-item,
-.navbar-link,
-.menu-label,
-.message-header,
-.modal-card-title,
-.panel-heading,
-.subtitle,
-.title,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-  font-family: $family-heading;
+html[data-font-size="large"] {
+    font-size: 1.25em !important;
 }
 
-.notification {
-  @each $name, $pair in $colors {
-    $color: nth($pair, 1);
-    $color-invert: nth($pair, 2);
+html[data-font-size="normal"] {
+    font-size: 1.0em !important;
+}
 
-    &.is-#{$name} {
-      a:not(.button) {
-        color: $color-invert;
-        text-decoration: underline;
-      }
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.is-clickable {
+    cursor: pointer;
+}
+
+.logo-header {
+    max-height: $logo-header-height !important;
+}
+
+.logo-header-desktop {
+    max-height: $logo-header-desktop-height !important;
+}
+
+#wrapper {
+    flex-grow: 1;
+}
+
+summary {
+    cursor: pointer;
+}
+
+.navbar-item-anim {
+    position: relative;
+
+    &:hover {
+        background-color: $primary;
     }
-  }
+
+    &::before {
+        position: absolute;
+        content: "";
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.5s;
+    }    
+
+    &:hover::before {
+        background-color: $primary;
+        transform: scaleX(1);
+        transform-origin: center;
+    }  
+}
+
+#btn-to-top {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: -2em;
+    left: 1em;
+
+    height: 2em;
+    width: 2em;
+
+    text-decoration: none;
+    transition: 0.5s;
+    pointer-events: none;
+
+    &.active {
+        opacity: 1;
+        pointer-events: auto;
+    
+        transform: translateY(-3em);
+    }
+}
+
+.legal {
+    counter-reset: item;
+    list-style-type: none !important;
+}
+
+.legal > li:before {
+    content: '§ ' counter(item, decimal) '. ';
+    counter-increment: item;
 }

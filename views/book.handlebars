@@ -1,0 +1,186 @@
+<section class="hero">
+    <div class="hero-body">
+        <div class="container box">
+            <div class="columns is-vcentered">
+                <div class="column is-3">
+                    <figure class="image box p-1">
+                        <img id="book-image" class="is-clickable" loading="lazy" src="/images/{{book.image_id}}"></img>
+                    </figure>
+                </div>
+                <div class="column is-9">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="title"><a href="/book/{{book.id}}">{{book.name}}</a></div>
+                        </div>
+                        <div class="column is-narrow">
+                            <button class="button is-primary" id="share-book" data-book-name="{{book.name}}">Udostępnij</button>
+                        </div>
+                    </div>
+                    <table class="table is-fullwidth is-striped">
+                        <tbody>
+                            <tr>
+                                <td class="has-text-grey-dark">Tytuł</td>
+                                <td>{{book.title}}</td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Autorzy</td>
+                                <td>
+                                    <ul>
+                                        {{#each book.authors}}
+                                            <li>{{> author author=this}}</li>
+                                        {{/each}}
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Wydawca</td>
+                                <td>{{> publisher publisher=book.publisher}}</td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Kategorie</td>
+                                <td>
+                                    {{#if book.tags}}
+                                        {{#each book.tags}}
+                                            {{> tag tag=this}}
+                                        {{/each}}
+                                    {{else}}
+                                        <span class="is-italic has-text-grey">(brak)</span>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Format</td>
+                                <td>{{showFormat book.book_format}}</td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">ISBN</td>
+                                <td>{{book.isbn}}</td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Strony</td>
+                                <td>{{book.pages}}</td>
+                            </tr>
+                            <tr>
+                                <td class="has-text-grey-dark">Ilość</td>
+                                <td>{{book.quantity_available}}</td>
+                            </tr>
+                            <tr class="has-text-weight-bold">
+                                <td class="has-text-grey-dark">Cena</td>
+                                <td>{{showPrice book.price}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {{#if (and book.is_purchasable (not (equals book.quantity_available 0)))}}
+                    <form id="add-to-cart">
+                        <input type="hidden" name="id" value="{{book.product_id}}"/>
+                        <input type="hidden" name="name" value="{{book.name}}"/>
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input type="submit" class="button is-primary" value="Dodaj do koszyka"/>
+                            </div>
+                            <div class="control">
+                                <input class="input" type="number" name="quantity" value="1" min="1" max="{{book.quantity_available}}" />
+                            </div>
+                            <div class="control">
+                                <div class="button is-static">sztuk</div>
+                            </div>
+                        </div>
+                    </form>
+                    {{else}}
+                        <div class="has-text-danger has-text-weight-bold">Produkt niedostępny.</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{#if book.description}}
+            <div>
+                <div class="subtitle">Opis</div>
+                <div class="book-description">{{book.description}}</div>
+            </div>
+            {{/if}}
+            {{#if similarProducts}}
+            <div>
+                <div class="subtitle">Klienci którzy zakupili ten produkt kupili również:</div>
+                <div class="columns">
+                    {{#each similarProducts as |product|}}
+                        <div class="column is-1">
+                            <div class="card">
+                                <div class="card-image">
+                                    <a href="/books?name={{product.name}}" class="m-0 p-0" title="{{product.name}}">
+                                        <figure class="image">
+                                            <img src="/images/{{product.image_id}}" />
+                                        </figure>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+<script type="module" defer>
+    import * as modal from "/js/modal.js";
+
+    document.getElementById("add-to-cart")?.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const formData = Object.fromEntries(new FormData(event.target));
+        const cartItem = window.localStorage.getItem("shopping_cart");
+
+        let cart;
+        try { cart = cartItem ? JSON.parse(cartItem) : {}; }
+        catch (_) { cart = {}; }
+
+        if (cart.hasOwnProperty(formData.id)) { cart[formData.id] += Number(formData.quantity); }
+        else { cart[formData.id] = Number(formData.quantity); }
+
+        window.localStorage.setItem("shopping_cart", JSON.stringify(cart));
+        window.dispatchEvent(new CustomEvent("WINDOW_STORAGE", { detail: { key: "shopping_cart", value: cart } }));
+
+        modal.showMessage("Koszyk", `Produkt "${formData.name}" (x${formData.quantity}) został dodany do koszyka.`, "is-success");
+    });
+
+    document.getElementById("book-image").addEventListener("click", event => {
+        modal.showImage(event.target.src);
+    });
+
+    document.getElementById("share-book").addEventListener("click", async event => {
+        const bookName = event.target.dataset.bookName;
+
+        if (navigator.share) {
+            await navigator.share({
+                title: `Cover Hurtownia - ${bookName}`,
+                url: document.location
+            });
+        }
+        else {
+            try {
+                const result = await navigator.permissions.query({ name: "clipboard-write" });
+                
+                if (result.state == "granted" || result.state == "prompt") {
+                    await navigator.clipboard.writeText(document.location);
+                }
+
+                 modal.showMessage("", `Skopiowano link!`, "is-success");
+            }
+            catch (error) {
+                const text = document.createElement("textarea");
+
+                document.body.append(text);
+                
+                text.style = "position: absolute; bottom: -9999px; left: 0;";
+                text.textContent = document.location;
+                text.select();
+            
+                document.execCommand("copy");
+
+                text.remove();
+
+                modal.showMessage("", `Skopiowano link!`, "is-success");
+            }
+        }
+    });
+</script>
