@@ -1,3 +1,5 @@
+import * as modal from "/js/modal.js";
+
 const cookies = Object.fromEntries(document.cookie.split("; ").map(_ => _.split("=")));
 
 /*
@@ -106,16 +108,7 @@ onCartChange((() => {
     catch (_) { return {}; }
 })());
 
-/*
-    toasts
-*/
-
-const toasts = document.getElementsByClassName("toast");
-
-for (const toast of toasts) {
-    toast.addEventListener("click", event => {
-        toast.classList.add("sliding-out");
-
-        setTimeout(() => toast.remove(), 500);
-    });
-}
+if (!Boolean(cookies.cookies_accepted)) {
+    modal.showMessage("Ciasteczka", "Nasza strona korzysta z ciasteczek w celu zapewnienia najwyższej jakości usług. Pozostanie na stronie jest jednoznaczne z ich akceptacją.", "is-info");
+    document.cookie = `cookies_accepted=1; path=/`;
+} 
