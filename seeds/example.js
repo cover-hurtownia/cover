@@ -896,6 +896,163 @@ const books = [
         book_format: "paperback",
         tags: ["computer_science"],
         image: "./seeds/images/9788328355583.jpg"
+    },
+
+    {
+        product: {
+            name: "Das schloss der träumenden bücher",
+            price: "39.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Das schloss der träumenden bücher",
+            publication_date: "2024-01-01",
+            isbn: "3813505898"
+        },
+        authors: ["Moers Walter"],
+        publisher: "Wydawnictwo Dolnośląskie",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/3813505898.jpg"
+    },
+    {
+        product: {
+            name: "Trzynasta opowieść",
+            price: "19.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Trzynasta opowieść",
+            publication_date: "2021-02-24",
+            isbn: "9788382151541",
+            pages: 448
+        },
+        authors: ["Setterfield Diane"],
+        publisher: "Albatros",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788382151541.jpg"
+    },
+    {
+        product: {
+            name: "Zabij mnie, tato",
+            price: "29.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Zabij mnie, tato",
+            publication_date: "2021-02-24",
+            isbn: "9788381953870",
+            pages: 544
+        },
+        authors: ["Darda Stefan"],
+        publisher: "Filia",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788381953870.jpg"
+    },
+    {
+        product: {
+            name: "Bękart ze Stambułu",
+            price: "19.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Bękart ze Stambułu",
+            publication_date: "2021-03-10",
+            isbn: ""
+        },
+        authors: ["Shafak Elif"],
+        publisher: "Wydawnictwo Poznańskie",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/BekartZeStambulu.jpg"
+    },
+    {
+        product: {
+            name: "Wampir z Zagłębia",
+            price: "40.00",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Wampir z Zagłębia",
+            publication_date: "2021-02-24",
+            isbn: "9788381395991",
+            pages: 540
+        },
+        authors: ["Semczuk Przemysław"],
+        publisher: "Świat Książki",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788381395991.jpg"
+    },
+    {
+        product: {
+            name: "Belfast. 99 ścian pokoju",
+            price: "29.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Belfast. 99 ścian pokoju",
+            publication_date: "2021-04-24",
+            isbn: "9788381911627"
+        },
+        authors: ["Łojek Aleksandra"],
+        publisher: "Czarne",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788381911627.jpg"
+    },
+    {
+        product: {
+            name: "Ostatnia chowa klucz",
+            price: "30.90",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Ostatnia chowa klucz",
+            publication_date: "2021-03-23",
+            isbn: "9788381321891"
+        },
+        authors: ["Grabowska Ałbena"],
+        publisher: "Zwierciadło",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788381321891.jpg"
+    },
+
+    {
+        product: {
+            name: "Dom Maynarda",
+            price: "35.00",
+            quantity_available: 0,
+            quantity_on_hand: 0,
+            is_purchasable: false
+        },
+        book: {
+            title: "Dom Maynarda",
+            publication_date: "2021-12-31",
+            isbn: ""
+        },
+        authors: ["Raucher Herman"],
+        publisher: "Vesper",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/DomMaynarda.jpg"
     }
 ];
 
