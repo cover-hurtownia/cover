@@ -79,28 +79,34 @@ export const showImage = src => {
 };
 
 export const showMessage = (title, body, className, buttons = []) => {
-    const modalEl = document.createElement("div");
-    modalEl.classList.add("modal", "is-active");
-
     const messageEl = document.createElement("div");
-    messageEl.classList.add("message", "box", "p-0", className);
+    messageEl.classList.add("toast", "message", "box", "p-0", className);
 
-    const messageHeaderEl = document.createElement("div");
-    messageHeaderEl.classList.add("message-header");
+    if (title) {
+        const messageHeaderEl = document.createElement("div");
+        messageHeaderEl.classList.add("message-header");
+    
+        const messageTitleEl = document.createElement("p");
+        messageTitleEl.textContent = title;
+    
+        const buttonEl = document.createElement("button");
+        buttonEl.classList.add("delete");
+    
+        buttonEl.addEventListener("click", _ => {
+            messageEl.classList.add("sliding-out");
+            setTimeout(() => messageEl.remove(), 500);
+        });
 
-    const messageTitleEl = document.createElement("p");
-    messageTitleEl.textContent = title;
+        messageHeaderEl.append(messageTitleEl, buttonEl);
 
-    const buttonEl = document.createElement("button");
-    buttonEl.classList.add("delete");
-
-    messageHeaderEl.append(messageTitleEl, buttonEl);
+        messageEl.append(messageHeaderEl);
+    }
 
     const messageBodyEl = document.createElement("div");
     messageBodyEl.classList.add("message-body");
     messageBodyEl.textContent = body;
 
-    messageEl.append(messageHeaderEl, messageBodyEl);
+    messageEl.append(messageBodyEl);
 
     const buttonsEl = document.createElement("footer");
     buttonsEl.classList.add("m-2");
@@ -116,14 +122,13 @@ export const showMessage = (title, body, className, buttons = []) => {
 
     messageEl.append(buttonsEl);
 
-    modalEl.append(messageEl);
+    setTimeout(() => {
+        messageEl.classList.add("sliding-out");
+        setTimeout(() => messageEl.remove(), 500);
+    }, 2000 + body.length * 100);
 
-    buttonEl.addEventListener("click", _ => {
-        modalEl.remove();
-    });
-
-    document.body.append(modalEl);
-    return modalEl;
+    document.getElementById("toasts").append(messageEl);
+    return messageEl;
 };
 
 export const showCard = (title, body, buttons = []) => {

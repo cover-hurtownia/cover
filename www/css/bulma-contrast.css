@@ -7873,5 +7873,51 @@ summary {
   list-style-type: none !important; }
 
 .legal > li:before {
-  content: "§" counter(item, decimal) ". ";
+  content: "§ " counter(item, decimal) ". ";
   counter-increment: item; }
+
+@keyframes slide-in {
+  from {
+    right: -400px;
+    opacity: 0.0; }
+  to {
+    right: 0px;
+    opacity: 1.0; } }
+
+@keyframes slide-out {
+  from {
+    right: 0px;
+    opacity: 1.0; }
+  to {
+    right: -400px;
+    opacity: 0.0; } }
+
+#toasts {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 1000; }
+
+.message.toast {
+  margin-bottom: 0.5rem;
+  max-width: 400px; }
+
+.toast {
+  cursor: pointer;
+  position: relative;
+  text-align: justify;
+  right: 0;
+  animation-timing-function: ease-out;
+  animation-duration: 0.5s;
+  animation-name: slide-in;
+  opacity: 1.0; }
+
+.toast.sliding-out {
+  right: -400px;
+  animation-timing-function: ease-in;
+  animation-duration: 0.5s;
+  animation-name: slide-out;
+  opacity: 0.0; }

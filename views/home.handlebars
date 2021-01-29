@@ -90,14 +90,10 @@
     new IntersectionObserver((entries, observer) => {
         for (const entry of entries) {
             if (entry.isIntersecting) {
-                console.log("intersecting");
                 animateCounters();
                 observer.unobserve(entry.target);
 
                 break;
-            }
-            else {
-                console.log("not intersecting")
             }
         }
     }, { threshold: 0.0 }).observe(stats);
