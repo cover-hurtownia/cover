@@ -560,6 +560,342 @@ const books = [
         book_format: "paperback",
         tags: [],
         image: "./seeds/images/9788378187929.jpg"
+    },
+    
+    {
+        product: {
+            name: "Mały Książę",
+            price: "5.00",
+            quantity_available: 25,
+            quantity_on_hand: 25,
+            is_purchasable: true
+        },
+        book: {
+            title: "Mały Książę",
+            publication_date: "2020-05-04",
+            isbn: "9788327499301",
+            pages: 128 
+        },
+        authors: ["Antoine de Saint-Exupéry"],
+        publisher: "Firma Księgarska Olesiejuk",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788327499301.jpg"
+    },
+
+    {
+        product: {
+            name: "Mistrz i Małgorzata",
+            price: "15.19",
+            quantity_available: 45,
+            quantity_on_hand: 45,
+            is_purchasable: true
+        },
+        book: {
+            title: "Mistrz i Małgorzata",
+            publication_date: "2018-11-29",
+            isbn: "9788311150614",
+            pages: 584 
+        },
+        authors: ["Michaił Bułhakow"],
+        publisher: "Bellona",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788311150614.jpg"
+    },
+
+    {
+        product: {
+            name: "Igrzyska śmierci",
+            price: "21.19",
+            quantity_available: 8,
+            quantity_on_hand: 8,
+            is_purchasable: true
+        },
+        book: {
+            title: "Igrzyska śmierci",
+            publication_date: "2018-10-17",
+            isbn: "9788372783578",
+            pages: 378 
+        },
+        authors: ["Suzanne Collins"],
+        publisher: "Media Rodzina",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788372783578.jpg"
+    },
+
+    {
+        product: {
+            name: "W pierścieniu ognia",
+            price: "21.19",
+            quantity_available: 12,
+            quantity_on_hand: 12,
+            is_purchasable: true
+        },
+        book: {
+            title: "W pierścieniu ognia",
+            publication_date: "2018-10-17",
+            isbn: "9788372783950",
+            pages: 360 
+        },
+        authors: ["Suzanne Collins"],
+        publisher: "Media Rodzina",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788372783950.jpg"
+    },
+
+    {
+        product: {
+            name: "Kosogłos",
+            price: "21.19",
+            quantity_available: 12,
+            quantity_on_hand: 12,
+            is_purchasable: true
+        },
+        book: {
+            title: "Kosogłos",
+            publication_date: "2018-10-17",
+            isbn: "9788372784919",
+            pages: 367 
+        },
+        authors: ["Suzanne Collins"],
+        publisher: "Media Rodzina",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788372784919.jpg"
+    },
+
+    {
+        product: {
+            name: "Zbrodnia i kara",
+            price: "15.00",
+            quantity_available: 445,
+            quantity_on_hand: 445,
+            is_purchasable: true
+        },
+        book: {
+            title: "Zbrodnia i kara",
+            publication_date: "2018-05-23",
+            isbn: "9788328055971",
+            pages: 608 
+        },
+        authors: ["Fiodor Dostojewski"],
+        publisher: "W.A.B.",
+        book_format: "paperback",
+        tags: ["belles_lettres"],
+        image: "./seeds/images/9788328055971.jpg"
+    },
+
+    {
+        product: {
+            name: "Oskar i pani Róża",
+            price: "14.80",
+            quantity_available: 145,
+            quantity_on_hand: 145,
+            is_purchasable: true
+        },
+        book: {
+            title: "Oskar i pani Róża",
+            publication_date: "2021-01-20",
+            isbn: "9788324074280",
+            pages: 96 
+        },
+        authors: ["Éric-Emmanuel Schmitt"],
+        publisher: "Znak Literanova",
+        book_format: "paperback",
+        tags: ["belles_lettres"],
+        image: "./seeds/images/9788324074280.jpg"
+    },
+
+    {
+        product: {
+            name: "Hobbit",
+            price: "14.80",
+            quantity_available: 85,
+            quantity_on_hand: 85,
+            is_purchasable: true
+        },
+        book: {
+            title: "Hobbit",
+            publication_date: "2018-02-12",
+            isbn: "9788381162647",
+            pages: 304 
+        },
+        authors: ["J.R.R. Tolkien"],
+        publisher: "Zysk i S-ka",
+        book_format: "paperback",
+        tags: ["fantasy"],
+        image: "./seeds/images/9788381162647.jpg"
+    },
+
+    {
+        product: {
+            name: "Kamienie na szaniec",
+            price: "18.90",
+            quantity_available: 85,
+            quantity_on_hand: 85,
+            is_purchasable: true
+        },
+        book: {
+            title: "Kamienie na szaniec",
+            publication_date: "2018-02-12",
+            isbn: "9788310126542",
+            pages: 256 
+        },
+        authors: ["Aleksander Kamiński"],
+        publisher: "Nasza Księgarnia",
+        book_format: "paperback",
+        tags: ["historical_novel"],
+        image: "./seeds/images/9788310126542.jpg"
+    },
+
+    {
+        product: {
+            name: "Folwark zwierzęcy",
+            price: "8.99",
+            quantity_available: 35,
+            quantity_on_hand: 35,
+            is_purchasable: true
+        },
+        book: {
+            title: "Folwark zwierzęcy",
+            publication_date: "2021-01-15",
+            isbn: "9788379982837",
+            pages: 128 
+        },
+        authors: ["George Orwell"],
+        publisher: "Vis-a-Vis Etiuda",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788379982837.jpg"
+    },
+
+    {
+        product: {
+            name: "Buszujący w zbożu",
+            price: "29.00",
+            quantity_available: 315,
+            quantity_on_hand: 315,
+            is_purchasable: true
+        },
+        book: {
+            title: "Buszujący w zbożu",
+            publication_date: "2016-11-02",
+            isbn: "9788379859115",
+            pages: 304 
+        },
+        authors: ["J.D. Salinger"],
+        publisher: "Albatros",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788379859115.jpg"
+    },
+    
+    {
+        product: {
+            name: "Romeo i Julia",
+            price: "4.75",
+            quantity_available: 31,
+            quantity_on_hand: 31,
+            is_purchasable: true
+        },
+        book: {
+            title: "Romeo i Julia",
+            publication_date: "2017-08-24",
+            isbn: "9788380731882",
+            pages: 240 
+        },
+        authors: ["William Shakespeare"],
+        publisher: "Zielona Sowa",
+        book_format: "paperback",
+        tags: ["belles_lettres"],
+        image: "./seeds/images/9788380731882.jpg"
+    },
+
+    {
+        product: {
+            name: "Pan Tadeusz",
+            price: "7.50",
+            quantity_available: 87,
+            quantity_on_hand: 87,
+            is_purchasable: true
+        },
+        book: {
+            title: "Pan Tadeusz",
+            publication_date: "2020-01-01",
+            isbn: "9788373271920",
+            pages: 344 
+        },
+        authors: ["Adam Mickiewicz"],
+        publisher: "Greg",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788373271920.jpg"
+    },
+
+    {
+        product: {
+            name: "Koniec świata. Krótki przewodnik po tym, co nas czeka",
+            price: "29.50",
+            quantity_available: 71,
+            quantity_on_hand: 71,
+            is_purchasable: true
+        },
+        book: {
+            title: "Koniec świata. Krótki przewodnik po tym, co nas czeka",
+            publication_date: "2021-01-27",
+            isbn: "9788381432733",
+            pages: 384 
+        },
+        authors: ["Bryan Walsh"],
+        publisher: "Czarna Owca",
+        book_format: "paperback",
+        tags: [],
+        image: "./seeds/images/9788381432733.jpg"
+    },
+
+    {
+        product: {
+            name: "PHP7. Praktyczny kurs",
+            price: "69.00",
+            quantity_available: 77,
+            quantity_on_hand: 77,
+            is_purchasable: true
+        },
+        book: {
+            title: "PHP7. Praktyczny kurs",
+            publication_date: "2017-04-18",
+            isbn: "9788328324787",
+            pages: 464 
+        },
+        authors: ["Marcin Lis"],
+        publisher: "Helion",
+        book_format: "paperback",
+        tags: ["computer_science", "horror"],
+        image: "./seeds/images/9788328324787.jpg"
+    },
+
+    {
+        product: {
+            name: "WordPress 5 dla początkujących",
+            price: "59.00",
+            quantity_available: 55,
+            quantity_on_hand: 55,
+            is_purchasable: true
+        },
+        book: {
+            title: "WordPress 5 dla początkujących",
+            publication_date: "2019-07-02",
+            isbn: "9788328355583",
+            pages: 352 
+        },
+        authors: ["Agnieszka Ciborowska", "Jarosław Lipiński"],
+        publisher: "Helion",
+        book_format: "paperback",
+        tags: ["computer_science"],
+        image: "./seeds/images/9788328355583.jpg"
     }
 ];
 
