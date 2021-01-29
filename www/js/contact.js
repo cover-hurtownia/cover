@@ -82,24 +82,30 @@ const onContactFormUserName = event => {
 };
 
 const onContactFormUserEmail = event => {
-    if(formContactUserEmailInput.value.length < 1 && 
-        !formContactUserEmailInput.value.includes("@")){
+    if (formContactUserEmailInput.validity.valueMissing) {
         formContactUserEmailInput.classList.remove("is-success");
         formContactUserEmailInput.classList.add("is-danger");
         
         formContactUserEmailHelp.classList.remove("is-success");
         formContactUserEmailHelp.classList.add("is-danger");
-        formContactUserEmailHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        formContactUserEmailHelp.textContent = `powyższe pole musi zostać wypełnione`;
         isUserEmailIsFill = false;
-
-    }else if(formContactUserEmailInput.value.length > 60 && 
-        !formContactUserEmailInput.value.includes("@")){
+    }
+    else if (formContactUserEmailInput.validity.typeMismatch) {
+        formContactUserEmailInput.classList.remove("is-success");
+        formContactUserEmailInput.classList.add("is-danger");
+        
+        formContactUserEmailHelp.classList.remove("is-success");
+        formContactUserEmailHelp.classList.add("is-danger");
+        formContactUserEmailHelp.textContent = `podany email nie jest prawdiłowy`;
+        isUserEmailIsFill = false;
+    }else if(formContactUserEmailInput.value.length > 60) {
         formContactUserEmailInput.classList.remove("is-success");
         formContactUserEmailInput.classList.add("is-danger");
 
         formContactUserEmailHelp.classList.remove("is-success");
         formContactUserEmailHelp.classList.add("is-danger");
-        formContactUserEmailHelp.textContent = `Maksymalna dopuszczalna liczba znaków jest równa 60`;
+        formContactUserEmailHelp.textContent = `maksymalna dopuszczalna liczba znaków jest równa 60`;
         isUserEmailIsFill = false;
     }else{
         formContactUserEmailInput.classList.remove("is-danger");
@@ -114,20 +120,12 @@ const onContactFormUserEmail = event => {
 };
 
 const onContactFormMessageTopic = event => {
-    if(formContactMessageTopicInput.value.length < 1){
+    if(formContactMessageTopicInput.value.length > 40){
         formContactMessageTopicInput.classList.remove("is-success");
         formContactMessageTopicInput.classList.add("is-danger");
         formContactMessageTopicHelp.classList.remove("is-success");
         formContactMessageTopicHelp.classList.add("is-danger");
-        formContactMessageTopicHelp.textContent = `Powyższe pole musi zostać wypełnione`;
-        isMessageTopicIsFill = false;
-
-    }else if(formContactMessageTopicInput.value.length > 40){
-        formContactMessageTopicInput.classList.remove("is-success");
-        formContactMessageTopicInput.classList.add("is-danger");
-        formContactMessageTopicHelp.classList.remove("is-success");
-        formContactMessageTopicHelp.classList.add("is-danger");
-        formContactMessageTopicHelp.textContent = `Maksymalna liczba znaków jest równa 40`;
+        formContactMessageTopicHelp.textContent = `maksymalna liczba znaków jest równa 40`;
         isMessageTopicIsFill = false;
     }else{
         formContactMessageTopicInput.classList.remove("is-danger");
@@ -146,7 +144,7 @@ const onContactFormUserMessage = event => {
         formContactUserMessageInput.classList.add("is-danger");
         formContactUserMessageHelp.classList.remove("is-success");
         formContactUserMessageHelp.classList.add("is-danger");
-        formContactUserMessageHelp.textContent = `Powyższe pole musi zostać wypełnione`;
+        formContactUserMessageHelp.textContent = `powyższe pole musi zostać wypełnione`;
         isUserMessageIsFill = false;
 
     }else if(formContactUserMessageInput.value.length > 500){
@@ -154,7 +152,7 @@ const onContactFormUserMessage = event => {
         formContactUserMessageInput.classList.add("is-danger");
         formContactUserMessageHelp.classList.remove("is-success");
         formContactUserMessageHelp.classList.add("is-danger");
-        formContactUserMessageHelp.textContent = `Maksymalna liczba znaków jest równa 500`;
+        formContactUserMessageHelp.textContent = `maksymalna liczba znaków jest równa 500`;
         isUserMessageIsFill = false;
     }else{
         formContactUserMessageInput.classList.remove("is-danger");
@@ -174,7 +172,7 @@ const onContactFormRegulation = event => {
             formContactCheckboxRegulationInput.classList.add("is-danger");
             formContactCheckboxRegulationHelp.classList.remove("is-success");
             formContactCheckboxRegulationHelp.classList.add("is-danger");
-            formContactCheckboxRegulationHelp.textContent = `Wymagane jest zaakceptowanie regulaminu serwisu`
+            formContactCheckboxRegulationHelp.textContent = `wymagane jest zaakceptowanie regulaminu serwisu`
             isRegulationIsAccepted = false;
         }
         else{
@@ -194,7 +192,7 @@ const onContactFormPrivacy = event => {
         formContactCheckboxPrivacyInput.classList.add("is-danger");
         formContactCheckboxPrivacyHelp.classList.remove("is-success");
         formContactCheckboxPrivacyHelp.classList.add("is-danger");
-        formContactCheckboxPrivacyHelp.textContent = `Wymagane jest zaakceptowanie polityki prywatności`
+        formContactCheckboxPrivacyHelp.textContent = `wymagane jest zaakceptowanie polityki prywatności`
         isPrivacyIsAccepted = false;
     }
     else{

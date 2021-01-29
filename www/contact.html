@@ -26,28 +26,28 @@
                 <div class="field py-3">
                   <label class="label">Imię*:</label>
                   <div class="control">
-                    <input class="input" id="form-contact-userName-input"  type="text"  name="userName" placeholder="Adam">
+                    <input class="input" id="form-contact-userName-input"  type="text"  name="name" placeholder="Adam" required>
                   </div>
                   <p id="form-contact-userName-help" class="help"></p>
                 </div>
                 <div class="field py-3">
                   <label class="label">Adres e-mail*:</label>
                   <div class="control">
-                    <input class="input" id="form-contact-userEmail-input" type="email"  name="userEmail" placeholder="jankowalski@mail.pl">
+                    <input class="input" id="form-contact-userEmail-input" type="email"  name="email" placeholder="jankowalski@mail.pl" required>
                   </div>
                   <p id="form-contact-userEmail-help" class="help"></p>
                 </div>
                 <div class="field py-3">
-                  <label class="label">Temat*:</label>
+                  <label class="label">Temat:</label>
                   <div class="control">
-                    <input class="input" id="form-contact-messageTopic-input" name="messageTopic" placeholder="Płatność/Zamówienie/Inne"/>
+                    <input class="input" id="form-contact-messageTopic-input" name="title" placeholder="Płatność/Zamówienie/Inne"/>
                   </div>
                   <p id="form-contact-messageTopic-help" class="help"></p>
                 </div>
                 <div class="field py-3">
                   <label class="label">Twoja wiadomość*:</label>
                   <div class="control">
-                    <textarea class="textarea" id="form-contact-userMessage-input" name="userMessage" maxlength="500" placeholder="Treść wiadomości: "></textarea>
+                    <textarea class="textarea" id="form-contact-userMessage-input" name="message" maxlength="500" placeholder="Treść wiadomości: " required></textarea>
                   </div>
                   <p id="form-contact-userMessage-help" class="help"></p>
                 </div>
@@ -80,6 +80,6 @@
       </div>
     </section>
   </main>
-<script src="js/contact.js" defer></script>
+<script src="/js/contact.js" defer></script>
 </body>
 </html>
