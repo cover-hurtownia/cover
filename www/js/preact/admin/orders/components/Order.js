@@ -105,7 +105,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.accept(order.id);
         
                         if (response.status === "ok") {
-                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało zaakceptowane.`, "is-success", [
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało zaakceptowane.`, [
                                 {
                                     classList: [],
                                     textContent: "Odśwież",
@@ -114,7 +114,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                             ]);
                         }
                         else {
-                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -125,7 +125,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.send(order.id);
         
                         if (response.status === "ok") {
-                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało wysłane.`, "is-success", [
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało wysłane.`, [
                                 {
                                     classList: [],
                                     textContent: "Odśwież",
@@ -134,7 +134,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                             ]);
                         }
                         else {
-                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -145,7 +145,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.delivered(order.id);
         
                         if (response.status === "ok") {
-                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało dostarczone.`, "is-success", [
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało dostarczone.`, [
                                 {
                                     classList: [],
                                     textContent: "Odśwież",
@@ -154,7 +154,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                             ]);
                         }
                         else {
-                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
                             console.error(response.error.devMessage);
                         }
                     }
@@ -167,7 +167,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                         const response = await API.orders.cancel(order.id);
         
                         if (response.status === "ok") {
-                            modal.showMessage("Sukces", `Zamówienie #${order.id} zostało anulowane.`, "is-success", [
+                            modal.showCard("Sukces", `Zamówienie #${order.id} zostało anulowane.`, [
                                 {
                                     classList: [],
                                     textContent: "Odśwież",
@@ -176,7 +176,7 @@ export const Order = ({ order }) => h("div", { className: "box" }, [
                             ]);
                         }
                         else {
-                            modal.showMessage("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".", "is-danger");
+                            modal.showCard("Błąd", utils.capitalizeFirst(response.error.userMessage) + ".");
                             console.error(response.error.devMessage);
                         }
                     }

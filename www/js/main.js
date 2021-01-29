@@ -105,3 +105,17 @@ onCartChange((() => {
     try { return item ? JSON.parse(item) : {}; }
     catch (_) { return {}; }
 })());
+
+/*
+    toasts
+*/
+
+const toasts = document.getElementsByClassName("toast");
+
+for (const toast of toasts) {
+    toast.addEventListener("click", event => {
+        toast.classList.add("sliding-out");
+
+        setTimeout(() => toast.remove(), 500);
+    });
+}
