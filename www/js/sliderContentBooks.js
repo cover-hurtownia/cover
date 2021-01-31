@@ -67,9 +67,7 @@ import * as utils from "/js/utils.js";
                 cardImage.classList.add("card-image");
                 cardImage.innerHTML = `
                 <a href="/book/${book_id}}">
-                    <figure class="image">
-                        <img src="/images/${image_id}">
-                    </figure>
+                    <img class="book-image" src="/images/${image_id}">
                 </a>
                 `;
                 const cardText = document.createElement("div");

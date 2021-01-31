@@ -189,10 +189,6 @@ summary {
     z-index: 0;
 }
 
-.slider-slide:not(:first-child){
-    justify-content: space-around;
-}
-
 .slider-slide-active {
     opacity: 1;
     z-index: 1;
@@ -210,14 +206,14 @@ summary {
 }
 
 .element-content {
-    justify-items: center;
+
     font-family: serif;
-    max-width:90%;
+
 }
 
 .element-title, .element-content {
     font-family: sans-serif;
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     text-align: center;
 }
 
@@ -334,14 +330,7 @@ article {
 
 .slider-content-column{
     display: block;
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
     margin: 1%;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
-    color: #453444;
 }
 
 .slider-text-font {
@@ -349,24 +338,27 @@ article {
 }
 
 .slider-content-column-card{
-    height: 100%;
-    position: relative;
+    background-color: white;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.1);
+    color: #453444;
 }
 
 .card-text{
     padding: 1rem 0;
 }
 
-@media (max-width: 380px){
+.book-image {
+    height: 300px;
+    width: 250px;
+}
+
+@media (max-width: 768px){
     a {
         font-size: 12px;
-    }
-    .slider-button-icon {
-        font-size: 2rem;
-        font-weight: bold;
     }
     .element-title {
         font-size: 1.5rem;
@@ -374,7 +366,28 @@ article {
     .slider-text-font{
         font-size: 1rem;
     }   
-    img {
-        width: 80px;
+    .book-image {
+        height: 150px;
+        width: 200px;
     }
+}
+
+@media (max-width: 380px){
+    .slider-button-icon {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    a {
+        font-size: 9px;
+    }
+    .card-text {
+        padding: 0.5rem 0;
+    }
+    .element-title {
+        font-size: 1rem;
+    }
+    .slider-text-font{
+        font-size: 0.8rem;
+    }   
+
 }

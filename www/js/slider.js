@@ -98,7 +98,7 @@ class Slider {
     createPagination(typeOfIcon) {
         const paginationIcon = document.createElement("ul");
         paginationIcon.classList.add("slider-pagination");
-        paginationIcon.setAttribute("aira-label", "slider pagination");
+        paginationIcon.setAttribute("aria-label", "slider pagination");
         const slidesNumber = this.slides.length;
         for (let i = 0; i < slidesNumber; i++){
             const li = document.createElement("li");
