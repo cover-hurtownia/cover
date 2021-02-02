@@ -24,8 +24,7 @@ import * as utils from "/js/utils.js";
     
     const sliderBookComponents = () => {
         const firstSlide = document.getElementById("s1");
-        firstSlide.innerHTML = `
-        
+        firstSlide.innerHTML = ` 
         <div class="image">
             <img src="/assets/logo-wbgl-d.svg">
         </div>
@@ -34,7 +33,6 @@ import * as utils from "/js/utils.js";
         </div>
         
         `   
-
         const secondSlide = document.getElementById("s2");
         const secondSlideTitle = `Nowości`;
         
@@ -66,14 +64,14 @@ import * as utils from "/js/utils.js";
                 sliderContentColumnCard.classList.add("slider-content-column-card");
 
                 const cardImage = document.createElement("div");
-                cardImage.classList.add("card-image");
+                cardImage.classList.add("slider-card-image");
                 cardImage.innerHTML = `
                 <a class="sliderA" href="/book/${book_id}}">
                     <img class="book-image" src="/images/${image_id}">
                 </a>
                 `;
                 const cardText = document.createElement("div");
-                cardText.classList.add("card-text");
+                cardText.classList.add("slider-card-text");
                 const cardTextBookTitle = document.createElement("div");
                 cardTextBookTitle.classList.add("has-text-weight-bold","has-text-centered");
                 cardTextBookTitle.innerHTML = `<a class="sliderA" href="/book/${book_id}">${title}</a>`;

@@ -358,7 +358,7 @@ summary {
     justify-content: center;
   }
   
-  .image > img {
+  .slider-image > img {
     height: 80%;
     width: 70%;
   }
@@ -368,11 +368,11 @@ summary {
     height: 100%;
   }
   
-  .card-image {
+  .slider-card-image {
     height: 75%;
   }
   
-  .card-text {
+  .slider-card-text {
     padding: 0.2rem 0;
     background-color: whitesmoke;
     height: 35%;
@@ -382,9 +382,10 @@ summary {
     border-radius: 5px;}
   
   @media (max-width: 678px) {
-    a {
-      font-size: 12px; }
-    .card-image {
+    .sliderA {
+      font-size: 0.6rem !important;
+    }
+    .slider-card-image {
       height: 65%;
       padding: 0.2rem 0;
     }
@@ -393,13 +394,15 @@ summary {
       padding: 0.2rem 0 ;
     }
     .slider-content-column-card{
-      width: 100px;
+      width: 120px;
       height: 230px;
     }
   }
   
   @media (max-width: 380px) {
-
+    .sliderA {
+      font-size: 0.6rem !important;
+    }
     .slider-button-icon {
       font-size: 2rem;
       font-weight: bold; }
@@ -411,7 +414,7 @@ summary {
     #s1 {
     grid-template-columns: 10px 1fr 10px;
     }
-    .card-image {
+    .slider-card-image {
       height: 50%;
       padding: 0.2rem 0;
     }

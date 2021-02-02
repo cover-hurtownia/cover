@@ -73,10 +73,10 @@ class Slider {
         });
         this.icons[index].classList.add("slider-pagination-element-active");
         this.currentSlide = index;
-        if (this.options.changeTime !== 0) {
-            clearInterval(this.time);
-            this.time = setTimeout(() => this.slideNext(), this.options.changeTime)
-        }
+        // if (this.options.changeTime !== 0) {
+        //     clearInterval(this.time);
+        //     this.time = setTimeout(() => this.slideNext(), this.options.changeTime)
+        // }
     }
     
     slidePrev() {
