@@ -338,24 +338,29 @@ summary {
   }
   
   .sliderA {
-    font-size: 0.6rem !important;
+    font-size: 0.8rem !important;
   }
-  
+  .element-content > h4{
+    font-size: 10%;
+  }  
   #s1 .element-content {
       grid-column: 2/3;
       grid-row: 2/3;
   }
-  
+  .element-content > h4 {
+    font-size: 1.3rem;
+  }
   .image {
     grid-column: 2/3;
     grid-row: 1/2;
     text-align: center;
+    display: flex;
+    justify-content: center;
   }
   
   .image > img {
-    height: 50%;
+    height: 80%;
     width: 70%;
-    display: inline;
   }
   
   img.book-image {
@@ -371,7 +376,10 @@ summary {
     padding: 0.2rem 0;
     background-color: whitesmoke;
     height: 35%;
-  border-radius: 5px; }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 5px;}
   
   @media (max-width: 678px) {
     a {
@@ -391,11 +399,12 @@ summary {
   }
   
   @media (max-width: 380px) {
+
     .slider-button-icon {
       font-size: 2rem;
       font-weight: bold; }
     #s1 h4 {
-      font-size: 12px;
+      font-size: 1.3rem;
       text-align: justify;
     text-justify: inter-word;
     }
