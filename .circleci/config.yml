@@ -1,0 +1,12 @@
+orbs:
+  node: circleci/node@4.1.0
+
+version: 2.1
+
+workflows:
+  app-tests:
+    jobs:
+      - node/test:
+          version: 15.5.1
+          cache-version: v5
+          override-ci-command: npm ci --python=python3

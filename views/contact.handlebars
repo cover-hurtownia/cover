@@ -1,0 +1,67 @@
+<section class="hero">
+    <div class="hero-body">
+        <div class="columns">
+            <div class="container is-flex is-justify-content-center">
+                <div class="column is-half">
+                    <div class="box">
+                        <h1 class="is-title is-size-2 has-text-centered my-5">Kontakt</h1>
+                        <form id="contact-form" class="my-4 px-5" method="POST" action="/contact">
+                            <div class="field py-3">
+                                <label class="label">Imię*:</label>
+                                <div class="control">
+                                <input class="input" id="form-contact-userName-input"  type="text"  name="name" placeholder="Adam" required>
+                                </div>
+                                <p id="form-contact-userName-help" class="help"></p>
+                            </div>
+                            <div class="field py-3">
+                                <label class="label">Adres e-mail*:</label>
+                                <div class="control">
+                                <input class="input" id="form-contact-userEmail-input" type="email"  name="email" placeholder="jankowalski@mail.pl" required>
+                                </div>
+                                <p id="form-contact-userEmail-help" class="help"></p>
+                            </div>
+                            <div class="field py-3">
+                                <label class="label">Temat:</label>
+                                <div class="control">
+                                <input class="input" id="form-contact-messageTopic-input" name="title" placeholder="Płatność/Zamówienie/Inne"/>
+                                </div>
+                                <p id="form-contact-messageTopic-help" class="help"></p>
+                            </div>
+                            <div class="field py-3">
+                                <label class="label">Twoja wiadomość*:</label>
+                                <div class="control">
+                                <textarea class="textarea" id="form-contact-userMessage-input" name="message" maxlength="500" placeholder="Treść wiadomości: " required></textarea>
+                                </div>
+                                <p id="form-contact-userMessage-help" class="help"></p>
+                            </div>
+                            <div class="field py-2">
+                                <div class="title is-5 py-3"><h2>Zgody*</h2></div>
+                                <div class="control">
+                                <label class="checkbox py-2">
+                                    <input type="checkbox" id="form-contact-regulation-input" name="regulation">
+                                    Zapoznałem się i akceptuje <a href="/terms"></a>regulamin serwisu.</a>
+                                </label>
+                                <p id="form-contact-regulation-help" class="help"></p>
+                                </div>
+                                <div class="control">
+                                <label class="checkbox py-2">
+                                    <input type="checkbox" id="form-contact-privacy-input" name="privacy">
+                                    Zapoznałem się i akceptuje <a href="/privacy"></a>politykę prywatości.</a>
+                                </label>
+                                <p id="form-contact-privacy-help" class="help"></p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                <button class="button is-primary" type="submit">Wyślij</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/js/contact.js" type="module" defer></script>

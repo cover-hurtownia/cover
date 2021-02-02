@@ -1,0 +1,40 @@
+{
+  "name": "hurtownia-ksiazek",
+  "version": "0.1.0",
+  "description": "Projekt strony WWW hurtowni książek",
+  "main": "index.js",
+  "repository": "https://github.com/bittersweetshimmer/hurtownia-ksiazek",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test mocha -r dotenv/config --exit",
+    "migrate": "knex migrate:latest --esm",
+    "seed": "knex seed:run --esm",
+    "server": "node -r dotenv/config index.js",
+    "sass": "node-sass sass/ -o www/css/"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "connect-session-knex": "^2.0.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.2.0",
+    "express-session": "^1.17.1",
+    "knex": "^0.21.16",
+    "mysql": "^2.18.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "bulma": "^0.9.2",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "cross-env": "^7.0.3",
+    "mime-types": "^2.1.28",
+    "mocha": "^8.2.1",
+    "node-sass": "^5.0.0"
+  }
+}

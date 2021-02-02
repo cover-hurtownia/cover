@@ -1,0 +1,22 @@
+<div class="box columns is-vcentered m-1 p-1">
+    <div class="column is-narrow">
+        <div class="title">
+            #{{inc @index}}
+        </div>
+    </div>
+    <div class="column is-1">
+        <figure class="box image p-1">
+            <img src="/images/{{book.image_id}}" />
+        </figure>
+    </div>
+    <div class="column">
+        <div class="title">
+            <a href="/book/{{book.id}}">{{book.name}}</a>
+        </div>
+        <ul>
+            {{#each book.authors}}
+                <li>{{> author author=this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
