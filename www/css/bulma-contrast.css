@@ -8067,7 +8067,7 @@ article#s2, article#s3 {
   cursor: pointer;
   display: flex;
   justify-content: center;
-  z-index: 98;
+  z-index: 9;
   background-color: rgba(80, 80, 80, 0.3); }
 
 .prev-slide-button {
