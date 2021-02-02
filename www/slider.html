@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-<link rel="stylesheet" href="css/main.css" type="text/css" />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/assets/logo-small.svg" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="preload" href="/css/bulma-light.css" as="style" />
+    <link rel="preload" href="/css/bulma-dark.css" as="style" />
+    <link rel="preload" href="/css/bulma-contrast.css" as="style" />
+    <link id="bulma-theme" href="/css/bulma-light.css" type="text/css" rel="stylesheet" />
+    <title>Cover Hurtownia</title>
 </head>
 <body>
 <style>
+
+
 .slider {
     position: relative;
     display: grid;
     grid-template-columns: 3em 1fr 3em;
     grid-template-rows: 1fr;
-    height: 50vh;
 }
 
 #slider1{
-    background-image: url("bookshelf.jpg");
+    background-image: url("assets/heh.png");
     background-size: cover;
     background-position: center center;
 }
@@ -35,47 +40,48 @@
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     opacity:0;
     z-index: 0;
 }
 
+.slider-slide:not(:first-child){
+    justify-content: space-around;
+}
+
 .slider-slide-active {
     opacity: 1;
     z-index: 1;
 }
+.element{
+    background-color: rgba(29, 29, 29, 0.618);
+}
 
 .element-title {
-    font-size: 2em;
+    padding: 10px;
+    color:white;
+    font-size: 2rem;
     text-transform: uppercase;
-    margin-top:0;
-    font-weight: normal;
+    margin-top:5px;
 }
 
-.element-text {
-    font-size:2rem;
+.element-content {
+    justify-items: center;
     font-family: serif;
-    font-style: italic;
-    max-width:60%;
+    max-width:90%;
 }
 
-.element-title, .element-text {
-    color:#fff;
+.element-title, .element-content {
     font-family: sans-serif;
-    position: relative;
-    left:-3rem;
-    opacity:0;
+    margin-bottom: 5%;
     text-align: center;
 }
 
 .slider-button-icon {
     position: absolute;
     color: white;
-    font-size: 2rem;
-    height: 100%;
-    width: 100%;
+    font-size: 3rem;
     display: flex;
     justify-self: center;
     align-self: center;
@@ -101,11 +107,15 @@
     right: 0;
 }
 
-/* stronicowanie  */
+#s1 {
+    color: black;
+}
+
 .slider-pagination {
     z-index: 2;
     position: absolute;
     bottom: 0;
+    margin-top: 10px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -118,6 +128,7 @@
     height: 2rem;
     border: none;
     overflow: hidden;
+    text-indent: -9999px; 
     cursor: pointer;
     position: relative;
 }
@@ -131,7 +142,6 @@
     background: transparent;
     width:0.9rem;
     height:0.2rem;
-    /* border-radius: 50%; */
     transition:0.5s all;
     box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5);
 }
@@ -149,7 +159,6 @@ article {
     color: white !important;
 }
 
-
 .slider-slide {
     opacity: 0;
     transition:0.4s all;
@@ -160,58 +169,93 @@ article {
 .slider .element-title {
     left:-3rem;
     opacity:0;
-    transition: 2s left, 2s opacity;
+    transition: 1s left, 1s opacity;
 }
-.slider .element-text {
-    left:-3rem;
+.slider .element-content {
     opacity:0;
-    transition: 2s 1s left, 2s 1s opacity;
+    transition: 1s left, 1s opacity;
 }
 .slider-slide-active .element-title {
-    left:0;
+    top:0;
     opacity:1;
 }
-.slider-slide-active .element-text {
+.slider-slide-active .element-content {
     left:0;
     opacity:1;
 }
 
+.element-content .column{
+    max-height: 10%;
+    line-height: 10%;
+}
 
+.slider-content-column{
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 1%;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+    color: #453444;
+}
+
+.slider-text-font {
+    font-size: 2rem;
+}
+
+.slider-content-column-card{
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-text{
+    padding: 1rem 0;
+}
+
+@media (max-width: 380px){
+    a {
+        font-size: 12px;
+    }
+    .slider-button-icon {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .element-title {
+        font-size: 1.5rem;
+    }
+    .slider-text-font{
+        font-size: 1rem;
+    }   
+    img {
+        width: 80px;
+    }
+}
 </style>
 
 <a href="main.html">HOME</a>
+<section class="hero">
+    <div class="hero-body px-0 py-0">
+        <div class="container">
+            <div class="elements-list" id="slider1">
+                <article class="element is-flex is-justify-content-center" id="s1">
 
-<section class="hero hero-body px-0 py-0">
-    <div class="container">
-        <div class="elements-list" id="slider1">
-            <article class="element">
-                <h2 class="element-title">
-                    s1
-                </h2>
-                <div class="element-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit...
-                </div>
-            </article>
-            <article class="element">
-                <h2 class="element-title">
-                    s2
-                </h2>
-                <div class="element-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit...
-                </div>
-            </article>
-            <article class="element">
-                <h2 class="element-title">
-                    s3
-                </h2>
-                <div class="element-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit...
-                </div>
-            </article>
+                </article>
+                <article class="element" id="s2">
+
+                </article>
+                <article class="element" id="s3">
+ 
+                </article>
+            </div>
         </div>
     </div>
 </section>
-<script src="js/slider.js" defer></script>
-
+<script src="/js/slider.js" defer></script>
+<script src="/js/sliderContentBooks.js" type="module" defer></script>
 </body>
 </html>
