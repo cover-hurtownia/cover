@@ -25,12 +25,14 @@ import * as utils from "/js/utils.js";
     const sliderBookComponents = () => {
         const firstSlide = document.getElementById("s1");
         firstSlide.innerHTML = `
-        <h2 class="element-title title is-1">
-        <figure class="image"><img src="/assets/logo-wbgl-d.svg"></figure>
-        </h2>
-        <div class="element-content">
-        <h4 class="slider-font has-text-white">Cover jest najambitniejszym projektem założonym przez kilku pasjonatów czytelnictwa. Projekt, który z pewnością przerodzi się w jedną z lepszych sieci hurtowni na rynku.</h4>
+        
+        <div class="image">
+            <img src="/assets/logo-wbgl-d.svg">
         </div>
+        <div class="element-content">
+            <h4 class="slider-font has-text-white">Cover jest najambitniejszym projektem założonym przez kilku pasjonatów czytelnictwa. Projekt, który z pewnością przerodzi się w jedną z lepszych sieci hurtowni na rynku.</h4>
+        </div>
+        
         `   
 
         const secondSlide = document.getElementById("s2");
@@ -66,7 +68,7 @@ import * as utils from "/js/utils.js";
                 const cardImage = document.createElement("div");
                 cardImage.classList.add("card-image");
                 cardImage.innerHTML = `
-                <a href="/book/${book_id}}">
+                <a class="sliderA" href="/book/${book_id}}">
                     <img class="book-image" src="/images/${image_id}">
                 </a>
                 `;
@@ -74,11 +76,11 @@ import * as utils from "/js/utils.js";
                 cardText.classList.add("card-text");
                 const cardTextBookTitle = document.createElement("div");
                 cardTextBookTitle.classList.add("has-text-weight-bold","has-text-centered");
-                cardTextBookTitle.innerHTML = `<a href="/book/${book_id}">${title}</a>`;
+                cardTextBookTitle.innerHTML = `<a class="sliderA" href="/book/${book_id}">${title}</a>`;
                 
                 const cardTextBookAuthors = document.createElement("div");
                 cardTextBookAuthors.classList.add("has-text-centered");
-                cardTextBookAuthors.innerHTML = `<a href="/books?author=${authors}">${authors}</a>`;
+                cardTextBookAuthors.innerHTML = `<a class="sliderA" href="/books?author=${authors}">${authors}</a>`;
         
                 cardText.append(cardTextBookTitle);
                 cardText.append(cardTextBookAuthors);

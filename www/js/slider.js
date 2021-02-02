@@ -96,6 +96,8 @@ class Slider {
     }
 
     createPagination(typeOfIcon) {
+        const pagiantionContainer = document.createElement("div");
+        pagiantionContainer.classList.add("pagination");
         const paginationIcon = document.createElement("ul");
         paginationIcon.classList.add("slider-pagination");
         paginationIcon.setAttribute("aria-label", "slider pagination");
@@ -123,7 +125,8 @@ class Slider {
                 heightbutton.style.setProperty("width", "0.9 rem");
             }
         }
-        this.slider.appendChild(paginationIcon);
+        pagiantionContainer.append(paginationIcon)
+        this.slider.appendChild(pagiantionContainer);
     }
 
     
