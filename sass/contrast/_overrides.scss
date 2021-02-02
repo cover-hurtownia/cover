@@ -41,3 +41,12 @@ h6 {
     }
   }
 }
+
+
+.slider {
+    background-color: rgba($primary, 0.6) !important;
+}
+
+.prev-slide-button, .next-slide-button {
+    background-color: rgba($primary, 0.8) !important;
+}
