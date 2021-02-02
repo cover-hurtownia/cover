@@ -11,7 +11,7 @@ class Slider {
         this.icons = [];
 
         const defaultOpts = {
-            changeTime: 5000,
+            changeTime: 6000,
             prevText : "<",
             nextText : ">",
             generateDots : true,
